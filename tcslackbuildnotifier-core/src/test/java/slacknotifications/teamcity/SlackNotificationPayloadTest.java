@@ -83,14 +83,14 @@ public class SlackNotificationPayloadTest {
 			wh.setEnabled(whc.getEnabled());
 			//slackNotification.addParams(slackNotificationConfig.getParams());
 			wh.setBuildStates(whc.getBuildStates());
-			//wh.setProxy(whps. getProxyConfigForUrl(whc.getChannel()));
-			//this.getFromConfig(wh, whc);
+			//slackNotification.setProxy(whps. getProxyConfigForUrl(whc.getChannel()));
+			//this.getFromConfig(slackNotification, whc);
 			
 			if (wpm.isRegisteredFormat(whc.getPayloadFormat())){
-				//wh.addParam("notifyType", state);
-				//addMessageParam(sRunningBuild, wh, stateShort);
-				//wh.addParam("buildStatus", sRunningBuild.getStatusDescriptor().getText());
-				//addCommonParams(sRunningBuild, wh);
+				//slackNotification.addParam("notifyType", state);
+				//addMessageParam(sRunningBuild, slackNotification, stateShort);
+				//slackNotification.addParam("buildStatus", sRunningBuild.getStatusDescriptor().getText());
+				//addCommonParams(sRunningBuild, slackNotification);
 				SlackNotificationPayload payloadFormat = wpm.getFormat(whc.getPayloadFormat());
 				wh.setContentType(payloadFormat.getContentType());
 				wh.setCharset(payloadFormat.getCharset());

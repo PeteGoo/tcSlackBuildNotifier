@@ -75,9 +75,9 @@ public class SlackNotificationCollection {
 	            		this.slackNotifications.put(this.convertToInt(tokens[SLACKNOTIFICATION_ID]), wh);
 //            		} else if ((tokens[SLACKNOTIFICATION_KEY].equals("bitmask"))
 //            				&& (this.canConvertToInt(val))){
-//            			SlackNotification wh = new SlackNotificationImpl();
-//                		wh.setTriggerStateBitMask(this.convertToInt(val)); 	 
-//                		this.slackNotifications.put(this.convertToInt(tokens[SLACKNOTIFICATION_ID]), wh);
+//            			SlackNotification slackNotification = new SlackNotificationImpl();
+//                		slackNotification.setTriggerStateBitMask(this.convertToInt(val));
+//                		this.slackNotifications.put(this.convertToInt(tokens[SLACKNOTIFICATION_ID]), slackNotification);
 	            	} else if (tokens[SLACKNOTIFICATION_KEY].equals("enabled")){
 	            		SlackNotification wh = new SlackNotificationImpl();
             			wh.setEnabled(true);
