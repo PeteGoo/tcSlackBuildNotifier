@@ -280,7 +280,7 @@
 			    To edit all slacknotifications for builds in the project <a href="index.html?projectId=${projectExternalId}">edit Project slacknotifications</a>.
          	</c:when>  
          	<c:otherwise>  
-			    <h2 class="noBorder">SlackNotifications configured for project ${projectName}</h2>
+			    <h2 class="noBorder">Slack notifications configured for project ${projectName}</h2>
          	</c:otherwise>  
 		</c:choose>  
 
