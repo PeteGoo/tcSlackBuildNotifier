@@ -33,7 +33,7 @@ public class SlackNotificationBuildTabExtension extends BuildTypeTab {
             ProjectSettingsManager settings, WebControllerManager manager,
             PluginDescriptor pluginDescriptor) {
 		//super(myTitle, myTitle, null, projectManager);
-		super("slackNotifications", "SlackNotifications", manager, projectManager);
+		super("slackNotifications", "Slack", manager, projectManager);
 		this.projSettings = settings;
 		myPluginPath = pluginDescriptor.getPluginResourcesPath();
 	}
