@@ -51,7 +51,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
 				SlackNotificationConfig whConfig = new SlackNotificationConfig(e);
 				Loggers.SERVER.debug(e.toString());
 				configs.add(whConfig);
-				Loggers.SERVER.debug(NAME + ":readFrom :: url " + whConfig.getUrl());
+				Loggers.SERVER.debug(NAME + ":readFrom :: url " + whConfig.getChannel());
 				Loggers.SERVER.debug(NAME + ":readFrom :: enabled " + String.valueOf(whConfig.getEnabled()));
 				Loggers.SERVER.debug(NAME + ":readFrom :: payloadFormat " + String.valueOf(whConfig.getPayloadFormat()));
 	        }
@@ -72,7 +72,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
             	Element el = whc.getAsElement();
             	Loggers.SERVER.debug(el.toString());
                 parentElement.addContent(el);
-				Loggers.SERVER.debug(NAME + ":writeTo :: url " + whc.getUrl());
+				Loggers.SERVER.debug(NAME + ":writeTo :: url " + whc.getChannel());
 				Loggers.SERVER.debug(NAME + ":writeTo :: enabled " + String.valueOf(whc.getEnabled()));
 				Loggers.SERVER.debug(NAME + ":writeTo :: payloadFormat " + String.valueOf(whc.getPayloadFormat()));
             }
@@ -109,7 +109,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     	String tmpString = "";
     	for(SlackNotificationConfig whConf : slackNotificationsConfigs)
     	{
-    		tmpString += whConf.getUrl() + "<br/>";
+    		tmpString += whConf.getChannel() + "<br/>";
     	}
     	return tmpString;
     }
@@ -123,7 +123,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
             for(SlackNotificationConfig whc : slackNotificationsConfigs)
             {
                 if (whc.getUniqueKey().equals(slackNotificationId)){
-                	Loggers.SERVER.debug(NAME + ":deleteSlackNotification :: Deleting slacknotifications from " + ProjectId + " with URL " + whc.getUrl());
+                	Loggers.SERVER.debug(NAME + ":deleteSlackNotification :: Deleting slacknotifications from " + ProjectId + " with URL " + whc.getChannel());
                 	tempSlackNotificationList.add(whc);
                 }
             }
@@ -143,7 +143,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
             {
                 if (whc.getUniqueKey().equals(slackNotificationId)){
                 	whc.setEnabled(enabled);
-                	whc.setUrl(URL);
+                	whc.setChannel(URL);
                 	whc.setBuildStates(buildState);
                 	whc.setPayloadFormat(format);
                 	whc.enableForSubProjects(buildSubProjects);
@@ -154,7 +154,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
                 			whc.enableBuildInProject(bt);
                 		}
                 	}
-                	Loggers.SERVER.debug(NAME + ":updateSlackNotification :: Updating slacknotifications from " + ProjectId + " with URL " + whc.getUrl());
+                	Loggers.SERVER.debug(NAME + ":updateSlackNotification :: Updating slacknotifications from " + ProjectId + " with URL " + whc.getChannel());
                    	this.updateSuccess = true;
                 }
             }

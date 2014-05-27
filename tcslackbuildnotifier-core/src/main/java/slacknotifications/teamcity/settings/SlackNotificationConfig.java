@@ -33,7 +33,7 @@ public class SlackNotificationConfig {
 	private SortedMap<String,String> extraParameters;
 	private Boolean enabled = true;
 	private String uniqueKey = "";
-	private String url;
+	private String channel;
 	private String payloadFormat = null;
 	private BuildState states = new BuildState();
 	private SortedMap<String, CustomMessageTemplate> templates; 
@@ -50,8 +50,8 @@ public class SlackNotificationConfig {
 		this.extraParameters = new TreeMap<String,String>();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
 		
-		if (e.getAttribute("url") != null){
-			this.setUrl(e.getAttributeValue("url"));
+		if (e.getAttribute("channel") != null){
+			this.setChannel(e.getAttributeValue("channel"));
 		}
 		
 		if (e.getAttribute("enabled") != null){
@@ -152,18 +152,18 @@ public class SlackNotificationConfig {
 	 * It will still allow you to add the format, but the slacknotifications might not
 	 * fire at runtime if the payloadFormat configured is not available.
 	 *  
-	 * @param url
+	 * @param channel
 	 * @param enabled
-	 * @param stateMask
+	 * @param states
 	 * @param payloadFormat (unvalidated)
 	 */
-	public SlackNotificationConfig(String url, Boolean enabled, BuildState states, String payloadFormat, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
+	public SlackNotificationConfig(String channel, Boolean enabled, BuildState states, String payloadFormat, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
 		int Min = 1000000, Max = 1000000000;
 		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
 		this.uniqueKey = Rand.toString();
 		this.extraParameters = new TreeMap<String,String>();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
-		this.setUrl(url);
+		this.setChannel(channel);
 		this.setEnabled(enabled);
 		this.setBuildStates(states);
 		this.setPayloadFormat(payloadFormat);
@@ -185,7 +185,7 @@ public class SlackNotificationConfig {
 	
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
-		el.setAttribute("url", this.getUrl());
+		el.setAttribute("channel", this.getChannel());
 		el.setAttribute("enabled", String.valueOf(this.enabled));
 		el.setAttribute("format", String.valueOf(this.payloadFormat).toLowerCase());
 		
@@ -284,12 +284,12 @@ public class SlackNotificationConfig {
 		this.states = states;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getChannel() {
+		return channel;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 
 	public String getUniqueKey() {

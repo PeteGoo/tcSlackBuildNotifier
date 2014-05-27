@@ -22,7 +22,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private String enabledBuildsListForWeb;
 	
 	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config, Collection<SlackNotificationPayload> registeredPayloads) {
-		url = config.getUrl();
+		url = config.getChannel();
 		uniqueKey = config.getUniqueKey();
 		enabled = config.getEnabled();
 		payloadFormat = config.getPayloadFormat();

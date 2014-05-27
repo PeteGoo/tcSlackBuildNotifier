@@ -63,13 +63,13 @@ public class SlackNotificationListener extends BuildServerAdapter {
     }
 
 	public void getFromConfig(SlackNotification slackNotification, SlackNotificationConfig slackNotificationConfig){
-		slackNotification.setUrl(slackNotificationConfig.getUrl());
+		slackNotification.setUrl(slackNotificationConfig.getChannel());
 		slackNotification.setEnabled(slackNotificationConfig.getEnabled());
 		//slackNotification.addParams(slackNotificationConfig.getParams());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
-		slackNotification.setProxy(myMainSettings.getProxyConfigForUrl(slackNotificationConfig.getUrl()));
+		slackNotification.setProxy(myMainSettings.getProxyConfigForUrl(slackNotificationConfig.getChannel()));
 		Loggers.ACTIVITIES.debug("SlackNotificationListener :: SlackNotification proxy set to "
-				+ slackNotification.getProxyHost() + " for " + slackNotificationConfig.getUrl());
+				+ slackNotification.getProxyHost() + " for " + slackNotificationConfig.getChannel());
 	}
     
 	private void processBuildEvent(SRunningBuild sRunningBuild, BuildStateEnum state) {
@@ -135,7 +135,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 						wh = null;
 		    		} else {
 		    			Loggers.ACTIVITIES.debug(this.getClass().getSimpleName() 
-		    					+ ":processBuildEvent() :: SlackNotification disabled. Will not process " + whc.getUrl() + " (" + whc.getPayloadFormat() + ")");
+		    					+ ":processBuildEvent() :: SlackNotification disabled. Will not process " + whc.getChannel() + " (" + whc.getPayloadFormat() + ")");
 		    		}
 				}
 	    	} else {

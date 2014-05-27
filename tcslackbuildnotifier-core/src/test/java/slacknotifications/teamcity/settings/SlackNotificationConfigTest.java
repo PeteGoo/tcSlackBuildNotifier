@@ -80,15 +80,15 @@ public class SlackNotificationConfigTest {
 
 	@Test
 	public void testGetUrl() {
-		assertTrue(slacknotificationAllEnabled.getUrl().equals("http://localhost/test"));
+		assertTrue(slacknotificationAllEnabled.getChannel().equals("http://localhost/test"));
 	}
 
 	@Test
 	public void testSetUrl() {
-		assertTrue(slacknotificationAllEnabled.getUrl().equals("http://localhost/test"));
-		slacknotificationAllEnabled.setUrl("a new url");
-		assertFalse(slacknotificationAllEnabled.getUrl().equals("http://localhost/test"));
-		assertTrue(slacknotificationAllEnabled.getUrl().equals("a new url"));
+		assertTrue(slacknotificationAllEnabled.getChannel().equals("http://localhost/test"));
+		slacknotificationAllEnabled.setChannel("a new url");
+		assertFalse(slacknotificationAllEnabled.getChannel().equals("http://localhost/test"));
+		assertTrue(slacknotificationAllEnabled.getChannel().equals("a new url"));
 		
 	}
 

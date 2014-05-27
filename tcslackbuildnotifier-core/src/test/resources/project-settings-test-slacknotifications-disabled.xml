@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
   <slacknotifications enabled="true">
-    <slacknotification url="http://localhost/test" enabled="false" format="nvpairs">
+    <slacknotification channel="http://localhost/test" enabled="false" format="nvpairs">
       <states>
         <state type="buildStarted" enabled="false" />
         <state type="beforeBuildFinish" enabled="false" />

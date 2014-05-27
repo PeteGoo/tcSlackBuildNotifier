@@ -79,11 +79,11 @@ public class SlackNotificationPayloadTest {
 		
     	for (SlackNotificationConfig whc : whps.getSlackNotificationsConfigs()){
 			SlackNotification wh = new SlackNotificationImpl();
-			wh.setUrl(whc.getUrl());
+			wh.setUrl(whc.getChannel());
 			wh.setEnabled(whc.getEnabled());
 			//slackNotification.addParams(slackNotificationConfig.getParams());
 			wh.setBuildStates(whc.getBuildStates());
-			//wh.setProxy(whps. getProxyConfigForUrl(whc.getUrl()));
+			//wh.setProxy(whps. getProxyConfigForUrl(whc.getChannel()));
 			//this.getFromConfig(wh, whc);
 			
 			if (wpm.isRegisteredFormat(whc.getPayloadFormat())){

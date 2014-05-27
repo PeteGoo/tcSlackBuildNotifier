@@ -202,7 +202,7 @@ public class SlackNotificationSettingsTest {
 
 		
 		for (SlackNotificationConfig c : configs){
-			SlackNotification wh = new SlackNotificationImpl(c.getUrl());
+			SlackNotification wh = new SlackNotificationImpl(c.getChannel());
 			wh.setEnabled(c.getEnabled());
 			//wh.addParams(c.getParams());
 			System.out.println(wh.getUrl());
