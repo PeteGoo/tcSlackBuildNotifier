@@ -24,9 +24,9 @@ public interface SlackNotification {
 
 	public abstract int getProxyPort();
 
-	public abstract String getUrl();
+	public abstract String getChannel();
 
-	public abstract void setUrl(String url);
+	public abstract void setChannel(String channel);
 
 	public abstract String getParameterisedUrl();
 

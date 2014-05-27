@@ -62,7 +62,7 @@ public class SlackNotificationTest {
 	@Test
 	public void test_URL() {
 		SlackNotification W = factory.getSlackNotification(url, proxy, proxyPort);
-		assertTrue(W.getUrl() == url);
+		assertTrue(W.getChannel() == url);
 	}
 
 	@Test(expected=java.io.FileNotFoundException.class)
@@ -271,7 +271,7 @@ public class SlackNotificationTest {
 		SlackNotificationCollection whc = new SlackNotificationCollection(params);
 		System.out.println("Test 1" + whc.getSlackNotifications().get(1).getParameterisedUrl());
 		System.out.println("Test 2" + whc.getSlackNotifications().get(2).getParameterisedUrl());
-		assertTrue(whc.getSlackNotifications().get(1).getUrl().equals(url));
+		assertTrue(whc.getSlackNotifications().get(1).getChannel().equals(url));
 		assertTrue((whc.getSlackNotifications().get(1).getParameterisedUrl().equals(url + "?fod=baa&slash=dot"))
 				|| (whc.getSlackNotifications().get(1).getParameterisedUrl().equals(url + "?slash=dot&fod=baa")));
 		assertTrue(whc.getSlackNotifications().get(2).getParameterisedUrl().equals(url + "/something?foo=bar"));
@@ -291,7 +291,7 @@ public class SlackNotificationTest {
 		params.put("system.slacknotifications.1.parameter.2.value","%system.test.recursive1%");
 		SlackNotificationCollection whc = new SlackNotificationCollection(params);
 		System.out.println("Test 1" + whc.getSlackNotifications().get(1).getParameterisedUrl());
-		assertTrue(whc.getSlackNotifications().get(1).getUrl().equals(url));
+		assertTrue(whc.getSlackNotifications().get(1).getChannel().equals(url));
 		assertTrue((whc.getSlackNotifications().get(1).getParameterisedUrl().equals(url + "?foo=bar&slash=blahblah"))
 				|| (whc.getSlackNotifications().get(1).getParameterisedUrl().equals(url + "?slash=blahblah&foo=bar")));
 		assertFalse(whc.getSlackNotifications().get(1).isErrored());
@@ -310,7 +310,7 @@ public class SlackNotificationTest {
 		params.put("system.slacknotifications.1.parameter.2.value","%system.test.recursive1%");
 		SlackNotificationCollection whc = new SlackNotificationCollection(params);
 		System.out.println("Test 1" + whc.getSlackNotifications().get(1).getParameterisedUrl());
-		assertTrue(whc.getSlackNotifications().get(1).getUrl().equals(url));
+		assertTrue(whc.getSlackNotifications().get(1).getChannel().equals(url));
 		assertTrue(whc.getSlackNotifications().get(1).getParameterisedUrl().equals(url + "?foo=bar"));
 		assertTrue(whc.getSlackNotifications().get(1).isErrored());
 		System.out.println(whc.getSlackNotifications().get(1).getErrorReason());

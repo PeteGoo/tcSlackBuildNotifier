@@ -24,7 +24,7 @@ public class SlackNotificationImpl implements SlackNotification {
 	private Integer proxyPort = 0;
 	private String proxyUsername;
 	private String proxyPassword;
-	private String url;
+	private String channel;
 	private String content;
 	private String contentType;
 	private String charset;
@@ -50,14 +50,14 @@ public class SlackNotificationImpl implements SlackNotification {
 		this.params = new ArrayList<NameValuePair>();
 	}
 	
-	public SlackNotificationImpl(String url){
-		this.url = url;
+	public SlackNotificationImpl(String channel){
+		this.channel = channel;
 		this.client = new HttpClient();
 		this.params = new ArrayList<NameValuePair>();
 	}
 	
-	public SlackNotificationImpl(String url, String proxyHost, String proxyPort){
-		this.url = url;
+	public SlackNotificationImpl(String channel, String proxyHost, String proxyPort){
+		this.channel = channel;
 		this.client = new HttpClient();
 		this.params = new ArrayList<NameValuePair>();
 		if (proxyPort.length() != 0) {
@@ -70,15 +70,15 @@ public class SlackNotificationImpl implements SlackNotification {
 		this.setProxy(proxyHost, this.proxyPort);
 	}
 	
-	public SlackNotificationImpl(String url, String proxyHost, Integer proxyPort){
-		this.url = url;
+	public SlackNotificationImpl(String channel, String proxyHost, Integer proxyPort){
+		this.channel = channel;
 		this.client = new HttpClient();
 		this.params = new ArrayList<NameValuePair>();
 		this.setProxy(proxyHost, proxyPort);
 	}
 	
-	public SlackNotificationImpl(String url, SlackNotificationProxyConfig proxyConfig){
-		this.url = url;
+	public SlackNotificationImpl(String channel, SlackNotificationProxyConfig proxyConfig){
+		this.channel = channel;
 		this.client = new HttpClient();
 		this.params = new ArrayList<NameValuePair>();
 		setProxy(proxyConfig);
@@ -111,7 +111,7 @@ public class SlackNotificationImpl implements SlackNotification {
 	
 	public void post() throws FileNotFoundException, IOException{
 		if ((this.enabled) && (!this.errored)){
-			PostMethod httppost = new PostMethod(this.url);
+			PostMethod httppost = new PostMethod(this.channel);
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
 			    httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
@@ -146,16 +146,17 @@ public class SlackNotificationImpl implements SlackNotification {
 		return proxyPort;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getChannel() {
+		return channel;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 	
 	public String getParameterisedUrl(){
-		return this.url +  this.parametersAsQueryString();
+        //TODO: Implement different url logic
+		return this.channel +  this.parametersAsQueryString();
 	}
 
 	public String parametersAsQueryString(){

@@ -79,7 +79,7 @@ public class SlackNotificationPayloadTest {
 		
     	for (SlackNotificationConfig whc : whps.getSlackNotificationsConfigs()){
 			SlackNotification wh = new SlackNotificationImpl();
-			wh.setUrl(whc.getChannel());
+			wh.setChannel(whc.getChannel());
 			wh.setEnabled(whc.getEnabled());
 			//slackNotification.addParams(slackNotificationConfig.getParams());
 			wh.setBuildStates(whc.getBuildStates());

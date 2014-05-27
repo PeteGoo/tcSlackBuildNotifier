@@ -18,6 +18,8 @@ import jetbrains.buildServer.serverSide.SRunningBuild;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.tests.TestName;
 
+import jetbrains.buildServer.util.StringUtil;
+import jetbrains.buildServer.util.StringUtils;
 import org.apache.commons.httpclient.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +65,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
     }
 
 	public void getFromConfig(SlackNotification slackNotification, SlackNotificationConfig slackNotificationConfig){
-		slackNotification.setUrl(slackNotificationConfig.getChannel());
+		slackNotification.setChannel(StringUtil.isEmpty(slackNotificationConfig.getChannel()) ? myMainSettings.getDefaultChannel() : slackNotificationConfig.getChannel());
 		slackNotification.setEnabled(slackNotificationConfig.getEnabled());
 		//slackNotification.addParams(slackNotificationConfig.getParams());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
@@ -277,7 +279,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 			if (wh.isEnabled()){
 				wh.post();
 				Loggers.SERVER.info(this.getClass().getSimpleName() + " :: SlackNotification triggered : "
-						+ wh.getUrl() + " using format " + payloadFormat 
+						+ wh.getChannel() + " using format " + payloadFormat
 						+ " returned " + wh.getStatus() 
 						+ " " + wh.getErrorReason());	
 				Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " + wh.getPayload());
@@ -285,18 +287,18 @@ public class SlackNotificationListener extends BuildServerAdapter {
 					Loggers.SERVER.error(wh.getErrorReason());
 				}
 				if ((wh.getStatus() == null || wh.getStatus() > HttpStatus.SC_OK))
-					Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + wh.getParam("projectId") + " SlackNotification (url: " + wh.getUrl() + " proxy: " + wh.getProxyHost() + ":" + wh.getProxyPort()+") returned HTTP status " + wh.getStatus().toString());
+					Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + wh.getParam("projectId") + " SlackNotification (url: " + wh.getChannel() + " proxy: " + wh.getProxyHost() + ":" + wh.getProxyPort()+") returned HTTP status " + wh.getStatus().toString());
 			} else {
 				Loggers.SERVER.debug("SlackNotification NOT triggered: "
-						+ wh.getParam("buildStatus") + " " + wh.getUrl());	
+						+ wh.getParam("buildStatus") + " " + wh.getChannel());
 			}
 		} catch (FileNotFoundException e) {
 			Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: " 
-					+ "A FileNotFoundException occurred while attempting to execute SlackNotification (" + wh.getUrl() + "). See the following stacktrace");
+					+ "A FileNotFoundException occurred while attempting to execute SlackNotification (" + wh.getChannel() + "). See the following stacktrace");
 			Loggers.SERVER.warn(e);
 		} catch (IOException e) {
 			Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: " 
-					+ "An IOException occurred while attempting to execute SlackNotification (" + wh.getUrl() + "). See the following stacktrace");
+					+ "An IOException occurred while attempting to execute SlackNotification (" + wh.getChannel() + "). See the following stacktrace");
 			Loggers.SERVER.warn(e);
 		}
 	}

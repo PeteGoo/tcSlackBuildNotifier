@@ -46,7 +46,7 @@ public class SlackNotificationCollection {
             	// Check if we have already created a slacknotifications instance
             	if (slackNotifications.containsKey(this.convertToInt(tokens[SLACKNOTIFICATION_ID]))){
             		if (tokens[SLACKNOTIFICATION_KEY].equals("url")){
-            			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setUrl(val);
+            			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setChannel(val);
 //            		} else if ((tokens[SLACKNOTIFICATION_KEY].equals("bitmask"))
 //            				&& (this.canConvertToInt(val))){
 //                		slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setTriggerStateBitMask(this.convertToInt(val));
