@@ -1,6 +1,7 @@
 *.class
 
 */target/**
+target/**
 
 .idea/*
 
