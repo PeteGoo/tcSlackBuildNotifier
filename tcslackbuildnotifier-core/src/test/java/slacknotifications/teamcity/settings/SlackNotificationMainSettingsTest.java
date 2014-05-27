@@ -19,6 +19,7 @@ public class SlackNotificationMainSettingsTest {
 	SBuildServer server = mock(SBuildServer.class);
 	Integer proxyPort = 8080;
 	String proxyHost = "myproxy.mycompany.com";
+    String defaultChannel = "#my-channel";
 	
 	@Test
 	public void TestFullConfig(){
@@ -30,6 +31,7 @@ public class SlackNotificationMainSettingsTest {
 		assertTrue(proxy.equals(this.proxyHost));
 		assertTrue(whpc.getProxyHost().equals(this.proxyHost ));
 		assertTrue(whpc.getProxyPort().equals(this.proxyPort));
+        assertTrue(whms.getDefaultChannel().equals(this.defaultChannel));
 	}
 	
 	private Element getFullConfigElement(){

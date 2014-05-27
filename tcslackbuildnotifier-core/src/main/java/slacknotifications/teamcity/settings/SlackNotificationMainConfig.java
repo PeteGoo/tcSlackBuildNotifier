@@ -19,6 +19,7 @@ public class SlackNotificationMainConfig {
 	private String proxyHost = null;
 	private String proxyUsername = null;
 	private String proxyPassword = null;
+    private String defaultChannel = null;
 	private Boolean proxyShortNames = false;
 	private List<String> noProxyUrls;
 	private List<Pattern> noProxyPatterns;
@@ -175,7 +176,14 @@ public class SlackNotificationMainConfig {
 		}
 		return el;
 	}
-	
+
+    public String getDefaultChannel() {
+        return defaultChannel;
+    }
+
+    public void setDefaultChannel(String defaultChannel) {
+        this.defaultChannel = defaultChannel;
+    }
 	
 	public Integer getProxyPort() {
 		return proxyPort;

@@ -42,6 +42,10 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
     	SlackNotificationMainConfig tempConfig = new SlackNotificationMainConfig();
     	Element slackNotificationsElement = rootElement.getChild("slacknotifications");
     	if(slackNotificationsElement != null){
+            if(slackNotificationsElement.getAttribute("defaultChannel") != null)
+            {
+                tempConfig.setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));
+            }
 			Element extraInfoElement = slackNotificationsElement.getChild("info");
 	        if(extraInfoElement != null)
 	        {
@@ -133,6 +137,10 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
     public String getInfoUrl(){
     	return this.slackNotificationMainConfig.getSlackNotificationInfoUrl();
+    }
+
+    public String getDefaultChannel() {
+        return this.slackNotificationMainConfig.getDefaultChannel();
     }
 
     public Boolean getSlackNotificationShowFurtherReading(){
