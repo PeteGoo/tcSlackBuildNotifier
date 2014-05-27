@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="urn:shemas-jetbrains-com:teamcity-plugin-v1-xml">
+  <info>
+    <name>tcSlackNotifications - REST API</name>
+    <display-name>REST API for the Slack Notifications plugin</display-name>
+    <version>${version}</version>
+    <description>Add the ability to configure tcSlackNotifications from the Teamcity REST API.</description>
+    <vendor>
+      <name>PeteGoo</name>
+      <url>http://blog.petegoo.com/</url>
+    </vendor>
+  </info>
+  <deployment use-separate-classloader="false"/>
+</teamcity-plugin>

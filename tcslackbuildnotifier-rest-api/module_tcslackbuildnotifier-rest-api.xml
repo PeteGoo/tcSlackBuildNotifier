@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_tcslacknotifications-rest-api" default="compile.module.tcslacknotifications-rest-api">
+  <dirname property="module.tcslacknotifications-rest-api.basedir" file="${ant.file.module_tcslacknotifications-rest-api}"/>
+  
+  <property name="module.jdk.home.tcslacknotifications-rest-api" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.tcslacknotifications-rest-api" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.tcslacknotifications-rest-api" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.tcslacknotifications-rest-api" value="-encoding UTF-8 -source 1.6 -target 1.6 ${compiler.args}"/>
+  
+  <property name="tcslacknotifications-rest-api.output.dir" value="tcslackbuildnotifier-rest-api/target/classes"/>
+  <property name="tcslacknotifications-rest-api.testoutput.dir" value="tcslackbuildnotifier-rest-api/target/test-classes"/>
+  
+  <path id="tcslacknotifications-rest-api.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="tcslacknotifications-rest-api.module.production.classpath">
+    <path refid="${module.jdk.classpath.tcslacknotifications-rest-api}"/>
+    <pathelement location="${tcslacknotifications-core.output.dir}"/>
+  </path>
+  
+  <path id="tcslacknotifications-rest-api.runtime.production.module.classpath">
+    <pathelement location="${tcslacknotifications-rest-api.output.dir}"/>
+    <path refid="tcslacknotifications-core.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="tcslacknotifications-rest-api.module.classpath">
+    <path refid="${module.jdk.classpath.tcslacknotifications-rest-api}"/>
+    <pathelement location="${tcslacknotifications-rest-api.output.dir}"/>
+    <pathelement location="${tcslacknotifications-core.testoutput.dir}"/>
+    <pathelement location="${tcslacknotifications-core.output.dir}"/>
+  </path>
+  
+  <path id="tcslacknotifications-rest-api.runtime.module.classpath">
+    <pathelement location="${tcslacknotifications-rest-api.testoutput.dir}"/>
+    <pathelement location="${tcslacknotifications-rest-api.output.dir}"/>
+    <path refid="tcslacknotifications-core.runtime.module.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.tcslacknotifications-rest-api">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.tcslacknotifications-rest-api">
+    <patternset refid="excluded.from.module.tcslacknotifications-rest-api"/>
+  </patternset>
+  
+  <path id="tcslacknotifications-rest-api.module.sourcepath">
+    <dirset dir="tcslackbuildnotifier-rest-api">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="tcslacknotifications-rest-api.module.test.sourcepath">
+    <dirset dir="tcslackbuildnotifier-rest-api">
+      <include name="src/test/java"/>
+      <include name="src/test/resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.tcslacknotifications-rest-api" depends="compile.module.tcslacknotifications-rest-api.production,compile.module.tcslacknotifications-rest-api.tests" description="Compile module tcslacknotifications-rest-api"/>
+  
+  <target name="compile.module.tcslacknotifications-rest-api.production" depends="register.custom.compilers,compile.module.tcslacknotifications-core" description="Compile module tcslacknotifications-rest-api; production classes">
+    <mkdir dir="${tcslacknotifications-rest-api.output.dir}"/>
+    <javac2 destdir="${tcslacknotifications-rest-api.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.tcslacknotifications-rest-api}/javac">
+      <compilerarg line="${compiler.args.tcslacknotifications-rest-api}"/>
+      <bootclasspath refid="tcslacknotifications-rest-api.module.bootclasspath"/>
+      <classpath refid="tcslacknotifications-rest-api.module.production.classpath"/>
+      <src refid="tcslacknotifications-rest-api.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.tcslacknotifications-rest-api"/>
+    </javac2>
+    
+    <copy todir="${tcslacknotifications-rest-api.output.dir}">
+      <fileset dir="tcslackbuildnotifier-rest-api/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="tcslackbuildnotifier-rest-api/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.tcslacknotifications-rest-api.tests" depends="register.custom.compilers,compile.module.tcslacknotifications-rest-api.production" description="compile module tcslacknotifications-rest-api; test classes" unless="skip.tests">
+    <mkdir dir="${tcslacknotifications-rest-api.testoutput.dir}"/>
+    <javac2 destdir="${tcslacknotifications-rest-api.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.tcslacknotifications-rest-api}/javac">
+      <compilerarg line="${compiler.args.tcslacknotifications-rest-api}"/>
+      <bootclasspath refid="tcslacknotifications-rest-api.module.bootclasspath"/>
+      <classpath refid="tcslacknotifications-rest-api.module.classpath"/>
+      <src refid="tcslacknotifications-rest-api.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.tcslacknotifications-rest-api"/>
+    </javac2>
+    
+    <copy todir="${tcslacknotifications-rest-api.testoutput.dir}">
+      <fileset dir="tcslackbuildnotifier-rest-api/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="tcslackbuildnotifier-rest-api/src/test/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.tcslacknotifications-rest-api" description="cleanup module">
+    <delete dir="${tcslacknotifications-rest-api.output.dir}"/>
+    <delete dir="${tcslacknotifications-rest-api.testoutput.dir}"/>
+  </target>
+</project>

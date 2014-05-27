@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <slacknotifications enabled="false">
+    <slacknotification enabled="true" url="http://something" statemask="255">
+      <parameters>
+	    <param name="foo" value="bar" />
+      </parameters>
+    </slacknotification>
+    <slacknotification enabled="true" url="http://localhost.local.network/slacknotifications/test/test">
+      <parameters>
+	    <param name="fromTeamCity" value="%system.test.1%" />
+      </parameters>
+    </slacknotification>
+    <slacknotification enabled="false" url="http://localhost.local.network/slacknotifications/test/teamcity" />
+  </slacknotifications>
+</settings>

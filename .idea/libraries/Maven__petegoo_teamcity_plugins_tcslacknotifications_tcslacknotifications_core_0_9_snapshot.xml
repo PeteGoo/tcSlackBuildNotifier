@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Maven: petegoo.teamcity.plugins.tcslacknotifications:tcslacknotifications-core:0.9.snapshot">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/petegoo/teamcity/plugins/tcslacknotifications/tcslacknotifications-core/0.9.snapshot/tcslacknotifications-core-0.9.snapshot.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/tcslackbuildnotifier-core/tcslacknotifications-core-0.9.snapshot-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/petegoo/teamcity/plugins/tcslacknotifications/tcslacknotifications-core/0.9.snapshot/tcslacknotifications-core-0.9.snapshot-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/tcslackbuildnotifier-core/tcslacknotifications-core-0.9.snapshot-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/petegoo/teamcity/plugins/tcslacknotifications/tcslacknotifications-core/0.9.snapshot/tcslacknotifications-core-0.9.snapshot-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

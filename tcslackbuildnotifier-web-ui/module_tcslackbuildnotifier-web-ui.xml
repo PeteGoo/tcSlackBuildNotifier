@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_tcslacknotifications-web-ui" default="compile.module.tcslacknotifications-web-ui">
+  <dirname property="module.tcslacknotifications-web-ui.basedir" file="/module_tcslackbuildnotifier-web-ui.xml"/>
+  
+  <property name="module.jdk.home.tcslacknotifications-web-ui" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.tcslacknotifications-web-ui" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.tcslacknotifications-web-ui" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.tcslacknotifications-web-ui" value="-encoding UTF-8 -source 1.6 -target 1.6 ${compiler.args}"/>
+  
+  <property name="tcslacknotifications-web-ui.output.dir" value="tcslackbuildnotifier-web-ui/target/classes"/>
+  <property name="tcslacknotifications-web-ui.testoutput.dir" value="tcslackbuildnotifier-web-ui/target/test-classes"/>
+  
+  <path id="tcslacknotifications-web-ui.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="tcslacknotifications-web-ui.module.production.classpath">
+    <path refid="${module.jdk.classpath.tcslacknotifications-web-ui}"/>
+    <pathelement location="${tcslacknotifications-core.output.dir}"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:server-api:8.0.0.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:runtime-util:7.1.0.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:common-api:8.0.0.classpath"/>
+    <path refid="library.maven:_com.intellij:openapi:7.0.3.classpath"/>
+    <path refid="library.maven:_com.intellij:annotations:7.0.3.classpath"/>
+    <path refid="library.maven:_com.intellij:extensions:7.0.3.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:annotations:7.1.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.springframework:spring:2.0.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.12.classpath"/>
+    <path refid="library.maven:_logkit:logkit:1.0.1.classpath"/>
+    <path refid="library.maven:_avalon-framework:avalon-framework:4.1.3.classpath"/>
+    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.3.1.classpath"/>
+    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
+    <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
+  </path>
+  
+  <path id="tcslacknotifications-web-ui.runtime.production.module.classpath">
+    <pathelement location="${tcslacknotifications-web-ui.output.dir}"/>
+    <path refid="tcslacknotifications-core.runtime.production.module.classpath"/>
+  </path>
+  
+  <path id="tcslacknotifications-web-ui.module.classpath">
+    <path refid="${module.jdk.classpath.tcslacknotifications-web-ui}"/>
+    <pathelement location="${tcslacknotifications-web-ui.output.dir}"/>
+    <pathelement location="${tcslacknotifications-core.testoutput.dir}"/>
+    <pathelement location="${tcslacknotifications-core.output.dir}"/>
+    <path refid="library.maven:_junit:junit:4.4.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:server-api:8.0.0.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:runtime-util:7.1.0.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:common-api:8.0.0.classpath"/>
+    <path refid="library.maven:_com.intellij:openapi:7.0.3.classpath"/>
+    <path refid="library.maven:_com.intellij:annotations:7.0.3.classpath"/>
+    <path refid="library.maven:_com.intellij:extensions:7.0.3.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:annotations:7.1.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.springframework:spring:2.0.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.12.classpath"/>
+    <path refid="library.maven:_logkit:logkit:1.0.1.classpath"/>
+    <path refid="library.maven:_avalon-framework:avalon-framework:4.1.3.classpath"/>
+    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.3.1.classpath"/>
+    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
+    <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
+    <path refid="library.maven:_org.mockito:mockito-all:1.8.0.classpath"/>
+    <path refid="library.maven:_commons-httpclient:commons-httpclient:3.1.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.2.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.3.classpath"/>
+  </path>
+  
+  <path id="tcslacknotifications-web-ui.runtime.module.classpath">
+    <pathelement location="${tcslacknotifications-web-ui.testoutput.dir}"/>
+    <pathelement location="${tcslacknotifications-web-ui.output.dir}"/>
+    <path refid="tcslacknotifications-core.runtime.module.classpath"/>
+    <path refid="library.maven:_junit:junit:4.4.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:server-api:8.0.0.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:runtime-util:7.1.0.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:common-api:8.0.0.classpath"/>
+    <path refid="library.maven:_com.intellij:openapi:7.0.3.classpath"/>
+    <path refid="library.maven:_com.intellij:annotations:7.0.3.classpath"/>
+    <path refid="library.maven:_com.intellij:extensions:7.0.3.classpath"/>
+    <path refid="library.maven:_com.jetbrains.teamcity:annotations:7.1.0.classpath"/>
+    <path refid="library.maven:_javax.servlet:servlet-api:2.5.classpath"/>
+    <path refid="library.maven:_org.springframework:spring:2.0.1.classpath"/>
+    <path refid="library.maven:_commons-logging:commons-logging:1.1.classpath"/>
+    <path refid="library.maven:_log4j:log4j:1.2.12.classpath"/>
+    <path refid="library.maven:_logkit:logkit:1.0.1.classpath"/>
+    <path refid="library.maven:_avalon-framework:avalon-framework:4.1.3.classpath"/>
+    <path refid="library.maven:_com.thoughtworks.xstream:xstream:1.3.1.classpath"/>
+    <path refid="library.maven:_xpp3:xpp3_min:1.1.4c.classpath"/>
+    <path refid="library.maven:_org.jdom:jdom:1.1.classpath"/>
+    <path refid="library.maven:_org.mockito:mockito-all:1.8.0.classpath"/>
+    <path refid="library.maven:_commons-httpclient:commons-httpclient:3.1.classpath"/>
+    <path refid="library.maven:_commons-codec:commons-codec:1.2.classpath"/>
+    <path refid="library.maven:_commons-beanutils:commons-beanutils:1.8.3.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.tcslacknotifications-web-ui">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.tcslacknotifications-web-ui">
+    <patternset refid="excluded.from.module.tcslacknotifications-web-ui"/>
+  </patternset>
+  
+  <path id="tcslacknotifications-web-ui.module.sourcepath">
+    <dirset dir="tcslackbuildnotifier-web-ui">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+      <include name="src/main/teamcity-plugin-resources"/>
+    </dirset>
+  </path>
+  
+  <path id="tcslacknotifications-web-ui.module.test.sourcepath">
+    <dirset dir="tcslackbuildnotifier-web-ui">
+      <include name="src/test/java"/>
+      <include name="src/test/resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.tcslacknotifications-web-ui" depends="compile.module.tcslacknotifications-web-ui.production,compile.module.tcslacknotifications-web-ui.tests" description="Compile module tcslacknotifications-web-ui"/>
+  
+  <target name="compile.module.tcslacknotifications-web-ui.production" depends="register.custom.compilers,compile.module.tcslacknotifications-core" description="Compile module tcslacknotifications-web-ui; production classes">
+    <mkdir dir="${tcslacknotifications-web-ui.output.dir}"/>
+    <javac2 destdir="${tcslacknotifications-web-ui.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.tcslacknotifications-web-ui}/javac">
+      <compilerarg line="${compiler.args.tcslacknotifications-web-ui}"/>
+      <bootclasspath refid="tcslacknotifications-web-ui.module.bootclasspath"/>
+      <classpath refid="tcslacknotifications-web-ui.module.production.classpath"/>
+      <src refid="tcslacknotifications-web-ui.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.tcslacknotifications-web-ui"/>
+    </javac2>
+    
+    <copy todir="${tcslacknotifications-web-ui.output.dir}">
+      <fileset dir="tcslackbuildnotifier-web-ui/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="tcslackbuildnotifier-web-ui/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="tcslackbuildnotifier-web-ui/src/main/teamcity-plugin-resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.tcslacknotifications-web-ui.tests" depends="register.custom.compilers,compile.module.tcslacknotifications-web-ui.production" description="compile module tcslacknotifications-web-ui; test classes" unless="skip.tests">
+    <mkdir dir="${tcslacknotifications-web-ui.testoutput.dir}"/>
+    <javac2 destdir="${tcslacknotifications-web-ui.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.tcslacknotifications-web-ui}/javac">
+      <compilerarg line="${compiler.args.tcslacknotifications-web-ui}"/>
+      <bootclasspath refid="tcslacknotifications-web-ui.module.bootclasspath"/>
+      <classpath refid="tcslacknotifications-web-ui.module.classpath"/>
+      <src refid="tcslacknotifications-web-ui.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.tcslacknotifications-web-ui"/>
+    </javac2>
+    
+    <copy todir="${tcslacknotifications-web-ui.testoutput.dir}">
+      <fileset dir="tcslackbuildnotifier-web-ui/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="tcslackbuildnotifier-web-ui/src/test/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.tcslacknotifications-web-ui" description="cleanup module">
+    <delete dir="${tcslacknotifications-web-ui.output.dir}"/>
+    <delete dir="${tcslacknotifications-web-ui.testoutput.dir}"/>
+  </target>
+</project>
