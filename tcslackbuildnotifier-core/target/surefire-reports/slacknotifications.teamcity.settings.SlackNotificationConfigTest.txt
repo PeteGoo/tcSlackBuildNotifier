@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: slacknotifications.teamcity.settings.SlackNotificationConfigTest
--------------------------------------------------------------------------------
-Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.168 sec
