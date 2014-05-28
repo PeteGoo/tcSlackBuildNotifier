@@ -25,6 +25,10 @@ public class SlackNotificationImpl implements SlackNotification {
 	private String proxyUsername;
 	private String proxyPassword;
 	private String channel;
+    private String teamName;
+    private String token;
+    private String username;
+    private String iconUrl;
 	private String content;
 	private String contentType;
 	private String charset;
@@ -111,7 +115,7 @@ public class SlackNotificationImpl implements SlackNotification {
 	
 	public void post() throws FileNotFoundException, IOException{
 		if ((this.enabled) && (!this.errored)){
-			PostMethod httppost = new PostMethod(this.channel);
+			PostMethod httppost = new PostMethod(String.format("https://slack.com/api/chat.postMessage?token=%s&channel=%s&text=%s&pretty=1", this.token, this.channel, ""));
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
 			    httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
@@ -145,6 +149,26 @@ public class SlackNotificationImpl implements SlackNotification {
 	public int getProxyPort() {
 		return proxyPort;
 	}
+
+    public String getTeamName()
+    {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName)
+    {
+        this.teamName = teamName;
+    }
+
+    public String getToken()
+    {
+        return token;
+    }
+
+    public void setToken(String token)
+    {
+        this.token = token;
+    }
 
 	public String getChannel() {
 		return channel;

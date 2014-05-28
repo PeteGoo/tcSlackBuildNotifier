@@ -15,8 +15,8 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 	private static final String NAME = SlackNotificationMainSettings.class.getName();
 	private SlackNotificationMainConfig slackNotificationMainConfig;
 	private SBuildServer server;
-	
-	public SlackNotificationMainSettings(SBuildServer server){
+
+    public SlackNotificationMainSettings(SBuildServer server){
 		Loggers.SERVER.debug(NAME + " :: Constructor called");
 		this.server = server;
 		slackNotificationMainConfig = new SlackNotificationMainConfig();
@@ -45,6 +45,14 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
             if(slackNotificationsElement.getAttribute("defaultChannel") != null)
             {
                 tempConfig.setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));
+            }
+            if(slackNotificationsElement.getAttribute("teamName") != null)
+            {
+                tempConfig.setTeamName(slackNotificationsElement.getAttributeValue("teamName"));
+            }
+            if(slackNotificationsElement.getAttribute("token") != null)
+            {
+                tempConfig.setToken(slackNotificationsElement.getAttributeValue("token"));
             }
 			Element extraInfoElement = slackNotificationsElement.getChild("info");
 	        if(extraInfoElement != null)
@@ -143,6 +151,14 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         return this.slackNotificationMainConfig.getDefaultChannel();
     }
 
+    public String getTeamName() {
+        return this.slackNotificationMainConfig.getTeamName();
+    }
+
+    public String getToken() {
+        return this.slackNotificationMainConfig.getToken();
+    }
+
     public Boolean getSlackNotificationShowFurtherReading(){
     	return this.slackNotificationMainConfig.getSlackNotificationShowFurtherReading();
     }
@@ -153,4 +169,6 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
 	public SlackNotificationProxyConfig getProxyConfigForUrl(String url) {
 		return this.slackNotificationMainConfig.getProxyConfigForUrl(url);	}
+
+
 }

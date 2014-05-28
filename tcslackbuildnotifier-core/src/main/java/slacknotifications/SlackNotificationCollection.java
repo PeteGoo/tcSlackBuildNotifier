@@ -45,11 +45,10 @@ public class SlackNotificationCollection {
             		&& (this.canConvertToInt(tokens[SLACKNOTIFICATION_ID]))) {
             	// Check if we have already created a slacknotifications instance
             	if (slackNotifications.containsKey(this.convertToInt(tokens[SLACKNOTIFICATION_ID]))){
-            		if (tokens[SLACKNOTIFICATION_KEY].equals("url")){
+            		if (tokens[SLACKNOTIFICATION_KEY].equals("channel")){
             			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setChannel(val);
-//            		} else if ((tokens[SLACKNOTIFICATION_KEY].equals("bitmask"))
-//            				&& (this.canConvertToInt(val))){
-//                		slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setTriggerStateBitMask(this.convertToInt(val));
+            		} else if (tokens[SLACKNOTIFICATION_KEY].equals("teamName")){
+                		slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setTeamName(val);
             		} else if (tokens[SLACKNOTIFICATION_KEY].equals("enabled")){
             			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setEnabled(val);
             		} else if (tokens[SLACKNOTIFICATION_KEY].equals("parameter")

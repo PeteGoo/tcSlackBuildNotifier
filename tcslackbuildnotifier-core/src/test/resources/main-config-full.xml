@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server>
-  <slacknotifications defaultChannel="#my-channel">
+  <slacknotifications defaultChannel="#my-channel" teamName="myteam" token="thisismytoken">
     <proxy host="myproxy.mycompany.com" port="8080">
       <noproxy url=".mycompany.com" />
       <noproxy url="192.168.0." />

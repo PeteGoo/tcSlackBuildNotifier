@@ -28,6 +28,14 @@ public interface SlackNotification {
 
 	public abstract void setChannel(String channel);
 
+    public abstract String getTeamName();
+
+    public abstract void setTeamName(String teamName);
+
+    public abstract String getToken();
+
+    public abstract void setToken(String token);
+
 	public abstract String getParameterisedUrl();
 
 	public abstract String parametersAsQueryString();

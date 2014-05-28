@@ -161,9 +161,9 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
         }    			
 	}
 
-	public void addNewSlackNotification(String ProjectId, String URL, Boolean enabled, BuildState buildState, String format, boolean buildTypeAll, boolean buildTypeSubProjects, Set<String> buildTypesEnabled) {
-		this.slackNotificationsConfigs.add(new SlackNotificationConfig(URL, enabled, buildState, format, buildTypeAll, buildTypeSubProjects, buildTypesEnabled));
-		Loggers.SERVER.debug(NAME + ":addNewSlackNotification :: Adding slacknotifications to " + ProjectId + " with URL " + URL);
+	public void addNewSlackNotification(String ProjectId, String channel, String teamName, Boolean enabled, BuildState buildState, String format, boolean buildTypeAll, boolean buildTypeSubProjects, Set<String> buildTypesEnabled) {
+		this.slackNotificationsConfigs.add(new SlackNotificationConfig(channel, teamName, enabled, buildState, format, buildTypeAll, buildTypeSubProjects, buildTypesEnabled));
+		Loggers.SERVER.debug(NAME + ":addNewSlackNotification :: Adding slack notifications to " + ProjectId + " with channel " + channel);
 		this.updateSuccess = true;
 	}
 

@@ -75,7 +75,7 @@ public class SlackNotificationPayloadTest {
 		SlackNotificationProjectSettings whps = new SlackNotificationProjectSettings();
 		
 		BuildState state = new BuildState().setAllEnabled();
-		whps.addNewSlackNotification("project1", url, true, state, "nvpairs", true, true, new HashSet<String>());
+		whps.addNewSlackNotification("project1", url, "myteam", true, state, "nvpairs", true, true, new HashSet<String>());
 		
     	for (SlackNotificationConfig whc : whps.getSlackNotificationsConfigs()){
 			SlackNotification wh = new SlackNotificationImpl();

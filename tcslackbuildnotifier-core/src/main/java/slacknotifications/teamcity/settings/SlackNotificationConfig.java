@@ -34,6 +34,7 @@ public class SlackNotificationConfig {
 	private Boolean enabled = true;
 	private String uniqueKey = "";
 	private String channel;
+    private String teamName;
 	private String payloadFormat = null;
 	private BuildState states = new BuildState();
 	private SortedMap<String, CustomMessageTemplate> templates; 
@@ -53,6 +54,10 @@ public class SlackNotificationConfig {
 		if (e.getAttribute("channel") != null){
 			this.setChannel(e.getAttributeValue("channel"));
 		}
+
+        if (e.getAttribute("teamName") != null){
+            this.setTeamName(e.getAttributeValue("teamName"));
+        }
 		
 		if (e.getAttribute("enabled") != null){
 			this.setEnabled(Boolean.parseBoolean(e.getAttributeValue("enabled")));
@@ -157,13 +162,14 @@ public class SlackNotificationConfig {
 	 * @param states
 	 * @param payloadFormat (unvalidated)
 	 */
-	public SlackNotificationConfig(String channel, Boolean enabled, BuildState states, String payloadFormat, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
+	public SlackNotificationConfig(String channel, String teamName, Boolean enabled, BuildState states, String payloadFormat, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
 		int Min = 1000000, Max = 1000000000;
 		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
 		this.uniqueKey = Rand.toString();
 		this.extraParameters = new TreeMap<String,String>();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
 		this.setChannel(channel);
+        this.setTeamName(teamName);
 		this.setEnabled(enabled);
 		this.setBuildStates(states);
 		this.setPayloadFormat(payloadFormat);
@@ -186,6 +192,7 @@ public class SlackNotificationConfig {
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
 		el.setAttribute("channel", this.getChannel());
+        el.setAttribute("teamName", this.getTeamName());
 		el.setAttribute("enabled", String.valueOf(this.enabled));
 		el.setAttribute("format", String.valueOf(this.payloadFormat).toLowerCase());
 		
@@ -291,6 +298,14 @@ public class SlackNotificationConfig {
 	public void setChannel(String channel) {
 		this.channel = channel;
 	}
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 
 	public String getUniqueKey() {
 		return uniqueKey;

@@ -19,7 +19,6 @@ import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.tests.TestName;
 
 import jetbrains.buildServer.util.StringUtil;
-import jetbrains.buildServer.util.StringUtils;
 import org.apache.commons.httpclient.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -66,6 +65,8 @@ public class SlackNotificationListener extends BuildServerAdapter {
 
 	public void getFromConfig(SlackNotification slackNotification, SlackNotificationConfig slackNotificationConfig){
 		slackNotification.setChannel(StringUtil.isEmpty(slackNotificationConfig.getChannel()) ? myMainSettings.getDefaultChannel() : slackNotificationConfig.getChannel());
+        slackNotification.setTeamName(myMainSettings.getTeamName());
+        slackNotification.setToken(myMainSettings.getToken());
 		slackNotification.setEnabled(slackNotificationConfig.getEnabled());
 		//slackNotification.addParams(slackNotificationConfig.getParams());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
@@ -271,34 +272,34 @@ public class SlackNotificationListener extends BuildServerAdapter {
     
 	/** doPost used by responsibleChanged
 	 * 
-	 * @param wh
+	 * @param notification
 	 * @param payloadFormat
 	 */
-	private void doPost(SlackNotification wh, String payloadFormat) {
+	private void doPost(SlackNotification notification, String payloadFormat) {
 		try {
-			if (wh.isEnabled()){
-				wh.post();
+			if (notification.isEnabled()){
+				notification.post();
 				Loggers.SERVER.info(this.getClass().getSimpleName() + " :: SlackNotification triggered : "
-						+ wh.getChannel() + " using format " + payloadFormat
-						+ " returned " + wh.getStatus() 
-						+ " " + wh.getErrorReason());	
-				Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " + wh.getPayload());
-				if (wh.isErrored()){
-					Loggers.SERVER.error(wh.getErrorReason());
+						+ notification.getChannel() + " using format " + payloadFormat
+						+ " returned " + notification.getStatus()
+						+ " " + notification.getErrorReason());
+				Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " + notification.getPayload());
+				if (notification.isErrored()){
+					Loggers.SERVER.error(notification.getErrorReason());
 				}
-				if ((wh.getStatus() == null || wh.getStatus() > HttpStatus.SC_OK))
-					Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + wh.getParam("projectId") + " SlackNotification (url: " + wh.getChannel() + " proxy: " + wh.getProxyHost() + ":" + wh.getProxyPort()+") returned HTTP status " + wh.getStatus().toString());
+				if ((notification.getStatus() == null || notification.getStatus() > HttpStatus.SC_OK))
+					Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + notification.getParam("projectId") + " SlackNotification (url: " + notification.getChannel() + " proxy: " + notification.getProxyHost() + ":" + notification.getProxyPort()+") returned HTTP status " + notification.getStatus().toString());
 			} else {
 				Loggers.SERVER.debug("SlackNotification NOT triggered: "
-						+ wh.getParam("buildStatus") + " " + wh.getChannel());
+						+ notification.getParam("buildStatus") + " " + notification.getChannel());
 			}
 		} catch (FileNotFoundException e) {
 			Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: " 
-					+ "A FileNotFoundException occurred while attempting to execute SlackNotification (" + wh.getChannel() + "). See the following stacktrace");
+					+ "A FileNotFoundException occurred while attempting to execute SlackNotification (" + notification.getChannel() + "). See the following stacktrace");
 			Loggers.SERVER.warn(e);
 		} catch (IOException e) {
 			Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: " 
-					+ "An IOException occurred while attempting to execute SlackNotification (" + wh.getChannel() + "). See the following stacktrace");
+					+ "An IOException occurred while attempting to execute SlackNotification (" + notification.getChannel() + "). See the following stacktrace");
 			Loggers.SERVER.warn(e);
 		}
 	}

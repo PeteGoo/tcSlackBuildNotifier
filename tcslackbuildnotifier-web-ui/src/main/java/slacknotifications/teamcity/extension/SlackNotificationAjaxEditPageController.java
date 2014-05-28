@@ -111,8 +111,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    					
 			    			} else if ((request.getParameter("submitAction") != null ) 
 				    				&& (request.getParameter("submitAction").equals("updateSlackNotification"))){
-			    				if((request.getParameter("URL") != null ) 
-				    				&& (request.getParameter("URL").length() > 0 )
+			    				if((request.getParameter("channel") != null )
+				    				&& (request.getParameter("channel").length() > 0 )
 				    				&& (request.getParameter("payloadFormat") != null)
 				    				&& (request.getParameter("payloadFormat").length() > 0)){
 			    					
@@ -152,7 +152,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						}
 		    						
 			    						if (request.getParameter("slackNotificationId").equals("new")){
-			    							projSettings.addNewSlackNotification(myProject.getProjectId(),request.getParameter("URL"), enabled,
+			    							projSettings.addNewSlackNotification(myProject.getProjectId(),request.getParameter("channel"), request.getParameter("team"), enabled,
 			    														states,request.getParameter("payloadFormat"), buildTypeAll, buildTypeSubProjects, buildTypes);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
@@ -162,7 +162,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    							}
 			    						} else {
 			    							projSettings.updateSlackNotification(myProject.getProjectId(),request.getParameter("slackNotificationId"),
-			    														request.getParameter("URL"), enabled, 
+			    														request.getParameter("channel"), enabled,
 			    														states, request.getParameter("payloadFormat"), buildTypeAll, buildTypeSubProjects, buildTypes);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
@@ -174,9 +174,9 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    					} // TODO Need to handle slackNotificationId being null
 			    						
 			    				} else {
-			    					if ((request.getParameter("URL") == null ) 
-				    				|| (request.getParameter("URL").length() == 0)){
-			    						params.put("messages", "<errors><error id=\"emptySlackNotificationUrl\">Please enter a URL.</error></errors>");
+			    					if ((request.getParameter("channel") == null )
+				    				|| (request.getParameter("channel").length() == 0)){
+			    						params.put("messages", "<errors><error id=\"emptySlackNotificationChannel\">Please enter a channel.</error></errors>");
 			    					} else if ((request.getParameter("payloadFormat") == null)
 				    				|| (request.getParameter("payloadFormat").length() == 0)){
 			    						params.put("messages", "<errors><error id=\"emptyPayloadFormat\">Please choose a Payload Format.</error></errors>");

@@ -20,6 +20,8 @@ public class SlackNotificationMainSettingsTest {
 	Integer proxyPort = 8080;
 	String proxyHost = "myproxy.mycompany.com";
     String defaultChannel = "#my-channel";
+    String teamName =  "myteam";
+    String token = "thisismytoken";
 	
 	@Test
 	public void TestFullConfig(){
@@ -32,6 +34,8 @@ public class SlackNotificationMainSettingsTest {
 		assertTrue(whpc.getProxyHost().equals(this.proxyHost ));
 		assertTrue(whpc.getProxyPort().equals(this.proxyPort));
         assertTrue(whms.getDefaultChannel().equals(this.defaultChannel));
+        assertTrue(whms.getTeamName().equals(this.teamName));
+        assertTrue(whms.getToken().equals(this.token));
 	}
 	
 	private Element getFullConfigElement(){

@@ -7,7 +7,7 @@
 	    <table id="slackNotificationTable" class="settings">
 	   		<thead>
 		   		<tr style="background-color: rgb(245, 245, 245);">
-					<th class="name">URL</th>
+					<th class="name">Channel</th>
 					<th class="name">Format</th>
 					<th class="name">Build Events</th>
 					<th class="value" style="width:20%;" colspan="3">Enabled Builds</th>
@@ -15,7 +15,7 @@
 			</thead>
 			<tbody>
 				<tr id="viewRow_template" class="slackNotificationRowTemplate">
-					<td class="name highlight slackNotificationRowItemUrl">URL</td>
+					<td class="name highlight slackNotificationRowItemChannel">Channel</td>
 					<td class="value highlight slackNotificationRowItemFormat" style="width:15%;">Format</td>
 					<td class="value highlight slackNotificationRowItemEvents" style="width:15%;">Events</td>
 					<td class="value highlight slackNotificationRowItemBuilds" style="width:15%;">Builds</td>
@@ -23,19 +23,19 @@
 					<td class="edit highlight slackNotificationRowItemDelete"><a ref="javascript://">delete</a></td>
 				</tr> 	
 	
-			<c:forEach items="${slackNotificationList}" var="hook">
-				
-				<tr id="viewRow_${hook.uniqueKey}" class="slackNotificationRow">
-					<td class="name highlight" onclick="BS.EditSlackNotificationDialog.showDialog('${hook.uniqueKey}','#hookPane');"><c:out value="${hook.url}" /></td>
+			<c:forEach items="${slackNotificationList}" var="notification">
+
+				<tr id="viewRow_${notification.uniqueKey}" class="slackNotificationRow">
+					<td class="name highlight" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');"><c:out value="${notification.channel}" /></td>
 						<c:forEach items="${formatList}" var="format">
-							<c:if test="${format.formatShortName == hook.payloadFormat}">
-								<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${hook.uniqueKey}','#hookPane');"><c:out value="${format.formatDescription}" /></td>
+							<c:if test="${format.formatShortName == notification.payloadFormat}">
+								<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');"><c:out value="${format.formatDescription}" /></td>
 							</c:if>
 						</c:forEach>
-					<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${hook.uniqueKey}','#hookPane');"><c:out value="${hook.enabledListAsString}" /></td>
-					<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${hook.uniqueKey}','#buildPane');"><c:out value="${hook.buildTypeCountAsFriendlyString}" /></td>
-					<td class="edit highlight"><a onclick="BS.EditSlackNotificationDialog.showDialog('${hook.uniqueKey}','#hookPane');" href="javascript://">edit</a></td>
-					<td class="edit highlight"><a onclick="BS.SlackNotificationForm.removeSlackNotification('${hook.uniqueKey}','#hookPane');" href="javascript://">delete</a></td>
+					<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');"><c:out value="${notification.enabledListAsString}" /></td>
+					<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#buildPane');"><c:out value="${notification.buildTypeCountAsFriendlyString}" /></td>
+					<td class="edit highlight"><a onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');" href="javascript://">edit</a></td>
+					<td class="edit highlight"><a onclick="BS.SlackNotificationForm.removeSlackNotification('${notification.uniqueKey}','#hookPane');" href="javascript://">delete</a></td>
 				</tr> 
 			</c:forEach>
 			</tbody>
@@ -77,12 +77,12 @@
 											<table style="border:none;">
 												
 												<tr style="border:none;">
-													<td>URL:</td>
-													<td colspan=2><input id="slackNotificationUrl" name="URL" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;"/></td>
+													<td>Channel:</td>
+													<td colspan=2><input id="slackNotificationChannel" name="channel" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;"/></td>
 												</tr>
 												<tr>
 													<td></td>
-													<td colspan=2><span class="error" id="error_slackNotificationUrl" style="margin-left: 0.5em;"></span></td>
+													<td colspan=2><span class="error" id="error_slackNotificationChannel" style="margin-left: 0.5em;"></span></td>
 												</tr>
 												<tr style="border:none;">
 													<td><label for="slackNotificationsEnabled">Enabled:</label></td>

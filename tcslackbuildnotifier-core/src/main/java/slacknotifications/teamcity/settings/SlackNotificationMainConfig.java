@@ -20,6 +20,8 @@ public class SlackNotificationMainConfig {
 	private String proxyUsername = null;
 	private String proxyPassword = null;
     private String defaultChannel = null;
+    private String teamName;
+    private String token;
 	private Boolean proxyShortNames = false;
 	private List<String> noProxyUrls;
 	private List<Pattern> noProxyPatterns;
@@ -28,7 +30,8 @@ public class SlackNotificationMainConfig {
 	public final String HOSTNAME_ONLY_REGEX = "^([^/]+)(?:/.*)?$";
 	private Pattern singleHostPattern, hostnameOnlyPattern ;
 
-	public SlackNotificationMainConfig() {
+
+    public SlackNotificationMainConfig() {
 		noProxyUrls = new ArrayList<String>();
 		noProxyPatterns = new ArrayList<Pattern>();
 		singleHostPattern = Pattern.compile(SINGLE_HOST_REGEX); 
@@ -184,6 +187,22 @@ public class SlackNotificationMainConfig {
     public void setDefaultChannel(String defaultChannel) {
         this.defaultChannel = defaultChannel;
     }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 	
 	public Integer getProxyPort() {
 		return proxyPort;
@@ -256,6 +275,7 @@ public class SlackNotificationMainConfig {
 	public Boolean getSlackNotificationShowFurtherReading() {
 		return slacknotificationShowFurtherReading;
 	}
+
 
 
 }
