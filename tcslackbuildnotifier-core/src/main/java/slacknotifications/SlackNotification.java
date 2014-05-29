@@ -36,6 +36,14 @@ public interface SlackNotification {
 
     public abstract void setToken(String token);
 
+    public abstract String getBotName();
+
+    public abstract void setBotName(String botName);
+
+    public abstract String getIconUrl();
+
+    public abstract void setIconUrl(String iconUrl);
+
 	public abstract String getParameterisedUrl();
 
 	public abstract String parametersAsQueryString();

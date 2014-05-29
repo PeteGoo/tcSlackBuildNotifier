@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.beanutils.converters.StringArrayConverter;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -41,6 +42,7 @@ public class SlackNotificationImpl implements SlackNotification {
 	private String errorReason = "";
 	private List<NameValuePair> params;
 	private BuildState states;
+    private String botName;
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
@@ -115,7 +117,13 @@ public class SlackNotificationImpl implements SlackNotification {
 	
 	public void post() throws FileNotFoundException, IOException{
 		if ((this.enabled) && (!this.errored)){
-			PostMethod httppost = new PostMethod(String.format("https://slack.com/api/chat.postMessage?token=%s&channel=%s&text=%s&pretty=1", this.token, this.channel, ""));
+			PostMethod httppost = new PostMethod(
+                    String.format("https://slack.com/api/chat.postMessage?token=%s&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
+                    this.token,
+                    this.botName,
+                    this.iconUrl,
+                    this.channel,
+                    ""));
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
 			    httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
@@ -168,6 +176,26 @@ public class SlackNotificationImpl implements SlackNotification {
     public void setToken(String token)
     {
         this.token = token;
+    }
+
+    public String getIconUrl()
+    {
+        return this.iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl)
+    {
+        this.iconUrl = iconUrl;
+    }
+
+    public String getBotName()
+    {
+        return this.botName;
+    }
+
+    public void setBotName(String botName)
+    {
+        this.botName = botName;
     }
 
 	public String getChannel() {

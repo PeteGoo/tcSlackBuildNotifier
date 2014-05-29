@@ -29,6 +29,8 @@ public class SlackNotificationMainConfig {
 	public final String SINGLE_HOST_REGEX = "^[^./~`'\"]+(?:/.*)?$";
 	public final String HOSTNAME_ONLY_REGEX = "^([^/]+)(?:/.*)?$";
 	private Pattern singleHostPattern, hostnameOnlyPattern ;
+    private String iconUrl;
+    private String botName;
 
 
     public SlackNotificationMainConfig() {
@@ -202,6 +204,26 @@ public class SlackNotificationMainConfig {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getIconUrl()
+    {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl)
+    {
+        this.iconUrl = iconUrl;
+    }
+
+    public String getBotName()
+    {
+        return botName;
+    }
+
+    public void setBotName(String botName)
+    {
+        this.botName = botName;
     }
 	
 	public Integer getProxyPort() {

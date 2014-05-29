@@ -54,6 +54,14 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
             {
                 tempConfig.setToken(slackNotificationsElement.getAttributeValue("token"));
             }
+            if(slackNotificationsElement.getAttribute("iconurl") != null)
+            {
+                tempConfig.setIconUrl(slackNotificationsElement.getAttributeValue("iconurl"));
+            }
+            if(slackNotificationsElement.getAttribute("botname") != null)
+            {
+                tempConfig.setBotName(slackNotificationsElement.getAttributeValue("botname"));
+            }
 			Element extraInfoElement = slackNotificationsElement.getChild("info");
 	        if(extraInfoElement != null)
 	        {
@@ -157,6 +165,16 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
     public String getToken() {
         return this.slackNotificationMainConfig.getToken();
+    }
+
+    public String getIconUrl()
+    {
+        return this.slackNotificationMainConfig.getIconUrl();
+    }
+
+    public String getBotName()
+    {
+        return this.slackNotificationMainConfig.getBotName();
     }
 
     public Boolean getSlackNotificationShowFurtherReading(){

@@ -22,7 +22,9 @@ public class SlackNotificationMainSettingsTest {
     String defaultChannel = "#my-channel";
     String teamName =  "myteam";
     String token = "thisismytoken";
-	
+	String iconUrl = "http://www.myicon.com/icon.gif";
+    String botName = "Team City";
+
 	@Test
 	public void TestFullConfig(){
 		SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server);
@@ -36,6 +38,8 @@ public class SlackNotificationMainSettingsTest {
         assertTrue(whms.getDefaultChannel().equals(this.defaultChannel));
         assertTrue(whms.getTeamName().equals(this.teamName));
         assertTrue(whms.getToken().equals(this.token));
+        assertTrue(whms.getIconUrl().equals(this.iconUrl));
+        assertTrue(whms.getBotName().equals(this.botName));
 	}
 	
 	private Element getFullConfigElement(){
