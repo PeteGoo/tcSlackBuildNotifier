@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -120,9 +121,9 @@ public class SlackNotificationImpl implements SlackNotification {
 			PostMethod httppost = new PostMethod(
                     String.format("https://slack.com/api/chat.postMessage?token=%s&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
-                    this.botName,
-                    this.iconUrl,
-                    this.channel,
+                    URLEncoder.encode(this.botName, "UTF-8"),
+                    URLEncoder.encode(this.iconUrl, "UTF-8"),
+                    URLEncoder.encode(this.channel, "UTF-8"),
                     ""));
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
