@@ -122,7 +122,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
     {
     	Loggers.SERVER.info("SlackNotificationMainSettings: re-writing main settings");
     	Loggers.SERVER.debug(NAME + ":writeTo :: " + parentElement.toString());
-    	Element el = new Element("slacknotification");
+    	Element el = new Element("slackNotification");
         if(	  slackNotificationMainConfig != null
            && slackNotificationMainConfig.getProxyHost() != null && slackNotificationMainConfig.getProxyHost().length() > 0
            && slackNotificationMainConfig.getProxyPort() != null && slackNotificationMainConfig.getProxyPort() > 0 )

@@ -23,8 +23,8 @@ public class ConfigLoaderUtil {
 
 	public static SlackNotificationConfig getFirstSlackNotificationInConfig(File f) throws JDOMException, IOException{
 		Element fileAsElement = ConfigLoaderUtil.getFullConfigElement(f);
-		assertTrue("One and only one slacknotifications expected when loading test config from file : " + f.getName(), fileAsElement.getChild("slacknotifications").getChildren("slacknotification").size() == 1);
-		return new SlackNotificationConfig((Element) fileAsElement.getChild("slacknotifications").getChildren("slacknotification").get(0));
+		assertTrue("One and only one slackNotifications expected when loading test config from file : " + f.getName(), fileAsElement.getChild("slackNotifications").getChildren("slackNotification").size() == 1);
+		return new SlackNotificationConfig((Element) fileAsElement.getChild("slackNotifications").getChildren("slackNotification").get(0));
 	}
 	
 }

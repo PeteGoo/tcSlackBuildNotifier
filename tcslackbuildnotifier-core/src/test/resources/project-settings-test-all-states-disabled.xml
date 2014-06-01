@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
-  <slacknotifications enabled="true">
-    <slacknotification channel="http://localhost/test" enabled="true" format="nvpairs">
+  <slackNotifications enabled="true">
+    <slackNotification channel="http://localhost/test" enabled="true" format="nvpairs">
       <states>
         <state type="buildStarted" enabled="false" />
         <state type="beforeBuildFinish" enabled="false" />
@@ -13,7 +13,7 @@
         <state type="buildFailed" enabled="false" />
         <state type="responsibilityChanged" enabled="false" />
       </states>
-    </slacknotification>
-  </slacknotifications>
+    </slackNotification>
+  </slackNotifications>
 </settings>
 

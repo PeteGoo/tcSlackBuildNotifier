@@ -142,7 +142,7 @@ public class SlackNotificationMockingFrameworkImpl implements SlackNotificationM
 	
 	@Override
 	public void loadSlackNotificationProjectSettingsFromConfigXml(File xmlConfigFile) throws IOException, JDOMException{
-		projSettings.readFrom(ConfigLoaderUtil.getFullConfigElement(xmlConfigFile).getChild("slacknotifications"));
+		projSettings.readFrom(ConfigLoaderUtil.getFullConfigElement(xmlConfigFile).getChild("slackNotifications"));
 	}
 	
 	@Override

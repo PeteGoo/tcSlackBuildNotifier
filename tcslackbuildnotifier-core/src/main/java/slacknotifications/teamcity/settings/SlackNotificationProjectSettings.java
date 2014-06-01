@@ -41,7 +41,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     		this.slackNotificationsEnabled = Boolean.parseBoolean(rootElement.getAttributeValue("enabled"));
     	}
     	
-		List<Element> namedChildren = rootElement.getChildren("slacknotification");
+		List<Element> namedChildren = rootElement.getChildren("slackNotification");
         if(namedChildren.size() == 0)
         {
             this.slackNotificationsConfigs = null;
