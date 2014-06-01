@@ -9,7 +9,7 @@ import slacknotifications.teamcity.payload.SlackNotificationPayload;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 
 public class SlacknotificationConfigAndBuildTypeListHolder {
-	public String url;
+	public String channel;
 	public String uniqueKey; 
 	public boolean enabled;
 	public String payloadFormat;
@@ -22,7 +22,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private String enabledBuildsListForWeb;
 	
 	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config, Collection<SlackNotificationPayload> registeredPayloads) {
-		url = config.getChannel();
+		channel = config.getChannel();
 		uniqueKey = config.getUniqueKey();
 		enabled = config.getEnabled();
 		payloadFormat = config.getPayloadFormat();

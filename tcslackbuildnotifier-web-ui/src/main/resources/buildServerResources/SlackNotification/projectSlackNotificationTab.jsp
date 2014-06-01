@@ -17,10 +17,10 @@
 				<p>There are <strong>${project.projectSlacknotificationCount}</strong> Slack notifications configured for all builds in this project.
 					<a href="./slacknotifications/index.html?projectId=${project.externalProjectId}">Edit project Slack notifications</a>.</p>
 				<table class="testList dark borderBottom">
-					<thead><tr><th class=name>URL</th><th class=name>Enabled</th></tr></thead>
+					<thead><tr><th class=name>Channel</th><th class=name>Enabled</th></tr></thead>
 					<tbody>
 					<c:forEach items="${project.projectSlacknotifications}" var="hook">
-						<tr><td><c:out value="${hook.url}" /></td><td><c:out value="${hook.enabledListAsString}" /></td></tr>  
+						<tr><td><c:out value="${hook.channel}" /></td><td><c:out value="${hook.enabledListAsString}" /></td></tr>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -43,10 +43,10 @@
 						<p>There are <strong>${config.buildCount}</strong> Slack notifications for this specific build.
 							<a href="./slacknotifications/index.html?buildTypeId=${config.buildExternalId}">Edit build Slack notifications</a>.</p>
 						<table class="testList dark borderBottom">
-							<thead><tr><th class=name>URL</th><th class=name>Enabled</th></tr></thead>
+							<thead><tr><th class=name>Channel</th><th class=name>Enabled</th></tr></thead>
 							<tbody>
 							<c:forEach items="${config.buildSlackNotificationList}" var="hook">
-								<tr><td><c:out value="${hook.url}" /></td><td><c:out value="${hook.enabledListAsString}" /></td></tr>  
+								<tr><td><c:out value="${hook.channel}" /></td><td><c:out value="${hook.enabledListAsString}" /></td></tr>
 							</c:forEach>
 							</tbody>
 						</table>

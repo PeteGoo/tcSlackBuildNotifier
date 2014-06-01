@@ -139,7 +139,7 @@ public interface SlackNotificationPayload {
      * @param sBuildType
      * @param responsibilityEntryOld
      * @param responsibilityEntryNew
-     * @param params
+     * @param extraParameters
      * @return Formatted payload for the SlackNotification to send for the responsibleChanged event.
      */
 	String responsibleChanged(SBuildType sBuildType,

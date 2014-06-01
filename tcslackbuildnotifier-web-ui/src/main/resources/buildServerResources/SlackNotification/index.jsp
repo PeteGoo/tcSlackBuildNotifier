@@ -310,7 +310,7 @@
       <div class=configurationSection>
       	<h2>SlackNotification Information</h2>
           <p>SlackNotifications are simply HTTP POST requests or "callbacks" triggered by events. They allow one web application (in this case TeamCity) to notify another web app of events.</p>
-          <p>When an event occurs, the tcSlackNotifications plugin will submit an HTTP POST to the URL configured. The receiving webapp is then able to use the information for any purpose. It could be used to light a lava lamp, or post a message on an IRC channel.</p>
+          <p>When an event occurs, the tcSlackNotifications plugin will submit message to the Slack channel configured. </p>
 
 			<c:choose>
 				<c:when test="${ShowFurtherReading == 'ALL'}">
