@@ -30,7 +30,7 @@ public class SlackNotificationProjectTabExtension extends ProjectTab {
 	protected SlackNotificationProjectTabExtension(
             PagePlaces pagePlaces, ProjectManager projectManager,
             ProjectSettingsManager settings, PluginDescriptor pluginDescriptor) {
-		super("slackNotifications", "SlackNotifications", pagePlaces, projectManager);
+		super("slackNotifications", "Slack", pagePlaces, projectManager);
 		this.projSettings = settings;
 		myPluginPath = pluginDescriptor.getPluginResourcesPath();
 	}
