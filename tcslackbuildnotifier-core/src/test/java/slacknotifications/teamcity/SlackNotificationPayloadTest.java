@@ -13,6 +13,7 @@ import jetbrains.buildServer.messages.Status;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SFinishedBuild;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import slacknotifications.*;
@@ -52,7 +53,8 @@ public class SlackNotificationPayloadTest {
 		System.out.println(wpm.getFormat("nvpairs").buildStarted(sRunningBuild, previousBuild, extraParameters, SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates()));
 		
 	}
-	
+
+    @Ignore
 	@Test
 	public void TestNVPairsPayloadWithPostToJetty() throws InterruptedException{
 		

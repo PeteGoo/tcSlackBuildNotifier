@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.serverSide.SBuildType;
 
 import org.jdom.DataConversionException;
@@ -192,7 +193,9 @@ public class SlackNotificationConfig {
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
 		el.setAttribute("channel", this.getChannel());
-        el.setAttribute("teamName", this.getTeamName());
+        if(StringUtil.isNotEmpty(this.getTeamName())) {
+            el.setAttribute("teamName", this.getTeamName());
+        }
 		el.setAttribute("enabled", String.valueOf(this.enabled));
 		el.setAttribute("format", String.valueOf(this.payloadFormat).toLowerCase());
 		

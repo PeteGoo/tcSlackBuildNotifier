@@ -121,9 +121,9 @@ public class SlackNotificationImpl implements SlackNotification {
 			PostMethod httppost = new PostMethod(
                     String.format("https://slack.com/api/chat.postMessage?token=%s&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
-                    URLEncoder.encode(this.botName, "UTF-8"),
-                    URLEncoder.encode(this.iconUrl, "UTF-8"),
-                    URLEncoder.encode(this.channel, "UTF-8"),
+                    this.botName == null ? "" : URLEncoder.encode(this.botName, "UTF-8"),
+                    this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, "UTF-8"),
+                    this.channel == null ? "" : URLEncoder.encode(this.channel, "UTF-8"),
                     ""));
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
@@ -140,7 +140,10 @@ public class SlackNotificationImpl implements SlackNotification {
 		    try {
 		        client.executeMethod(httppost);
 		        this.resultCode = httppost.getStatusCode();
-		        this.content = httppost.getResponseBodyAsString();
+                if(httppost.getResponseContentLength() > 0)
+                {
+                    this.content = httppost.getResponseBodyAsString();
+                }
 		    } finally {
 		        httppost.releaseConnection();
 		    }   

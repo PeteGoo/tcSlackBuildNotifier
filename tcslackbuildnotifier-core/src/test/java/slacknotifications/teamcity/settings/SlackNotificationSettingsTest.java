@@ -17,6 +17,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import slacknotifications.*;
@@ -104,7 +105,8 @@ public class SlackNotificationSettingsTest {
 		assertFalse(mainConfig.matchProxyForURL("http://10.10.0.1"));
 		assertTrue(mainConfig.matchProxyForURL("http://100.10.10.1/test1.test2.example.com/test"));
 	}
-	
+
+    @Ignore
 	@Test
 	public void test_200UsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTest test = new SlackNotificationTest();
@@ -123,6 +125,7 @@ public class SlackNotificationSettingsTest {
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);		
 	}
 
+    @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTest test = new SlackNotificationTest();
@@ -142,6 +145,7 @@ public class SlackNotificationSettingsTest {
 		assertTrue(w.getStatus() == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED);
 	}
 
+    @Ignore
 	@Test
 	public void test_AuthFailNoCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTest test = new SlackNotificationTest();
@@ -161,6 +165,7 @@ public class SlackNotificationSettingsTest {
 		assertTrue(w.getStatus() == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED);
 	}
 
+    @Ignore
 	@Test
 	public void test_AuthPassNoCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTest test = new SlackNotificationTest();

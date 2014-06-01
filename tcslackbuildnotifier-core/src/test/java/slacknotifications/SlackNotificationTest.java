@@ -75,6 +75,7 @@ public class SlackNotificationTest {
 		System.out.print(".. done");
 	}
 
+    @Ignore
 	@Test(expected=java.net.ConnectException.class)
 	public void test_ConnectionRefused() throws ConnectException, IOException{
 		SlackNotification w = factory.getSlackNotification(url);
@@ -91,6 +92,7 @@ public class SlackNotificationTest {
 		System.out.print(".. done");
 	}
 
+    @Ignore
 	@Test
 	public void test_200() throws FileNotFoundException, IOException, Exception {
 		SlackNotificationTestServer s = startWebServer();
@@ -105,7 +107,8 @@ public class SlackNotificationTest {
 		stopWebServer(s);
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);
 	}
-	
+
+    @Ignore
 	@Test
 	public void test_NotEnabled() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -114,7 +117,8 @@ public class SlackNotificationTest {
 		stopWebServer(s);
 		assertTrue(w.getStatus() == null);
 	}
-	
+
+    @Ignore
 	@Test
 	public void test_200WithProxy() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -127,6 +131,7 @@ public class SlackNotificationTest {
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);
 	}
 
+    @Ignore
 	@Test
 	public void test_200WithProxyFailAuth() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -139,6 +144,7 @@ public class SlackNotificationTest {
 		assertTrue(w.getStatus() == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED);
 	}
 
+    @Ignore
 	@Test
 	public void test_200WithProxyAuth() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -152,7 +158,7 @@ public class SlackNotificationTest {
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);
 	}
 
-	
+    @Ignore
 	@Test
 	public void test_200WithFilename() throws FileNotFoundException, IOException, Exception {
 		SlackNotificationTestServer s = startWebServer();
@@ -164,6 +170,7 @@ public class SlackNotificationTest {
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);
 	}
 
+    @Ignore
 	@Test
 	public void test_200WithFilenameWithProxy() throws FileNotFoundException, IOException, Exception {
 		SlackNotificationTestServer s = startWebServer();
@@ -178,6 +185,7 @@ public class SlackNotificationTest {
 
 	}
 
+    @Ignore
 	@Test
 	public void test_302() throws FileNotFoundException, IOException, Exception {
 		SlackNotificationTestServer s = startWebServer();
@@ -188,8 +196,8 @@ public class SlackNotificationTest {
 		assertTrue(w.getStatus() == HttpStatus.SC_MOVED_TEMPORARILY);
 
 	}
-	
-	
+
+    @Ignore
 	@Test
 	public void test_302WithProxy() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -203,6 +211,7 @@ public class SlackNotificationTest {
 
 	}
 
+    @Ignore
 	@Test
 	public void test_404WithProxyStringPort() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -214,8 +223,9 @@ public class SlackNotificationTest {
 		stopProxyServer(p);
 		assertTrue(w.getStatus() == HttpStatus.SC_NOT_FOUND);
 
-	}	
-	
+	}
+
+    @Ignore
 	@Test
 	public void test_404WithProxyConfig() throws FileNotFoundException, IOException, InterruptedException {
 		SlackNotificationTestServer s = startWebServer();
@@ -228,7 +238,8 @@ public class SlackNotificationTest {
 		stopProxyServer(p);
 		assertTrue(w.getStatus() == HttpStatus.SC_NOT_FOUND);
 	}
-	
+
+    @Ignore
 	@Test
 	public void test_302WithFilename() throws FileNotFoundException, IOException, Exception {
 		SlackNotificationTestServer s = startWebServer();
@@ -240,7 +251,8 @@ public class SlackNotificationTest {
 		assertTrue(w.getStatus() == HttpStatus.SC_MOVED_TEMPORARILY);
 
 	}
-	
+
+    @Ignore
 	@Test
 	public void test_302WithFilenameWithProxy() throws FileNotFoundException, IOException, Exception {
 		SlackNotificationTestServer s = startWebServer();
@@ -316,8 +328,7 @@ public class SlackNotificationTest {
 		System.out.println(whc.getSlackNotifications().get(1).getErrorReason());
 	}
 	
-	@Ignore
-	public void test_SlackNotificationCollectionWithPost() throws SlackNotificationParameterReferenceException, InterruptedException {
+    public void test_SlackNotificationCollectionWithPost() throws SlackNotificationParameterReferenceException, InterruptedException {
 		Map <String, String> params = new HashMap<String, String>();
 		//params.put("system.slacknotifications.1.url", url + "/200");
 		params.put("system.slacknotifications.1.url", "http://localhost/slacknotifications/" );
