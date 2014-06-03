@@ -36,7 +36,6 @@ public class SlackNotificationConfig {
 	private String uniqueKey = "";
 	private String channel;
     private String teamName;
-	private String payloadFormat = null;
 	private BuildState states = new BuildState();
 	private SortedMap<String, CustomMessageTemplate> templates; 
 	private Boolean allBuildTypesEnabled = true;
@@ -70,13 +69,6 @@ public class SlackNotificationConfig {
 
 		if (e.getAttribute("key") != null){
 			this.setUniqueKey(e.getAttributeValue("key"));
-		}
-
-		if (e.getAttribute("format") != null){
-			this.setPayloadFormat(e.getAttributeValue("format"));
-		} else {
-			// Set to nvpairs by default for backward compatibility.
-			this.setPayloadFormat("nvpairs");
 		}
 		
 		if(e.getChild("states") != null){
@@ -161,9 +153,8 @@ public class SlackNotificationConfig {
 	 * @param channel
 	 * @param enabled
 	 * @param states
-	 * @param payloadFormat (unvalidated)
 	 */
-	public SlackNotificationConfig(String channel, String teamName, Boolean enabled, BuildState states, String payloadFormat, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
+	public SlackNotificationConfig(String channel, String teamName, Boolean enabled, BuildState states, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
 		int Min = 1000000, Max = 1000000000;
 		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
 		this.uniqueKey = Rand.toString();
@@ -173,7 +164,6 @@ public class SlackNotificationConfig {
         this.setTeamName(teamName);
 		this.setEnabled(enabled);
 		this.setBuildStates(states);
-		this.setPayloadFormat(payloadFormat);
 		this.subProjectsEnabled = buildTypeSubProjects;
 		this.allBuildTypesEnabled = buildTypeAllEnabled;
 		if (!this.allBuildTypesEnabled){
@@ -197,7 +187,6 @@ public class SlackNotificationConfig {
             el.setAttribute("teamName", this.getTeamName());
         }
 		el.setAttribute("enabled", String.valueOf(this.enabled));
-		el.setAttribute("format", String.valueOf(this.payloadFormat).toLowerCase());
 		
 		Element statesEl = new Element("states");
 		for (BuildStateEnum state : states.getStateSet()){
@@ -442,20 +431,6 @@ public class SlackNotificationConfig {
 			return "checked ";
 		}
 		return ""; 
-	}
-	
-	public String getPayloadFormat() {
-		return payloadFormat;
-	}
-
-	/**
-	 * Sets the payload format to whatever string is passed.
-	 * It does NOT check that the payload format has a valid implementation loaded.
-	 * 
-	 * @param payloadFormat
-	 */
-	public void setPayloadFormat(String payloadFormat) {
-		this.payloadFormat = payloadFormat;
 	}
 
 	public Boolean isEnabledForAllBuildsInProject() {

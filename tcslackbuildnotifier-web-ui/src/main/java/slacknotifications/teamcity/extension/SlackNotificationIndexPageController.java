@@ -98,19 +98,18 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    	logger.debug(myMainSettings.getInfoText() + myMainSettings.getInfoUrl() + myMainSettings.getProxyListasString());
 			    	
 			    	params.put("slackNotificationCount", projSettings.getSlackNotificationsCount());
-			    	params.put("formatList", myManager.getRegisteredFormatsAsCollection());
 			    	
 			    	if (projSettings.getSlackNotificationsCount() == 0){
 			    		params.put("noSlackNotifications", "true");
 			    		params.put("slackNotifications", "false");
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myManager.getRegisteredFormatsAsCollection())));
+			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project)));
 			    	} else {
 			    		params.put("noSlackNotifications", "false");
 			    		params.put("slackNotifications", "true");
 			    		params.put("slackNotificationList", projSettings.getSlackNotificationsAsList());
 			    		params.put("slackNotificationsDisabled", !projSettings.isEnabled());
 			    		params.put("slackNotificationsEnabledAsChecked", projSettings.isEnabledAsChecked());
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myManager.getRegisteredFormatsAsCollection())));
+			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project)));
 
 			    	}
 		    	} else {
@@ -130,7 +129,6 @@ public class SlackNotificationIndexPageController extends BaseController {
 				        params.put("hasPermission", myUser.isPermissionGrantedForProject(project.getProjectId(), Permission.EDIT_PROJECT));
 				    	
 				    	List<SlackNotificationConfig> configs = projSettings.getBuildSlackNotificationsAsList(sBuildType);
-				    	params.put("formatList", myManager.getRegisteredFormatsAsCollection());
 				    	params.put("slackNotificationList", configs);
 				    	params.put("slackNotificationsDisabled", !projSettings.isEnabled());
 				    	params.put("projectId", project.getProjectId());
@@ -144,7 +142,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    		params.put("noSlackNotifications", configs.size() == 0);
 			    		params.put("slackNotifications", configs.size() != 0);
 				    	
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project, myManager.getRegisteredFormatsAsCollection())));
+			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project)));
 		        	}
         		} else {
 		    		params.put("haveProject", "false");

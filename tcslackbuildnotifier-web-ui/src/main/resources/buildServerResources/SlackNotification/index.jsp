@@ -117,14 +117,7 @@
 				    	jQuerySlacknotification('#' + value.buildStateName).attr('checked', value.enabled);
 				    });
 				    
-				    jQuerySlacknotification('#slackNotificationFormContents input.payloadFormat').each(function(i){
-						if(this.value === slacknotification.payloadFormat){
-							this.checked = true;
-						} else {
-							this.checked = false;
-						}
-					});
-					jQuerySlacknotification('#buildTypeSubProjects').attr('checked', slacknotification.subProjectsEnabled);
+                    jQuerySlacknotification('#buildTypeSubProjects').attr('checked', slacknotification.subProjectsEnabled);
 					jQuerySlacknotification.each(slacknotification.builds, function(){
 						 if (this.enabled){
 					 	 	jQuerySlacknotification('#buildList').append('<p style="border-bottom:solid 1px #cccccc; margin:0; padding:0.5em;"><label><input checked onclick="updateSelectedBuildTypes();" type=checkbox style="padding-right: 1em;" name="buildTypeId" value="' + this.buildTypeId + '"class="buildType_single">' + this.buildTypeName + '</label></p>');
@@ -135,16 +128,6 @@
 				}
 			});
 			updateSelectedBuildTypes();
-		}
-
-		function selectCorrectRadio(id){
-			jQuerySlacknotification('#slackNotificationFormContents input.payloadFormat').each(function(i){
-				if(this.value == jQuerySlacknotification('#payloadFormat_'+id).val()){
-					this.checked = true;
-				} else {
-					this.checked = false;
-				}
-			});
 		}
 		
 		function addSlackNotificationsFromJsonCallback(){
@@ -159,7 +142,6 @@
 									.addClass('slackNotificationRow')
 									.appendTo('#slackNotificationTable > tbody');
 					jQuerySlacknotification("#viewRow_" + slacknotification.uniqueKey + " > td.slackNotificationRowItemChannel").html(slacknotification.channel).click(function(){BS.EditSlackNotificationDialog.showDialog(slacknotification.uniqueKey, '#hookPane');});
-					jQuerySlacknotification("#viewRow_" + slacknotification.uniqueKey + " > td.slackNotificationRowItemFormat").html(slacknotification.payloadFormatForWeb).click(function(){BS.EditSlackNotificationDialog.showDialog(slacknotification.uniqueKey,'#hookPane');});
 					jQuerySlacknotification("#viewRow_" + slacknotification.uniqueKey + " > td.slackNotificationRowItemEvents").html(slacknotification.enabledEventsListForWeb).click(function(){BS.EditSlackNotificationDialog.showDialog(slacknotification.uniqueKey,'#hookPane');});
 					jQuerySlacknotification("#viewRow_" + slacknotification.uniqueKey + " > td.slackNotificationRowItemBuilds").html(slacknotification.enabledBuildsListForWeb).click(function(){BS.EditSlackNotificationDialog.showDialog(slacknotification.uniqueKey, '#buildPane');});
 					jQuerySlacknotification("#viewRow_" + slacknotification.uniqueKey + " > td.slackNotificationRowItemEdit > a").click(function(){BS.EditSlackNotificationDialog.showDialog(slacknotification.uniqueKey,'#hookPane');});
@@ -238,10 +220,7 @@
 			        that.highlightErrorField($('slackNotificationChannel'));
 			      },
 
-			      onEmptyPayloadFormatError : function(elem) {
-			        $("error_payloadFormat").innerHTML = elem.firstChild.nodeValue;
-			        that.highlightErrorField($('payloadFormatTable'));
-			      },
+
 
 			      onCompleteSave : function(form, responseXML, err) {
 			    	BS.ErrorsAwareListener.onCompleteSave(form, responseXML, err);

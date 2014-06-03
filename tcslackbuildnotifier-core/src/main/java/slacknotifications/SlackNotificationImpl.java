@@ -9,19 +9,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.beanutils.converters.StringArrayConverter;
+import com.google.gson.Gson;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
 
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import slacknotifications.teamcity.BuildState;
+import slacknotifications.teamcity.Loggers;
+import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 
 public class SlackNotificationImpl implements SlackNotification {
+
 	private String proxyHost;
 	private Integer proxyPort = 0;
 	private String proxyUsername;
@@ -29,12 +34,9 @@ public class SlackNotificationImpl implements SlackNotification {
 	private String channel;
     private String teamName;
     private String token;
-    private String username;
     private String iconUrl;
 	private String content;
-	private String contentType;
-	private String charset;
-	private String payload;
+	private SlackNotificationPayloadContent payload;
 	private Integer resultCode;
 	private HttpClient client;
 	private String filename = "";
@@ -44,6 +46,7 @@ public class SlackNotificationImpl implements SlackNotification {
 	private List<NameValuePair> params;
 	private BuildState states;
     private String botName;
+    private final static String CONTENT_TYPE = "application/x-www-form-urlencoded";
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
@@ -118,24 +121,33 @@ public class SlackNotificationImpl implements SlackNotification {
 	
 	public void post() throws FileNotFoundException, IOException{
 		if ((this.enabled) && (!this.errored)){
-			PostMethod httppost = new PostMethod(
-                    String.format("https://slack.com/api/chat.postMessage?token=%s&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
+            String url = String.format("https://slack.com/api/chat.postMessage?token=%s&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
                     this.botName == null ? "" : URLEncoder.encode(this.botName, "UTF-8"),
                     this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, "UTF-8"),
                     this.channel == null ? "" : URLEncoder.encode(this.channel, "UTF-8"),
-                    ""));
+                    this.payload == null ? "" : URLEncoder.encode(payload.getBuildDescriptionWithLinkSyntax(), "UTF-8"),
+                    "");
+            PostMethod httppost = new PostMethod(
+                    url);
+            Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
 			    httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
 			    httppost.setContentChunked(true);
 			}
-			if (   this.payload != null && this.payload.length() > 0 
-				&& this.contentType != null && this.contentType.length() > 0){
-				httppost.setRequestEntity(new StringRequestEntity(this.payload, this.contentType, this.charset));
-			} else if (this.params.size() > 0){
-				NameValuePair[] paramsArray = this.params.toArray(new NameValuePair[this.params.size()]);
-				httppost.setRequestBody(paramsArray);
+			if (this.payload != null){
+                //TODO: Set the body
+                List<Attachment> attachments = new ArrayList<Attachment>();
+                Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
+                attachment.addField(this.payload.getBuildResult(), this.payload.getAgentName(), false);
+                attachments.add(attachment);
+
+                String attachmentsParam = String.format("attachments=%s", URLEncoder.encode(convertAttachmentsToJson(attachments), "UTF-8"));
+
+                Loggers.SERVER.info("SlackNotificationListener :: Body message will be " + attachmentsParam);
+
+                httppost.setRequestEntity(new StringRequestEntity(attachmentsParam, CONTENT_TYPE, "UTF-8"));
 			}
 		    try {
 		        client.executeMethod(httppost);
@@ -150,7 +162,20 @@ public class SlackNotificationImpl implements SlackNotification {
 		}
 	}
 
-	public Integer getStatus(){
+    public static String convertAttachmentsToJson(List<Attachment> attachments)
+    {
+        Gson gson = new Gson();
+        return gson.toJson(attachments);
+//        XStream xstream = new XStream(new JsonHierarchicalStreamDriver());
+//        xstream.setMode(XStream.NO_REFERENCES);
+//        xstream.alias("build", Attachment.class);
+//        /* For some reason, the items are coming back as "@name" and "@value"
+//         * so strip those out with a regex.
+//         */
+//        return xstream.toXML(attachments).replaceAll("\"@(fallback|text|pretext|color|fields|title|value|short)\": \"(.*)\"", "\"$1\": \"$2\"");
+    }
+
+    public Integer getStatus(){
 		return this.resultCode;
 	}
 	
@@ -315,21 +340,12 @@ public class SlackNotificationImpl implements SlackNotification {
 		this.proxyPassword = proxyPassword;
 	}
 
-	public String getPayload() {
+	public SlackNotificationPayloadContent getPayload() {
 		return payload;
 	}
 
-	public void setPayload(String payloadContent) {
+	public void setPayload(SlackNotificationPayloadContent payloadContent) {
 		this.payload = payloadContent;
-	}
-
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-
-	}
-
-	public void setCharset(String charset) {
-		this.charset = charset;
 	}
 
 	@Override

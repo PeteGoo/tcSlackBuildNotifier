@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import org.jdom.JDOMException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import slacknotifications.teamcity.BuildStateEnum;
@@ -24,7 +25,8 @@ public class SlackNotificationPayloadContentTest {
 	@Before 
 	public void setup() throws JDOMException, IOException{
 	}
-	
+
+    @Ignore
 	@Test
 	public void testGetBuildStatusHtml() throws JDOMException, IOException {
 		framework = SlackNotificationMockingFrameworkImpl.create(BuildStateEnum.BUILD_FINISHED, extraParameters);

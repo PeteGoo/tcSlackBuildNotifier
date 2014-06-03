@@ -27,9 +27,7 @@ import org.junit.Test;
 
 import slacknotifications.SlackNotification;
 import slacknotifications.SlackNotificationImpl;
-import slacknotifications.teamcity.payload.SlackNotificationPayload;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
-import slacknotifications.teamcity.payload.format.SlackNotificationPayloadJson;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
@@ -40,7 +38,7 @@ public class SlackNotificationListenerTest {
 	ProjectSettingsManager settings = mock(ProjectSettingsManager.class);
 	SlackNotificationMainSettings configSettings = mock(SlackNotificationMainSettings.class);
 	SlackNotificationPayloadManager manager = mock(SlackNotificationPayloadManager.class);
-	SlackNotificationPayload payload = new SlackNotificationPayloadJson(manager);
+//	SlackNotificationPayload payload = new SlackNotificationPayloadDetailed(manager);
 	SlackNotificationProjectSettings projSettings;
 	SlackNotificationFactory factory = mock(SlackNotificationFactory.class);
 	SlackNotification slacknotification = mock (SlackNotification.class);
@@ -71,9 +69,9 @@ public class SlackNotificationListenerTest {
 		whl = new SlackNotificationListener(sBuildServer, settings, configSettings, manager, factory);
 		projSettings = new SlackNotificationProjectSettings();
 		when(factory.getSlackNotification()).thenReturn(spySlackNotification);
-		when(manager.isRegisteredFormat("JSON")).thenReturn(true);
-		when(manager.getFormat("JSON")).thenReturn(payload);
-		when(manager.getServer()).thenReturn(sBuildServer);
+		//when(manager.isRegisteredFormat("JSON")).thenReturn(true);
+//		when(manager.getFormat("JSON")).thenReturn(payload);
+		//when(manager.getServer()).thenReturn(sBuildServer);
 		when(sBuildServer.getProjectManager()).thenReturn(projectManager);
 		when(projectManager.findProjectById("project1")).thenReturn(sProject);
 		when(sBuildServer.getHistory()).thenReturn(buildHistory);
@@ -114,7 +112,7 @@ public class SlackNotificationListenerTest {
 	@Test
 	public void testBuildStartedSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState().setAllEnabled();
-		projSettings.addNewSlackNotification("project1", "my-channel", "myteam", true, state, "JSON", true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("project1", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
 		when(slacknotification.isEnabled()).thenReturn(state.allEnabled());
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
@@ -125,7 +123,7 @@ public class SlackNotificationListenerTest {
 	@Test
 	public void testBuildFinishedSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState().setAllEnabled();
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state , "JSON", true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state , true, true, new HashSet<String>());
 		when(slacknotification.isEnabled()).thenReturn(state.allEnabled());
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
@@ -139,7 +137,7 @@ public class SlackNotificationListenerTest {
 		state.enable(BuildStateEnum.BUILD_FIXED);
 		state.enable(BuildStateEnum.BUILD_FINISHED);
 		state.enable(BuildStateEnum.BUILD_SUCCESSFUL);
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, "JSON", true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
 		when(slacknotification.isEnabled()).thenReturn(state.enabled(BuildStateEnum.BUILD_FIXED));
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedFailedBuilds);
 		
@@ -151,7 +149,7 @@ public class SlackNotificationListenerTest {
 	public void testBuildFinishedSRunningBuildSuccessAfterSuccess() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState();
 		state.enable(BuildStateEnum.BUILD_FIXED);
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, "JSON", true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
 		when(slacknotification.isEnabled()).thenReturn(state.enabled(BuildStateEnum.BUILD_FIXED));
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
@@ -162,7 +160,7 @@ public class SlackNotificationListenerTest {
 	@Test
 	public void testBuildInterruptedSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState().setAllEnabled();
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, "JSON", true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
 		whl.buildInterrupted(sRunningBuild);
@@ -173,7 +171,7 @@ public class SlackNotificationListenerTest {
 	public void testBeforeBuildFinishSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState();
 		state.enable(BuildStateEnum.BEFORE_BUILD_FINISHED);
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, "JSON", true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
 		whl.beforeBuildFinish(sRunningBuild);

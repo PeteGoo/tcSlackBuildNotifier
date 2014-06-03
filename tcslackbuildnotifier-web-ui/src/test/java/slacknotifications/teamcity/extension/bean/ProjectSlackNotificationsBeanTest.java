@@ -23,7 +23,7 @@ public class ProjectSlackNotificationsBeanTest {
 	public void JsonSerialisationTest() throws JDOMException, IOException {
 		framework = SlackNotificationMockingFrameworkImpl.create(BuildStateEnum.BUILD_FINISHED, extraParameters);
 		framework.loadSlackNotificationProjectSettingsFromConfigXml(new File("../tcslackbuildnotifier-core/src/test/resources/project-settings-test-all-states-enabled-with-specific-builds.xml"));
-		ProjectSlackNotificationsBean slacknotificationsConfig = ProjectSlackNotificationsBean.build(framework.getSlackNotificationProjectSettings() ,framework.getServer().getProjectManager().findProjectById("project01"), framework.getSlackNotificationPayloadManager().getRegisteredFormatsAsCollection());
+		ProjectSlackNotificationsBean slacknotificationsConfig = ProjectSlackNotificationsBean.build(framework.getSlackNotificationProjectSettings() ,framework.getServer().getProjectManager().findProjectById("project01"));
 		System.out.println(ProjectSlackNotificationsBeanJsonSerialiser.serialise(slacknotificationsConfig));
 	}
 	
@@ -31,7 +31,7 @@ public class ProjectSlackNotificationsBeanTest {
 	public void JsonBuildSerialisationTest() throws JDOMException, IOException {
 		framework = SlackNotificationMockingFrameworkImpl.create(BuildStateEnum.BUILD_FINISHED, extraParameters);
 		framework.loadSlackNotificationProjectSettingsFromConfigXml(new File("../tcslackbuildnotifier-core/src/test/resources/project-settings-test-all-states-enabled-with-specific-builds.xml"));
-		ProjectSlackNotificationsBean slacknotificationsConfig = ProjectSlackNotificationsBean.build(framework.getSlackNotificationProjectSettings() ,framework.getSBuildType() ,framework.getServer().getProjectManager().findProjectById("project01"), framework.getSlackNotificationPayloadManager().getRegisteredFormatsAsCollection());
+		ProjectSlackNotificationsBean slacknotificationsConfig = ProjectSlackNotificationsBean.build(framework.getSlackNotificationProjectSettings() ,framework.getSBuildType() ,framework.getServer().getProjectManager().findProjectById("project01"));
 		System.out.println(ProjectSlackNotificationsBeanJsonSerialiser.serialise(slacknotificationsConfig));
 	}
 

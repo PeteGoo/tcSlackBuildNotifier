@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.httpclient.NameValuePair;
 
 import slacknotifications.teamcity.BuildState;
+import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 public interface SlackNotification {
 
@@ -89,12 +90,8 @@ public interface SlackNotification {
 
 	public abstract void setProxyPassword(String proxyPassword);
 
-	public abstract String getPayload();
+	public abstract SlackNotificationPayloadContent getPayload();
 
-	public abstract void setPayload(String payloadContent);
-
-	public abstract void setContentType(String contentType);
-
-	public abstract void setCharset(String charset);
+	public abstract void setPayload(SlackNotificationPayloadContent payloadContent);
 
 }

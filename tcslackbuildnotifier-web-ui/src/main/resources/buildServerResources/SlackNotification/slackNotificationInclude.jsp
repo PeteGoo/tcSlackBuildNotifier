@@ -8,7 +8,6 @@
 	   		<thead>
 		   		<tr style="background-color: rgb(245, 245, 245);">
 					<th class="name">Channel</th>
-					<th class="name">Format</th>
 					<th class="name">Build Events</th>
 					<th class="value" style="width:20%;" colspan="3">Enabled Builds</th>
 			</tr>
@@ -16,7 +15,6 @@
 			<tbody>
 				<tr id="viewRow_template" class="slackNotificationRowTemplate">
 					<td class="name highlight slackNotificationRowItemChannel">Channel</td>
-					<td class="value highlight slackNotificationRowItemFormat" style="width:15%;">Format</td>
 					<td class="value highlight slackNotificationRowItemEvents" style="width:15%;">Events</td>
 					<td class="value highlight slackNotificationRowItemBuilds" style="width:15%;">Builds</td>
 					<td class="edit highlight slackNotificationRowItemEdit"><a href="javascript://">edit</a></td>
@@ -27,11 +25,6 @@
 
 				<tr id="viewRow_${notification.uniqueKey}" class="slackNotificationRow">
 					<td class="name highlight" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');"><c:out value="${notification.channel}" /></td>
-						<c:forEach items="${formatList}" var="format">
-							<c:if test="${format.formatShortName == notification.payloadFormat}">
-								<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');"><c:out value="${format.formatDescription}" /></td>
-							</c:if>
-						</c:forEach>
 					<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');"><c:out value="${notification.enabledListAsString}" /></td>
 					<td class="value highlight" style="width:15%;" onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#buildPane');"><c:out value="${notification.buildTypeCountAsFriendlyString}" /></td>
 					<td class="edit highlight"><a onclick="BS.EditSlackNotificationDialog.showDialog('${notification.uniqueKey}','#hookPane');" href="javascript://">edit</a></td>
@@ -131,23 +124,6 @@
 																	</td></tr>
 														</tbody></table>
 													</td>
-												</tr>
-					
-												<tr style="border:none;"><td style="vertical-align:text-top; padding-top:0.33em;">Payload Format:</td>
-													<td colspan=2>
-														<table style="padding:0; margin:0; left: 0px;" id="payloadFormatTable"><tbody style="padding:0; margin:0; left: 0px;">
-															<c:forEach items="${formatList}" var="format">
-																<tr style="padding:0; margin:0; left: 0px;"><td style="padding:0; margin:0; left: 0px;"><label style='white-space:nowrap;'>
-																	<input style="vertical-align:text-bottom;" class="payloadFormat" id="payloadFormat_${format.formatShortName}" name="payloadFormat" type="radio" value="${format.formatShortName}" />
-																	${format.formatDescription}</label>
-																	</td></tr>
-															</c:forEach>
-														</tbody></table>
-													</td>
-												</tr>
-												<tr>
-													<td></td>
-													<td colspan=2><span class="error" id="error_payloadFormat" style="margin-left: 0.5em;"></span></td>
 												</tr>
 					    					</table>     
 					    					

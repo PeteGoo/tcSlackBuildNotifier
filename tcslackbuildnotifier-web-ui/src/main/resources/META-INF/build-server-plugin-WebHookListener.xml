@@ -59,8 +59,8 @@
 		class="slacknotifications.teamcity.payload.SlackNotificationPayloadManager"
 		/>
 
-	<bean id="slackNotificationPayloadNameValuePairs"
-		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadNameValuePairs"
+	<!--<bean id="slackNotificationPayloadNameValuePairs"
+		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadSummary"
 		init-method="register">
 		<property name="rank">
 			<value>15</value>
@@ -68,7 +68,7 @@
 	</bean>
 
 	<bean id="slackNotificationPayloadJson"
-		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadJson"
+		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadDetailed"
 		init-method="register">
 		<property name="rank">
 			<value>10</value>
@@ -84,11 +84,11 @@
 	</bean>
 
 	<bean id="slackNotificationEmptyPayload"
-		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadEmpty"
+		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadShort"
 		init-method="register">
 		<property name="rank">
 			<value>5</value>
 		</property>
-	</bean>
+	</bean>-->
 
 </beans>

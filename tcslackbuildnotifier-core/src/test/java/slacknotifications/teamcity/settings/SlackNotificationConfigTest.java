@@ -178,17 +178,5 @@ public class SlackNotificationConfigTest {
 		assertFalse(slacknotificationAllDisabled.getStateBuildBrokenAsChecked().equals(CHECKED));
 	}
 
-	@Test
-	public void testGetPayloadFormat() {
-		assertTrue(slacknotificationAllEnabled.getPayloadFormat().equals("nvpairs"));
-	}
-
-	@Test
-	public void testSetPayloadFormatString() {
-		assertTrue(slacknotificationAllEnabled.getPayloadFormat().equals("nvpairs"));
-		slacknotificationAllEnabled.setPayloadFormat("XML");
-		assertTrue(slacknotificationAllEnabled.getPayloadFormat().equals("XML"));
-		
-	}
 
 }

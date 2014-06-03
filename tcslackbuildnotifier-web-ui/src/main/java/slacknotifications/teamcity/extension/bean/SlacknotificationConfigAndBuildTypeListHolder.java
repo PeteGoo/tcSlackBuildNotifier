@@ -5,14 +5,12 @@ import java.util.Collection;
 import java.util.List;
 
 import slacknotifications.teamcity.BuildStateEnum;
-import slacknotifications.teamcity.payload.SlackNotificationPayload;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 
 public class SlacknotificationConfigAndBuildTypeListHolder {
 	public String channel;
 	public String uniqueKey; 
 	public boolean enabled;
-	public String payloadFormat;
 	public String payloadFormatForWeb = "Unknown";
 	public List<StateBean> states = new ArrayList<StateBean>();
 	public boolean allBuildTypesEnabled;
@@ -21,22 +19,16 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private String enabledEventsListForWeb;
 	private String enabledBuildsListForWeb;
 	
-	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config, Collection<SlackNotificationPayload> registeredPayloads) {
+	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config) {
 		channel = config.getChannel();
 		uniqueKey = config.getUniqueKey();
 		enabled = config.getEnabled();
-		payloadFormat = config.getPayloadFormat();
 		setEnabledEventsListForWeb(config.getEnabledListAsString());
 		setEnabledBuildsListForWeb(config.getBuildTypeCountAsFriendlyString());
 		allBuildTypesEnabled = config.isEnabledForAllBuildsInProject();
 		subProjectsEnabled = config.isEnabledForSubProjects();
 		for (BuildStateEnum state : config.getBuildStates().getStateSet()){
 			states.add(new StateBean(state.getShortName(), config.getBuildStates().enabled(state)));
-		}
-		for (SlackNotificationPayload payload : registeredPayloads){
-			if (payload.getFormatShortName().equals(payloadFormat)){
-				this.payloadFormatForWeb = payload.getFormatDescription();
-			}
 		}
 	}
 
