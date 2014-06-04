@@ -112,9 +112,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    			} else if ((request.getParameter("submitAction") != null ) 
 				    				&& (request.getParameter("submitAction").equals("updateSlackNotification"))){
 			    				if((request.getParameter("channel") != null )
-				    				&& (request.getParameter("channel").length() > 0 )
-				    				&& (request.getParameter("payloadFormat") != null)
-				    				&& (request.getParameter("payloadFormat").length() > 0)){
+				    				&& (request.getParameter("channel").length() > 0 )){
 			    					
 			    					if (request.getParameter("slackNotificationId") != null){
 			    						Boolean enabled = false;
@@ -177,9 +175,6 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    					if ((request.getParameter("channel") == null )
 				    				|| (request.getParameter("channel").length() == 0)){
 			    						params.put("messages", "<errors><error id=\"emptySlackNotificationChannel\">Please enter a channel.</error></errors>");
-			    					} else if ((request.getParameter("payloadFormat") == null)
-				    				|| (request.getParameter("payloadFormat").length() == 0)){
-			    						params.put("messages", "<errors><error id=\"emptyPayloadFormat\">Please choose a Payload Format.</error></errors>");
 			    					}
 			    				}
 				    			
