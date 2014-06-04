@@ -129,4 +129,5 @@ public class SlackNotificationPayloadTest {
 
         System.out.println(json);
     }
+
 }

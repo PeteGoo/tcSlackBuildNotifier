@@ -22,6 +22,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
+import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 
@@ -140,7 +141,22 @@ public class SlackNotificationImpl implements SlackNotification {
                 //TODO: Set the body
                 List<Attachment> attachments = new ArrayList<Attachment>();
                 Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
-                attachment.addField(this.payload.getBuildResult(), this.payload.getAgentName(), false);
+                attachment.addField(this.payload.getBuildResult(), "Agent: " + this.payload.getAgentName(), false);
+
+                StringBuilder sbCommits = new StringBuilder();
+
+                List<Commit> commits = this.payload.getCommits();
+                for(Commit commit : commits){
+                    String revision = commit.getRevision();
+                    revision = revision == null ? "" : revision;
+                    sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
+                }
+
+                if(!commits.isEmpty())
+                {
+                    attachment.addField("Commits", sbCommits.toString(), false);
+                }
+
                 attachments.add(attachment);
 
                 String attachmentsParam = String.format("attachments=%s", URLEncoder.encode(convertAttachmentsToJson(attachments), "UTF-8"));

@@ -12,6 +12,7 @@ import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SFinishedBuild;
 import jetbrains.buildServer.serverSide.SRunningBuild;
+import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.TeamCityIdResolver;
@@ -20,7 +21,7 @@ import slacknotifications.teamcity.payload.util.SlackNotificationBeanUtilsVariab
 import slacknotifications.teamcity.payload.util.VariableMessageBuilder;
 
 public class SlackNotificationPayloadContent {
-		String buildStatus;
+    String buildStatus;
     String buildResult;
     String buildResultPrevious;
     String buildResultDelta;
@@ -50,12 +51,13 @@ public class SlackNotificationPayloadContent {
     String branchDisplayName;
     String buildStateDescription;
     String progressSummary;
+    List<Commit> commits;
 
-		Boolean branchIsDefault;
-		
-		Branch branch;
-		List<String> buildRunners;
-		ExtraParametersMap extraParameters;
+    Boolean branchIsDefault;
+
+    Branch branch;
+    List<String> buildRunners;
+    ExtraParametersMap extraParameters;
 
 /*
     public final static String BUILD_STATUS_FAILURE   = "failure";
@@ -101,14 +103,27 @@ public class SlackNotificationPayloadContent {
                                                BuildStateEnum buildState,
                                                Map<String, String> extraParameters,
                                                Map<String, String> templates) {
-			
-    		populateCommonContent(server, sRunningBuild, previousBuild, buildState, templates);
+
+            this.commits = new ArrayList<Commit>();
+            populateCommonContent(server, sRunningBuild, previousBuild, buildState, templates);
     		populateMessageAndText(sRunningBuild, buildState, templates);
+            populateCommits(sRunningBuild);
     		populateArtifacts(sRunningBuild);
     		this.extraParameters =  new ExtraParametersMap(extraParameters);
+
 		}
 
-		private void populateArtifacts(SRunningBuild runningBuild) {
+    private void populateCommits(SRunningBuild sRunningBuild) {
+        List<SVcsModification> changes = sRunningBuild.getContainingChanges();
+        if(changes == null){
+            return;
+        }
+        for(SVcsModification change : changes){
+            commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName()));
+        }
+    }
+
+    private void populateArtifacts(SRunningBuild runningBuild) {
 			//ArtifactsInfo artInfo = new ArtifactsInfo(runningBuild);
 			//artInfo.
 			
@@ -584,5 +599,9 @@ public class SlackNotificationPayloadContent {
 
     public long getElapsedTime() {
         return elapsedTime;
+    }
+
+    public List<Commit> getCommits() {
+        return commits;
     }
 }
