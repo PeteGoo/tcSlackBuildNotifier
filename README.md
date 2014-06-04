@@ -17,8 +17,8 @@ Drop the following configuration into your main-config somewhere within the <ser
 ```xml
 
 <slacknotifications 
-  defaultChannel="@petegoo" 
-  teamName="svdevchat" 
+  defaultChannel="<your default channel>" 
+  teamName="<your team name>" 
   token="<Your user token available from the API page on slack>" 
   iconurl="https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity32.png" 
   botname="Team City">
