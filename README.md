@@ -30,3 +30,5 @@ Drop the following configuration into your main-config somewhere within the <ser
 ## Usage
 
 From the Slack tab on the Project or Build Configuration page, add a new Slack Notification and you're away!
+
+![Sample Build Configuration](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-slack-config.png)
