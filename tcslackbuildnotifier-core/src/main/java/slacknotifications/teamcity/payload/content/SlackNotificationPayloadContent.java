@@ -118,6 +118,7 @@ public class SlackNotificationPayloadContent {
         if(changes == null){
             return;
         }
+
         for(SVcsModification change : changes){
             commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName()));
         }

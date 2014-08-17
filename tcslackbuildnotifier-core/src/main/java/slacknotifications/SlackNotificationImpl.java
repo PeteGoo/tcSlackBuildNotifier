@@ -146,10 +146,21 @@ public class SlackNotificationImpl implements SlackNotification {
                 StringBuilder sbCommits = new StringBuilder();
 
                 List<Commit> commits = this.payload.getCommits();
+
+                boolean truncated = false;
+                int totalCommits = commits.size();
+                if(commits.size() > 5){
+                    commits = commits.subList(0, 5 > commits.size() ? commits.size() : 5);
+                }
+
                 for(Commit commit : commits){
                     String revision = commit.getRevision();
                     revision = revision == null ? "" : revision;
                     sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
+                }
+
+                if(truncated){
+                    sbCommits.append(String.format("(+ %d more)\n", totalCommits -5));
                 }
 
                 if(!commits.isEmpty())
