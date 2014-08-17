@@ -62,7 +62,7 @@
             
             		<div id="tab-container" class="tab-container">
 								  <ul class='etabs'>
-												   <li class='tab'><a href="#hookPane" class="active">SlackNotification Config</a></li>
+												   <li class='tab'><a href="#hookPane" class="active">Slack Config</a></li>
 												   <li class='tab'><a href="#buildPane">Builds (<span id="selectedBuildCount">all</span>)</a></li>
 								  </ul>
 						 <div class='panel-container'>
@@ -71,12 +71,16 @@
 												
 												<tr style="border:none;">
 													<td>Channel:</td>
-													<td colspan=2><input id="slackNotificationChannel" name="channel" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;"/></td>
+													<td colspan=2><input id="slackNotificationChannel" name="channel" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;" watermark=" #my-channel"/></td>
 												</tr>
 												<tr>
 													<td></td>
 													<td colspan=2><span class="error" id="error_slackNotificationChannel" style="margin-left: 0.5em;"></span></td>
 												</tr>
+												<tr style="border:none">
+                                                  <td></td>
+                                                  <td colspan="2"><span class="smallNote" style="margin-left:0px;">Make sure you include the leading # if you are posting to a channel e.g. #my-channel</span></td>
+                                                </tr>
 												<tr style="border:none;">
 													<td><label for="slackNotificationsEnabled">Enabled:</label></td>
 													<td style="padding-left:3px;" colspan=2><input id="slackNotificationsEnabled" type=checkbox name="slackNotificationsEnabled"/></td>
