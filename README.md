@@ -27,6 +27,10 @@ Drop the following configuration into your main-config somewhere within the <ser
 </slacknotifications>
 ```
 
+The user token is available when you got to https://api.slack.com while logged in to your Slack instance. Under "authentication" you should see a token displayed like below.
+
+![Sample Auth Token](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/SlackToken.png)
+
 ## Usage
 
 From the Slack tab on the Project or Build Configuration page, add a new Slack Notification and you're away!
