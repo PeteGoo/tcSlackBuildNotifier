@@ -5,7 +5,8 @@ tcSlackBuildNotifier
 
 Posts Build Status to [Slack](http://www.slack.com)
 
-![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/ExampleSlackNotification.png)
+![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-status_pass.png)
+![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-status_fail.png)
 
 _Tested on TeamCity 8.1.2 (build 29993)_
 
