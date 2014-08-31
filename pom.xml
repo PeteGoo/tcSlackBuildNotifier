@@ -42,86 +42,47 @@
 		</pluginManagement>
 		<plugins>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>				
-			</plugin>
-			
-		
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-		    <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-jar-plugin</artifactId>
-		    </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-		        <artifactId>maven-antrun-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <phase>package</phase>
-		            <configuration>
-		              <tasks>
-						<echo message="Attempting to build dist zip file" />
-						<mkdir dir="${project.build.directory}/dist" />
-						<mkdir dir="${project.build.directory}/dist/server" />
-						
-						<echo message=" - Copying resources to dist" />
-						<copy todir="${project.build.directory}/dist/">
-							<fileset dir="${project.build.directory}/classes/">
-								<include name="teamcity-plugin.xml"/>
-							</fileset>
-						</copy> 
-		
-						<echo message=" - Copying dep jar to dist/server" />
-						<copy todir="${project.build.directory}/dist/server/">
-							  <fileset dir="${project.build.directory}/">
-		    						<include name="${artifactId}-${version}.jar" />
-		    				  </fileset>
-		    			</copy>
-		    			
-		    			<echo message=" - Creating ZIP file" />
-		    			<zip destfile="${project.build.directory}/tcSlackNotificationsPlugin-${version}.zip"
-		    				 basedir="${project.build.directory}/dist"
-		    			 />
-		
-		               </tasks>
-		            </configuration>
-		            <goals>
-		              <goal>run</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-      		</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>               
+            </plugin>
+            
+        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 	</build>
 	<reporting>
 		<plugins>
