@@ -79,6 +79,10 @@ public class SlackNotificationPayloadContent {
     private String color;
     private long elapsedTime;
 
+        public SlackNotificationPayloadContent(){
+
+        }
+
     /**
 		 * Constructor: Only called by RepsonsibilityChanged.
 		 * @param server
@@ -604,5 +608,9 @@ public class SlackNotificationPayloadContent {
 
     public List<Commit> getCommits() {
         return commits;
+    }
+
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
     }
 }

@@ -5,7 +5,7 @@
 	<artifactId>tcslackbuildnotifier</artifactId>
 	<properties>
     	<majorVersion>0.9</majorVersion>
-    	<minorVersion>1</minorVersion>
+    	<minorVersion>2</minorVersion>
     	<currentVersion>${majorVersion}.${minorVersion}</currentVersion>
     </properties>
 	<version>${currentVersion}</version>
@@ -82,6 +82,84 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--<plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>teamcityPluginXML</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <target>
+                                <copy file="teamcity-plugin.xml" toDir="${project.build.directory}">
+                                  <filterset>
+                                    <filter token="VERSION" value="${project.version}"/>
+                                  </filterset>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>buildZip</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <zip destfile="${project.build.directory}/${project.name}-${project.version}.zip"
+                                     basedir="${project.build.directory}"
+                                     includes="**/*.jar, teamcity-plugin.xml"
+                                        />
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
+           <plugin>
+               <artifactId>maven-antrun-plugin</artifactId>
+               <executions>
+                 <execution>
+                   <phase>package</phase>
+                   <configuration>
+                     <tasks>
+                       <echo message="Attempting to build dist zip file" />
+                       <mkdir dir="${project.build.directory}/dist" />
+                       <mkdir dir="${project.build.directory}/dist/server" />
+                       
+                       <echo message=" - Copying resources to dist" />
+                       <copy todir="${project.build.directory}/dist/">
+                           <fileset dir="${project.build.directory}/classes/">
+                               <include name="teamcity-plugin.xml"/>
+                           </fileset>
+                       </copy> 
+       
+                       <echo message=" - Copying dep jar to dist/server" />
+                       <copy todir="${project.build.directory}/dist/server/">
+                             <fileset dir="${project.build.directory}/">
+                                   <include name="${artifactId}-${version}.jar" />
+                             </fileset>
+                       </copy>
+                       
+                       <echo message=" - Creating ZIP file" />
+                       <zip destfile="${project.build.directory}/tcSlackNotificationsPlugin-${version}.zip"
+                            basedir="${project.build.directory}/dist"
+                        />
+       
+                      </tasks>
+                   </configuration>
+                   <goals>
+                     <goal>run</goal>
+                   </goals>
+                 </execution>
+               </executions>
+           </plugin>
+
+
+
         </plugins>
 	</build>
 	<reporting>

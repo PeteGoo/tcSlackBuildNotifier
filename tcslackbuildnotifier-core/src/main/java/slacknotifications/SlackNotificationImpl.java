@@ -15,6 +15,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
@@ -33,6 +34,7 @@ import org.apache.http.util.EntityUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
+import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -55,10 +57,11 @@ public class SlackNotificationImpl implements SlackNotification {
 	private Boolean enabled = false;
 	private Boolean errored = false;
 	private String errorReason = "";
-	private List<NameValuePair> params;
+	private List<NameValuePair> params = new ArrayList<NameValuePair>();
 	private BuildState states;
     private String botName;
     private final static String CONTENT_TYPE = "application/x-www-form-urlencoded";
+    private PostMessageResponse response;
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
@@ -198,11 +201,15 @@ public class SlackNotificationImpl implements SlackNotification {
 
                 Loggers.SERVER.info("SlackNotificationListener :: Body message will be " + attachmentsParam);
 
-                httppost.setEntity(new StringEntity(attachmentsParam, CONTENT_TYPE));
+                httppost.setEntity(new StringEntity(attachmentsParam));
+                httppost.setHeader("Content-Type", CONTENT_TYPE);
 			}
 		    try {
 		        HttpResponse response = client.execute(httppost);
 		        this.resultCode = response.getStatusLine().getStatusCode();
+                if(this.resultCode == HttpStatus.SC_OK){
+                    this.response = PostMessageResponse.fromJson(EntityUtils.toString(response.getEntity()));
+                }
                 if(response.getEntity().getContentLength() > 0)
                 {
                     this.content = EntityUtils.toString(response.getEntity());
@@ -408,4 +415,8 @@ public class SlackNotificationImpl implements SlackNotification {
 	public void setBuildStates(BuildState states) {
 		this.states = states;
 	}
+
+    public PostMessageResponse getResponse() {
+        return response;
+    }
 }

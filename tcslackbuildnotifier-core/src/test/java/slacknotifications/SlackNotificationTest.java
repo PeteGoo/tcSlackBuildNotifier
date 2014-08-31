@@ -1,27 +1,34 @@
 package slacknotifications;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.isNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.ProtocolVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.message.BasicStatusLine;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import slacknotifications.teamcity.BuildStateEnum;
-import slacknotifications.teamcity.SlackNotificationFactory;
-import slacknotifications.teamcity.SlackNotificationFactoryImpl;
+import org.mockito.ArgumentCaptor;
+import slacknotifications.teamcity.*;
+import slacknotifications.teamcity.payload.content.Commit;
+import slacknotifications.teamcity.payload.content.PostMessageResponse;
+import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 
 public class SlackNotificationTest {
@@ -96,6 +103,84 @@ public class SlackNotificationTest {
 		w.post();
 		System.out.print(".. done");
 	}
+
+    @Test
+    public void post_whenResponseIsOk_doesNotThrow() throws IOException {
+        ArgumentCaptor<HttpPost> requestCaptor = ArgumentCaptor.forClass(HttpPost.class);
+        HttpClient httpClient = mock(HttpClient.class);
+        BasicHttpResponse response = new BasicHttpResponse(new BasicStatusLine(new ProtocolVersion("http", 1, 1), 200, ""));
+        PostMessageResponse successfulResponse = new PostMessageResponse();
+        successfulResponse.setOk(true);
+        successfulResponse.setError("channel_not_found");
+        response.setEntity(new StringEntity(successfulResponse.toJson()));
+
+        when(httpClient.execute(requestCaptor.capture())).thenReturn(response);
+
+        SlackNotification w = factory.getSlackNotification(httpClient, "#test-channel");
+
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent();
+        content.setBuildDescriptionWithLinkSyntax("http://foo");
+        content.setCommits(new ArrayList<Commit>());
+
+        w.setPayload(content);
+        w.setEnabled(true);
+        w.post();
+
+        List<HttpPost> capturedRequests = requestCaptor.getAllValues();
+        HttpPost request = capturedRequests.get(0);
+
+        assertNotNull(w.getResponse());
+        assertTrue(w.getResponse().getOk());
+    }
+
+    @Test
+    public void post_whenResponseIsFailure_logsException() throws IOException {
+        ArgumentCaptor<HttpPost> requestCaptor = ArgumentCaptor.forClass(HttpPost.class);
+        HttpClient httpClient = mock(HttpClient.class);
+        BasicHttpResponse response = new BasicHttpResponse(new BasicStatusLine(new ProtocolVersion("http", 1, 1), 200, ""));
+        PostMessageResponse failedResponse = new PostMessageResponse();
+        failedResponse.setOk(false);
+        failedResponse.setError("channel_not_found");
+        response.setEntity(new StringEntity(failedResponse.toJson()));
+
+        when(httpClient.execute(requestCaptor.capture())).thenReturn(response);
+
+        SlackNotification w = factory.getSlackNotification(httpClient, "#test-channel");
+
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent();
+        content.setBuildDescriptionWithLinkSyntax("http://foo");
+        content.setCommits(new ArrayList<Commit>());
+
+        w.setPayload(content);
+        w.setEnabled(true);
+        w.post();
+
+        assertNotNull(w.getResponse());
+        assertFalse(w.getResponse().getOk());
+    }
+
+    @Test
+    public void actualTest() throws IOException {
+        SlackNotificationImpl impl = new SlackNotificationImpl("#sdfdfgdfg");
+        impl.setToken("xoxp-sdfgdfg-2602518dfghdgfh312-dfghd-f93dc2");
+        impl.setBotName("foo");
+        impl.setTeamName("mmbottest");
+        impl.setEnabled(true);
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent();
+        content.setBuildResult("sdfd");
+        content.setColor("#ff0000");
+        content.setAgentName("fsdf");
+        content.setCommits(new ArrayList<Commit>());
+        content.setBuildDescriptionWithLinkSyntax("asdf");
+        impl.setPayload(content);
+
+        impl.post();
+
+        assertNotNull(impl.getResponse());
+        assertFalse(impl.getResponse().getOk());
+        assertEquals(impl.getResponse().getError(), "invalid_auth");
+    }
+
 /*
     @Test
 	public void test_200() throws FileNotFoundException, IOException, Exception {

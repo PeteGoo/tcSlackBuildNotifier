@@ -1,5 +1,6 @@
 package slacknotifications.teamcity;
 
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -19,6 +20,12 @@ import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SFinishedBuild;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 
+import org.apache.http.ProtocolVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.message.BasicStatusLine;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -28,6 +35,7 @@ import org.junit.Test;
 import slacknotifications.SlackNotification;
 import slacknotifications.SlackNotificationImpl;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
+import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
@@ -63,8 +71,15 @@ public class SlackNotificationListenerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		
-		slackNotificationImpl = new SlackNotificationImpl();
+        HttpClient httpClient = mock(HttpClient.class);
+        BasicHttpResponse response = new BasicHttpResponse(new BasicStatusLine(new ProtocolVersion("http", 1, 1), 200, ""));
+        PostMessageResponse successfulResponse = new PostMessageResponse();
+        successfulResponse.setOk(true);
+        successfulResponse.setError("channel_not_found");
+        response.setEntity(new StringEntity(successfulResponse.toJson()));
+
+        when(httpClient.execute(isA(HttpUriRequest.class))).thenReturn(response);
+		slackNotificationImpl = new SlackNotificationImpl(httpClient, "");
 		spySlackNotification = spy(slackNotificationImpl);
 		whl = new SlackNotificationListener(sBuildServer, settings, configSettings, manager, factory);
 		projSettings = new SlackNotificationProjectSettings();

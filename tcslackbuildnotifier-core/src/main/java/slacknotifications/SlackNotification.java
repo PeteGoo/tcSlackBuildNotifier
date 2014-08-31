@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import slacknotifications.teamcity.BuildState;
+import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 public interface SlackNotification {
@@ -92,5 +93,7 @@ public interface SlackNotification {
 	public abstract SlackNotificationPayloadContent getPayload();
 
 	public abstract void setPayload(SlackNotificationPayloadContent payloadContent);
+
+    public abstract PostMessageResponse getResponse();
 
 }
