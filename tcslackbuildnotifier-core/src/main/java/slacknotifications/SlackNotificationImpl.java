@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,18 +13,28 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
-import org.apache.commons.httpclient.methods.PostMethod;
-
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class SlackNotificationImpl implements SlackNotification {
@@ -57,19 +68,19 @@ public class SlackNotificationImpl implements SlackNotification {
 	
 	
 	public SlackNotificationImpl(){
-		this.client = new HttpClient();
+		this.client = HttpClients.createDefault();
 		this.params = new ArrayList<NameValuePair>();
 	}
 	
 	public SlackNotificationImpl(String channel){
 		this.channel = channel;
-		this.client = new HttpClient();
+		this.client = HttpClients.createDefault();
 		this.params = new ArrayList<NameValuePair>();
 	}
 	
 	public SlackNotificationImpl(String channel, String proxyHost, String proxyPort){
 		this.channel = channel;
-		this.client = new HttpClient();
+		this.client = HttpClients.createDefault();
 		this.params = new ArrayList<NameValuePair>();
 		if (proxyPort.length() != 0) {
 			try {
@@ -83,40 +94,52 @@ public class SlackNotificationImpl implements SlackNotification {
 	
 	public SlackNotificationImpl(String channel, String proxyHost, Integer proxyPort){
 		this.channel = channel;
-		this.client = new HttpClient();
+		this.client = HttpClients.createDefault();
 		this.params = new ArrayList<NameValuePair>();
 		this.setProxy(proxyHost, proxyPort);
 	}
 	
 	public SlackNotificationImpl(String channel, SlackNotificationProxyConfig proxyConfig){
 		this.channel = channel;
-		this.client = new HttpClient();
+		this.client = HttpClients.createDefault();
 		this.params = new ArrayList<NameValuePair>();
 		setProxy(proxyConfig);
 	}
 
-	public void setProxy(SlackNotificationProxyConfig proxyConfig) {
+    public SlackNotificationImpl(HttpClient httpClient, String channel) {
+        this.channel = channel;
+        this.client = httpClient;
+    }
+
+    public void setProxy(SlackNotificationProxyConfig proxyConfig) {
 		if ((proxyConfig != null) && (proxyConfig.getProxyHost() != null) && (proxyConfig.getProxyPort() != null)){
 			this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort());
 			if (proxyConfig.getCreds() != null){
-				this.client.getState().setProxyCredentials(AuthScope.ANY, proxyConfig.getCreds());
+                setProxyCredentials(proxyConfig.getCreds());
 			}
 		}
 	}
+
+    void setProxyCredentials(Credentials credentials){
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        credsProvider.setCredentials(
+                new AuthScope(proxyHost, proxyPort),
+                credentials);
+        this.client = HttpClients.custom()
+                .setDefaultCredentialsProvider(credsProvider).build();
+    }
 	
 	public void setProxy(String proxyHost, Integer proxyPort) {
 		this.proxyHost = proxyHost;
 		this.proxyPort = proxyPort;
-		if (this.proxyHost.length() > 0 && !this.proxyPort.equals(0)) {
-			this.client.getHostConfiguration().setProxy(this.proxyHost, this.proxyPort);
-		}
+
 	}
 
 	public void setProxyUserAndPass(String username, String password){
 		this.proxyUsername = username;
 		this.proxyPassword = password;
 		if (this.proxyUsername.length() > 0 && this.proxyPassword.length() > 0) {
-			this.client.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+            setProxyCredentials(new UsernamePasswordCredentials(username, password));
 		}
 	}
 	
@@ -129,16 +152,17 @@ public class SlackNotificationImpl implements SlackNotification {
                     this.channel == null ? "" : URLEncoder.encode(this.channel, "UTF-8"),
                     this.payload == null ? "" : URLEncoder.encode(payload.getBuildDescriptionWithLinkSyntax(), "UTF-8"),
                     "");
-            PostMethod httppost = new PostMethod(
-                    url);
+            HttpPost httppost = new HttpPost(url);
+
             Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
 			if (this.filename.length() > 0){
 				File file = new File(this.filename);
-			    httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
-			    httppost.setContentChunked(true);
+                throw new NotImplementedException();
+			    //httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
+			    //httppost.setContentChunked(true);
 			}
 			if (this.payload != null){
-                //TODO: Set the body
+
                 List<Attachment> attachments = new ArrayList<Attachment>();
                 Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
                 attachment.addField(this.payload.getBuildResult(), "Agent: " + this.payload.getAgentName(), false);
@@ -174,14 +198,14 @@ public class SlackNotificationImpl implements SlackNotification {
 
                 Loggers.SERVER.info("SlackNotificationListener :: Body message will be " + attachmentsParam);
 
-                httppost.setRequestEntity(new StringRequestEntity(attachmentsParam, CONTENT_TYPE, "UTF-8"));
+                httppost.setEntity(new StringEntity(attachmentsParam, CONTENT_TYPE));
 			}
 		    try {
-		        client.executeMethod(httppost);
-		        this.resultCode = httppost.getStatusCode();
-                if(httppost.getResponseContentLength() > 0)
+		        HttpResponse response = client.execute(httppost);
+		        this.resultCode = response.getStatusLine().getStatusCode();
+                if(response.getEntity().getContentLength() > 0)
                 {
-                    this.content = httppost.getResponseBodyAsString();
+                    this.content = EntityUtils.toString(response.getEntity());
                 }
 		    } finally {
 		        httppost.releaseConnection();
@@ -280,7 +304,7 @@ public class SlackNotificationImpl implements SlackNotification {
 	}
 	
 	public void addParam(String key, String value){
-		this.params.add(new NameValuePair(key, value));
+		this.params.add(new BasicNameValuePair(key, value));
 	}
 
 	public void addParams(List<NameValuePair> paramsList){

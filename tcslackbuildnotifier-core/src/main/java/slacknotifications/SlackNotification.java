@@ -4,8 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.httpclient.NameValuePair;
-
+import org.apache.http.NameValuePair;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 

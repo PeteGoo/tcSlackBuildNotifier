@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -105,7 +104,7 @@ public class SlackNotificationSettingsTest {
 		assertFalse(mainConfig.matchProxyForURL("http://10.10.0.1"));
 		assertTrue(mainConfig.matchProxyForURL("http://100.10.10.1/test1.test2.example.com/test"));
 	}
-
+/*
     @Ignore
 	@Test
 	public void test_200UsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
@@ -124,7 +123,7 @@ public class SlackNotificationSettingsTest {
 		test.stopProxyServer(p);
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);		
 	}
-
+*/
     @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
@@ -165,6 +164,7 @@ public class SlackNotificationSettingsTest {
 		assertTrue(w.getStatus() == HttpServletResponse.SC_PROXY_AUTHENTICATION_REQUIRED);
 	}
 
+    /*
     @Ignore
 	@Test
 	public void test_AuthPassNoCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
@@ -183,6 +183,7 @@ public class SlackNotificationSettingsTest {
 		test.stopProxyServer(p);
 		assertTrue(w.getStatus() == HttpStatus.SC_OK);
 	}
+	*/
 	
 	@SuppressWarnings("unchecked")
 	@Test

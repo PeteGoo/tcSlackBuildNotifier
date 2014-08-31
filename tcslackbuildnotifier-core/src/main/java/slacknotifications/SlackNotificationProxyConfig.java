@@ -1,8 +1,8 @@
 package slacknotifications;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
 
 public class SlackNotificationProxyConfig {
 	private Credentials creds = null;
