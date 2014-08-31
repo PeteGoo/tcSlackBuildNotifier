@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.functions.FuncUnparsedEntityURI;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import org.apache.http.HttpHost;
@@ -41,73 +42,74 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SlackNotificationImpl implements SlackNotification {
 
-	private String proxyHost;
-	private Integer proxyPort = 0;
-	private String proxyUsername;
-	private String proxyPassword;
-	private String channel;
+    private String proxyHost;
+    private Integer proxyPort = 0;
+    private String proxyUsername;
+    private String proxyPassword;
+    private String channel;
     private String teamName;
     private String token;
     private String iconUrl;
-	private String content;
-	private SlackNotificationPayloadContent payload;
-	private Integer resultCode;
-	private HttpClient client;
-	private String filename = "";
-	private Boolean enabled = false;
-	private Boolean errored = false;
-	private String errorReason = "";
-	private List<NameValuePair> params = new ArrayList<NameValuePair>();
-	private BuildState states;
+    private String content;
+    private SlackNotificationPayloadContent payload;
+    private Integer resultCode;
+    private HttpClient client;
+    private String filename = "";
+    private Boolean enabled = false;
+    private Boolean errored = false;
+    private String errorReason = "";
+    private List<NameValuePair> params = new ArrayList<NameValuePair>();
+    private BuildState states;
     private String botName;
     private final static String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private PostMessageResponse response;
+
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
- *  We'll set that as the default, and then override if we get a more specific bit mask. */ 
-	//private Integer EventListBitMask = BuildState.ALL_ENABLED;
-	//private Integer EventListBitMask = Integer.parseInt("0",2);
-	
-	
-	public SlackNotificationImpl(){
-		this.client = HttpClients.createDefault();
-		this.params = new ArrayList<NameValuePair>();
-	}
-	
-	public SlackNotificationImpl(String channel){
-		this.channel = channel;
-		this.client = HttpClients.createDefault();
-		this.params = new ArrayList<NameValuePair>();
-	}
-	
-	public SlackNotificationImpl(String channel, String proxyHost, String proxyPort){
-		this.channel = channel;
-		this.client = HttpClients.createDefault();
-		this.params = new ArrayList<NameValuePair>();
-		if (proxyPort.length() != 0) {
-			try {
-				this.proxyPort = Integer.parseInt(proxyPort);
-			} catch (NumberFormatException ex){
-				ex.printStackTrace();
-			}
-		}
-		this.setProxy(proxyHost, this.proxyPort);
-	}
-	
-	public SlackNotificationImpl(String channel, String proxyHost, Integer proxyPort){
-		this.channel = channel;
-		this.client = HttpClients.createDefault();
-		this.params = new ArrayList<NameValuePair>();
-		this.setProxy(proxyHost, proxyPort);
-	}
-	
-	public SlackNotificationImpl(String channel, SlackNotificationProxyConfig proxyConfig){
-		this.channel = channel;
-		this.client = HttpClients.createDefault();
-		this.params = new ArrayList<NameValuePair>();
-		setProxy(proxyConfig);
-	}
+ *  We'll set that as the default, and then override if we get a more specific bit mask. */
+    //private Integer EventListBitMask = BuildState.ALL_ENABLED;
+    //private Integer EventListBitMask = Integer.parseInt("0",2);
+
+
+    public SlackNotificationImpl() {
+        this.client = HttpClients.createDefault();
+        this.params = new ArrayList<NameValuePair>();
+    }
+
+    public SlackNotificationImpl(String channel) {
+        this.channel = channel;
+        this.client = HttpClients.createDefault();
+        this.params = new ArrayList<NameValuePair>();
+    }
+
+    public SlackNotificationImpl(String channel, String proxyHost, String proxyPort) {
+        this.channel = channel;
+        this.client = HttpClients.createDefault();
+        this.params = new ArrayList<NameValuePair>();
+        if (proxyPort.length() != 0) {
+            try {
+                this.proxyPort = Integer.parseInt(proxyPort);
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        }
+        this.setProxy(proxyHost, this.proxyPort);
+    }
+
+    public SlackNotificationImpl(String channel, String proxyHost, Integer proxyPort) {
+        this.channel = channel;
+        this.client = HttpClients.createDefault();
+        this.params = new ArrayList<NameValuePair>();
+        this.setProxy(proxyHost, proxyPort);
+    }
+
+    public SlackNotificationImpl(String channel, SlackNotificationProxyConfig proxyConfig) {
+        this.channel = channel;
+        this.client = HttpClients.createDefault();
+        this.params = new ArrayList<NameValuePair>();
+        setProxy(proxyConfig);
+    }
 
     public SlackNotificationImpl(HttpClient httpClient, String channel) {
         this.channel = channel;
@@ -115,15 +117,15 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public void setProxy(SlackNotificationProxyConfig proxyConfig) {
-		if ((proxyConfig != null) && (proxyConfig.getProxyHost() != null) && (proxyConfig.getProxyPort() != null)){
-			this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort());
-			if (proxyConfig.getCreds() != null){
+        if ((proxyConfig != null) && (proxyConfig.getProxyHost() != null) && (proxyConfig.getProxyPort() != null)) {
+            this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort());
+            if (proxyConfig.getCreds() != null) {
                 setProxyCredentials(proxyConfig.getCreds());
-			}
-		}
-	}
+            }
+        }
+    }
 
-    void setProxyCredentials(Credentials credentials){
+    void setProxyCredentials(Credentials credentials) {
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(
                 new AuthScope(proxyHost, proxyPort),
@@ -131,23 +133,36 @@ public class SlackNotificationImpl implements SlackNotification {
         this.client = HttpClients.custom()
                 .setDefaultCredentialsProvider(credsProvider).build();
     }
-	
-	public void setProxy(String proxyHost, Integer proxyPort) {
-		this.proxyHost = proxyHost;
-		this.proxyPort = proxyPort;
 
-	}
+    public void setProxy(String proxyHost, Integer proxyPort) {
+        this.proxyHost = proxyHost;
+        this.proxyPort = proxyPort;
 
-	public void setProxyUserAndPass(String username, String password){
-		this.proxyUsername = username;
-		this.proxyPassword = password;
-		if (this.proxyUsername.length() > 0 && this.proxyPassword.length() > 0) {
+    }
+
+    public void setProxyUserAndPass(String username, String password) {
+        this.proxyUsername = username;
+        this.proxyPassword = password;
+        if (this.proxyUsername.length() > 0 && this.proxyPassword.length() > 0) {
             setProxyCredentials(new UsernamePasswordCredentials(username, password));
-		}
-	}
-	
-	public void post() throws FileNotFoundException, IOException{
-		if ((this.enabled) && (!this.errored)){
+        }
+    }
+
+    public void post() throws FileNotFoundException, IOException {
+        if(getIsApiToken()){
+            postViaApi();
+        }
+        else{
+            postViaWebHook();
+        }
+
+    }
+
+    private void postViaApi() throws IOException {
+        if ((this.enabled) && (!this.errored)) {
+            if (this.teamName == null) {
+                this.teamName = "";
+            }
             String url = String.format("https://slack.com/api/chat.postMessage?token=%s&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
                     this.botName == null ? "" : URLEncoder.encode(this.botName, "UTF-8"),
@@ -155,47 +170,19 @@ public class SlackNotificationImpl implements SlackNotification {
                     this.channel == null ? "" : URLEncoder.encode(this.channel, "UTF-8"),
                     this.payload == null ? "" : URLEncoder.encode(payload.getBuildDescriptionWithLinkSyntax(), "UTF-8"),
                     "");
+
             HttpPost httppost = new HttpPost(url);
 
             Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
-			if (this.filename.length() > 0){
-				File file = new File(this.filename);
+            if (this.filename.length() > 0) {
+                File file = new File(this.filename);
                 throw new NotImplementedException();
-			    //httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
-			    //httppost.setContentChunked(true);
-			}
-			if (this.payload != null){
+                //httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
+                //httppost.setContentChunked(true);
+            }
+            if (this.payload != null) {
 
-                List<Attachment> attachments = new ArrayList<Attachment>();
-                Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
-                attachment.addField(this.payload.getBuildResult(), "Agent: " + this.payload.getAgentName(), false);
-
-                StringBuilder sbCommits = new StringBuilder();
-
-                List<Commit> commits = this.payload.getCommits();
-
-                boolean truncated = false;
-                int totalCommits = commits.size();
-                if(commits.size() > 5){
-                    commits = commits.subList(0, 5 > commits.size() ? commits.size() : 5);
-                }
-
-                for(Commit commit : commits){
-                    String revision = commit.getRevision();
-                    revision = revision == null ? "" : revision;
-                    sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
-                }
-
-                if(truncated){
-                    sbCommits.append(String.format("(+ %d more)\n", totalCommits -5));
-                }
-
-                if(!commits.isEmpty())
-                {
-                    attachment.addField("Commits", sbCommits.toString(), false);
-                }
-
-                attachments.add(attachment);
+                List<Attachment> attachments = getAttachments();
 
                 String attachmentsParam = String.format("attachments=%s", URLEncoder.encode(convertAttachmentsToJson(attachments), "UTF-8"));
 
@@ -203,25 +190,163 @@ public class SlackNotificationImpl implements SlackNotification {
 
                 httppost.setEntity(new StringEntity(attachmentsParam));
                 httppost.setHeader("Content-Type", CONTENT_TYPE);
-			}
-		    try {
-		        HttpResponse response = client.execute(httppost);
-		        this.resultCode = response.getStatusLine().getStatusCode();
-                if(this.resultCode == HttpStatus.SC_OK){
+            }
+            try {
+                HttpResponse response = client.execute(httppost);
+                this.resultCode = response.getStatusLine().getStatusCode();
+                if (this.resultCode == HttpStatus.SC_OK) {
                     this.response = PostMessageResponse.fromJson(EntityUtils.toString(response.getEntity()));
                 }
-                if(response.getEntity().getContentLength() > 0)
-                {
+                if (response.getEntity().getContentLength() > 0) {
                     this.content = EntityUtils.toString(response.getEntity());
                 }
-		    } finally {
-		        httppost.releaseConnection();
-		    }   
-		}
-	}
+            } finally {
+                httppost.releaseConnection();
+            }
+        }
+    }
 
-    public static String convertAttachmentsToJson(List<Attachment> attachments)
-    {
+    private void postViaWebHook() throws IOException {
+        if ((this.enabled) && (!this.errored)) {
+            if (this.teamName == null) {
+                this.teamName = "";
+            }
+            String url = String.format("https://%s.slack.com/services/hooks/incoming-webhook?token=%s",
+                    this.teamName.toLowerCase(),
+                    this.token);
+
+            Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
+
+            WebHookPayload requestBody = new WebHookPayload();
+            requestBody.setChannel(this.getChannel());
+            requestBody.setUsername(this.getBotName());
+            requestBody.setIcon_url(this.getIconUrl());
+
+            HttpPost httppost = new HttpPost(url);
+
+            if (this.payload != null) {
+                requestBody.setText(payload.getBuildDescriptionWithLinkSyntax());
+                requestBody.setAttachments(getAttachments());
+            }
+
+            String bodyParam = String.format("payload=%s", URLEncoder.encode(requestBody.toJson(), "UTF-8"));
+
+            Loggers.SERVER.info("SlackNotificationListener :: Body message will be " + bodyParam);
+
+            httppost.setEntity(new StringEntity(bodyParam));
+            httppost.setHeader("Content-Type", CONTENT_TYPE);
+
+            try {
+                HttpResponse response = client.execute(httppost);
+                this.resultCode = response.getStatusLine().getStatusCode();
+
+                PostMessageResponse resp = new PostMessageResponse();
+
+                if (this.resultCode != HttpStatus.SC_OK) {
+                    String error = EntityUtils.toString(response.getEntity());
+                    resp.setOk(error == "ok");
+                    resp.setError(error);
+                }
+                else{
+                    resp.setOk(true);
+                    this.response = resp;
+                }
+
+                this.content = EntityUtils.toString(response.getEntity());
+
+            } finally {
+                httppost.releaseConnection();
+            }
+        }
+    }
+
+    private List<Attachment> getAttachments() {
+        List<Attachment> attachments = new ArrayList<Attachment>();
+        Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
+        attachment.addField(this.payload.getBuildResult(), "Agent: " + this.payload.getAgentName(), false);
+
+        StringBuilder sbCommits = new StringBuilder();
+
+        List<Commit> commits = this.payload.getCommits();
+
+        boolean truncated = false;
+        int totalCommits = commits.size();
+        if (commits.size() > 5) {
+            commits = commits.subList(0, 5 > commits.size() ? commits.size() : 5);
+        }
+
+        for (Commit commit : commits) {
+            String revision = commit.getRevision();
+            revision = revision == null ? "" : revision;
+            sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
+        }
+
+        if (truncated) {
+            sbCommits.append(String.format("(+ %d more)\n", totalCommits - 5));
+        }
+
+        if (!commits.isEmpty()) {
+            attachment.addField("Commits", sbCommits.toString(), false);
+        }
+
+        attachments.add(attachment);
+        return attachments;
+    }
+
+    private class WebHookPayload {
+        private String channel;
+        private String username;
+        private String text;
+        private String icon_url;
+        private List<Attachment> attachments;
+
+        public String getChannel() {
+            return channel;
+        }
+
+        public void setChannel(String channel) {
+            this.channel = channel;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getIcon_url() {
+            return icon_url;
+        }
+
+        public void setIcon_url(String icon_url) {
+            this.icon_url = icon_url;
+        }
+
+        public List<Attachment> getAttachments() {
+            return attachments;
+        }
+
+        public void setAttachments(List<Attachment> attachments) {
+            this.attachments = attachments;
+        }
+
+        public String toJson() {
+            Gson gson = new Gson();
+            return gson.toJson(this);
+        }
+    }
+
+    public static String convertAttachmentsToJson(List<Attachment> attachments) {
         Gson gson = new Gson();
         return gson.toJson(attachments);
 //        XStream xstream = new XStream(new JsonHierarchicalStreamDriver());
@@ -233,146 +358,138 @@ public class SlackNotificationImpl implements SlackNotification {
 //        return xstream.toXML(attachments).replaceAll("\"@(fallback|text|pretext|color|fields|title|value|short)\": \"(.*)\"", "\"$1\": \"$2\"");
     }
 
-    public Integer getStatus(){
-		return this.resultCode;
-	}
-	
-	public String getProxyHost() {
-		return proxyHost;
-	}
+    public Integer getStatus() {
+        return this.resultCode;
+    }
 
-	public int getProxyPort() {
-		return proxyPort;
-	}
+    public String getProxyHost() {
+        return proxyHost;
+    }
 
-    public String getTeamName()
-    {
+    public int getProxyPort() {
+        return proxyPort;
+    }
+
+    public String getTeamName() {
         return teamName;
     }
 
-    public void setTeamName(String teamName)
-    {
+    public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
 
-    public String getToken()
-    {
+    public String getToken() {
         return token;
     }
 
-    public void setToken(String token)
-    {
+    public void setToken(String token) {
         this.token = token;
     }
 
-    public String getIconUrl()
-    {
+    public String getIconUrl() {
         return this.iconUrl;
     }
 
-    public void setIconUrl(String iconUrl)
-    {
+    public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
     }
 
-    public String getBotName()
-    {
+    public String getBotName() {
         return this.botName;
     }
 
-    public void setBotName(String botName)
-    {
+    public void setBotName(String botName) {
         this.botName = botName;
     }
 
-	public String getChannel() {
-		return channel;
-	}
+    public String getChannel() {
+        return channel;
+    }
 
-	public void setChannel(String channel) {
-		this.channel = channel;
-	}
-	
-	public String getParameterisedUrl(){
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public String getParameterisedUrl() {
         //TODO: Implement different url logic
-		return this.channel +  this.parametersAsQueryString();
-	}
+        return this.channel + this.parametersAsQueryString();
+    }
 
-	public String parametersAsQueryString(){
-		String s = "";
-		for (Iterator<NameValuePair> i = this.params.iterator(); i.hasNext();){
-			NameValuePair nv = i.next();
-			s += "&" + nv.getName() + "=" + nv.getValue(); 
-		}
-		if (s.length() > 0 ){
-			return "?" + s.substring(1);
-		}
-		return s;
-	}
-	
-	public void addParam(String key, String value){
-		this.params.add(new BasicNameValuePair(key, value));
-	}
+    public String parametersAsQueryString() {
+        String s = "";
+        for (Iterator<NameValuePair> i = this.params.iterator(); i.hasNext(); ) {
+            NameValuePair nv = i.next();
+            s += "&" + nv.getName() + "=" + nv.getValue();
+        }
+        if (s.length() > 0) {
+            return "?" + s.substring(1);
+        }
+        return s;
+    }
 
-	public void addParams(List<NameValuePair> paramsList){
-		for (Iterator<NameValuePair> i = paramsList.iterator(); i.hasNext();){
-			this.params.add(i.next()); 
-		}		
-	}
-	
-	public String getParam(String key){
-		for (Iterator<NameValuePair> i = this.params.iterator(); i.hasNext();){
-			NameValuePair nv = i.next();
-			if (nv.getName().equals(key)){
-				return nv.getValue();
-			}
-		}		
-		return "";
-	}
-	
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+    public void addParam(String key, String value) {
+        this.params.add(new BasicNameValuePair(key, value));
+    }
 
-	public String getFilename() {
-		return filename;
-	}
+    public void addParams(List<NameValuePair> paramsList) {
+        for (Iterator<NameValuePair> i = paramsList.iterator(); i.hasNext(); ) {
+            this.params.add(i.next());
+        }
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getParam(String key) {
+        for (Iterator<NameValuePair> i = this.params.iterator(); i.hasNext(); ) {
+            NameValuePair nv = i.next();
+            if (nv.getName().equals(key)) {
+                return nv.getValue();
+            }
+        }
+        return "";
+    }
 
-	public Boolean isEnabled() {
-		return enabled;
-	}
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
+    public String getFilename() {
+        return filename;
+    }
 
-	public void setEnabled(String enabled){
-		if (enabled.toLowerCase().equals("true")){
-			this.enabled = true;
-		} else {
-			this.enabled = false;
-		}
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public Boolean isErrored() {
-		return errored;
-	}
+    public Boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setErrored(Boolean errored) {
-		this.errored = errored;
-	}
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public String getErrorReason() {
-		return errorReason;
-	}
+    public void setEnabled(String enabled) {
+        if (enabled.toLowerCase().equals("true")) {
+            this.enabled = true;
+        } else {
+            this.enabled = false;
+        }
+    }
 
-	public void setErrorReason(String errorReason) {
-		this.errorReason = errorReason;
-	}
+    public Boolean isErrored() {
+        return errored;
+    }
+
+    public void setErrored(Boolean errored) {
+        this.errored = errored;
+    }
+
+    public String getErrorReason() {
+        return errorReason;
+    }
+
+    public void setErrorReason(String errorReason) {
+        this.errorReason = errorReason;
+    }
 
 //	public Integer getEventListBitMask() {
 //		return EventListBitMask;
@@ -382,41 +499,45 @@ public class SlackNotificationImpl implements SlackNotification {
 //		EventListBitMask = triggerStateBitMask;
 //	}
 
-	public String getProxyUsername() {
-		return proxyUsername;
-	}
+    public String getProxyUsername() {
+        return proxyUsername;
+    }
 
-	public void setProxyUsername(String proxyUsername) {
-		this.proxyUsername = proxyUsername;
-	}
+    public void setProxyUsername(String proxyUsername) {
+        this.proxyUsername = proxyUsername;
+    }
 
-	public String getProxyPassword() {
-		return proxyPassword;
-	}
+    public String getProxyPassword() {
+        return proxyPassword;
+    }
 
-	public void setProxyPassword(String proxyPassword) {
-		this.proxyPassword = proxyPassword;
-	}
+    public void setProxyPassword(String proxyPassword) {
+        this.proxyPassword = proxyPassword;
+    }
 
-	public SlackNotificationPayloadContent getPayload() {
-		return payload;
-	}
+    public SlackNotificationPayloadContent getPayload() {
+        return payload;
+    }
 
-	public void setPayload(SlackNotificationPayloadContent payloadContent) {
-		this.payload = payloadContent;
-	}
+    public void setPayload(SlackNotificationPayloadContent payloadContent) {
+        this.payload = payloadContent;
+    }
 
-	@Override
-	public BuildState getBuildStates() {
-		return states;
-	}
+    @Override
+    public BuildState getBuildStates() {
+        return states;
+    }
 
-	@Override
-	public void setBuildStates(BuildState states) {
-		this.states = states;
-	}
+    @Override
+    public void setBuildStates(BuildState states) {
+        this.states = states;
+    }
 
     public PostMessageResponse getResponse() {
         return response;
+    }
+
+    public boolean getIsApiToken() {
+        return this.token == null || this.token.split("-").length > 1;
     }
 }

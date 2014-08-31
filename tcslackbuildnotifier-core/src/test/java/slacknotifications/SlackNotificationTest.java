@@ -181,6 +181,20 @@ public class SlackNotificationTest {
         assertEquals(impl.getResponse().getError(), "invalid_auth");
     }
 
+    @Test
+    public void isApiToken_whenApiTokenIsSupplied_returnsTrue(){
+        SlackNotificationImpl impl = new SlackNotificationImpl();
+        impl.setToken("xoxp-sdsdfs-3453efgeg-35tefb");
+        assertTrue(impl.getIsApiToken());
+    }
+
+    @Test
+    public void isApiToken_whenOAuthAppTokenIsSupplied_returnsTrue(){
+        SlackNotificationImpl impl = new SlackNotificationImpl();
+        impl.setToken("34tsrfdgdrtyrysdfg");
+        assertFalse(impl.getIsApiToken());
+    }
+
 /*
     @Test
 	public void test_200() throws FileNotFoundException, IOException, Exception {

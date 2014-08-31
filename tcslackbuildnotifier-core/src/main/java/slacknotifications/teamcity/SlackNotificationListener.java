@@ -299,13 +299,6 @@ public class SlackNotificationListener extends BuildServerAdapter {
 				if ((notification.getStatus() == null || notification.getStatus() > HttpStatus.SC_OK))
 					Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + notification.getParam("projectId") + " SlackNotification (url: " + notification.getChannel() + " proxy: " + notification.getProxyHost() + ":" + notification.getProxyPort()+") returned HTTP status " + notification.getStatus().toString());
 
-                if (notification.getResponse() != null && !notification.getResponse().getOk()) {
-                    Loggers.SERVER.error(this.getClass().getSimpleName() + " :: SlackNotification failed : "
-                            + notification.getChannel()
-                            + " returned error " + notification.getResponse().getError()
-                            + " " + notification.getErrorReason());
-                }
-
 			} else {
 				Loggers.SERVER.debug("SlackNotification NOT triggered: "
                         + notification.getParam("buildStatus") + " " + notification.getChannel());
