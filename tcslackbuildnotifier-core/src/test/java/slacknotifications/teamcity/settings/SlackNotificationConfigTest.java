@@ -42,20 +42,6 @@ public class SlackNotificationConfigTest {
 	public void printDefaultHtmlMessage(){
 		System.out.println(SlackNotificationPayloadDefaultTemplates.DEFAULT_HTML_BUILDSTATUS_TEMPLATE);
 	}
-	
-	@Test
-	public void testGetAsElement() {
-		Element e = slacknotificationAllEnabled.getAsElement();
-		SlackNotificationConfig whc = new SlackNotificationConfig(e);
-		assertTrue(whc.getParams().containsKey("color"));
-		assertTrue(whc.getParams().containsKey("notify"));
-	}
-
-	@Test
-	public void testGetParams() {
-		assertTrue(slacknotificationAllEnabled.getParams().containsKey("color"));
-		assertTrue(slacknotificationAllEnabled.getParams().containsKey("notify"));
-	}
 
 	@Test
 	public void testGetEnabled() {

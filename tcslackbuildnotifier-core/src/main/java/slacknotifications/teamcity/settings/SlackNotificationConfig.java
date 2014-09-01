@@ -31,7 +31,6 @@ import slacknotifications.teamcity.settings.converter.SlackNotificationBuildStat
 
 
 public class SlackNotificationConfig {
-	private SortedMap<String,String> extraParameters;
 	private Boolean enabled = true;
 	private String uniqueKey = "";
 	private String channel;
@@ -48,7 +47,6 @@ public class SlackNotificationConfig {
 		int Min = 1000000, Max = 1000000000;
 		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
 		this.uniqueKey = Rand.toString();
-		this.extraParameters = new TreeMap<String,String>();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
 		
 		if (e.getAttribute("channel") != null){
@@ -110,19 +108,7 @@ public class SlackNotificationConfig {
 			}
 		}
 		
-		if(e.getChild("parameters") != null){
-			Element eParams = e.getChild("parameters");
-			List<Element> paramsList = eParams.getChildren("param");
-			if (paramsList.size() > 0){
-				for(Element eParam : paramsList)
-				{
-					this.extraParameters.put(
-							eParam.getAttributeValue("name"), 
-							eParam.getAttributeValue("value")
-							);
-				}
-			}
-		}
+
 		
 		if(e.getChild("custom-templates") != null){
 			Element eParams = e.getChild("custom-templates");
@@ -158,7 +144,6 @@ public class SlackNotificationConfig {
 		int Min = 1000000, Max = 1000000000;
 		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
 		this.uniqueKey = Rand.toString();
-		this.extraParameters = new TreeMap<String,String>();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
 		this.setChannel(channel);
         this.setTeamName(teamName);
@@ -169,15 +154,6 @@ public class SlackNotificationConfig {
 		if (!this.allBuildTypesEnabled){
 			this.enabledBuildTypesSet = enabledBuildTypes;
 		}
-	}
-
-	private Element getKeyAndValueAsElement(String key, String elementName){
-		Element e = new Element(elementName);
-		if (this.extraParameters.containsKey(key)){
-			e.setAttribute("name", key);
-			e.setAttribute("value",this.extraParameters.get(key));
-		}
-		return e;
 	}
 	
 	public Element getAsElement(){
@@ -210,14 +186,6 @@ public class SlackNotificationConfig {
 		}
 		el.addContent(buildsEl);
 		
-		if (this.extraParameters.size() > 0){
-			Element paramsEl = new Element("parameters");
-			for (String i : this.extraParameters.keySet()){
-				paramsEl.addContent(this.getKeyAndValueAsElement(i, "param"));
-			}
-			el.addContent(paramsEl);
-		}
-		
 		if (this.templates.size() > 0){
 			Element templatesEl = new Element("custom-templates");
 			for (CustomMessageTemplate t : this.templates.values()){
@@ -231,14 +199,6 @@ public class SlackNotificationConfig {
 	
 	// Getters and Setters..
 
-	public SortedMap<String,String> getParams() {
-		return extraParameters;
-	}
-//
-//	public void setParams(List<NameValuePair> params) {
-//		this.params = params;
-//	}
-	
 	public boolean isEnabledForBuildType(SBuildType sBuildType){
 		// If allBuildTypes enabled, return true, otherwise  return whether the build is in the list of enabled buildTypes. 
 		return isEnabledForAllBuildsInProject() ? true : enabledBuildTypesSet.contains(TeamCityIdResolver.getInternalBuildId(sBuildType));

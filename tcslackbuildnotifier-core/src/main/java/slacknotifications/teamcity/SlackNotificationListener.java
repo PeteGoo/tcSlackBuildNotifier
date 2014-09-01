@@ -77,7 +77,6 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setIconUrl(myMainSettings.getIconUrl());
         slackNotification.setBotName(myMainSettings.getBotName());
 		slackNotification.setEnabled(slackNotificationConfig.getEnabled());
-		//slackNotification.addParams(slackNotificationConfig.getParams());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
 		slackNotification.setProxy(myMainSettings.getProxyConfigForUrl(slackNotificationConfig.getChannel()));
 		Loggers.ACTIVITIES.debug("SlackNotificationListener :: SlackNotification proxy set to "
@@ -89,23 +88,21 @@ public class SlackNotificationListener extends BuildServerAdapter {
 			Loggers.SERVER.debug("About to process Slack notifications for " + sRunningBuild.getProjectId() + " at buildState " + state.getShortName());
 			for (SlackNotificationConfigWrapper slackNotificationConfigWrapper : getListOfEnabledSlackNotifications(sRunningBuild.getProjectId())){
 
-                SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(myBuildServer, sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), state, slackNotificationConfigWrapper.whc.getParams(), slackNotificationConfigWrapper.whc.getEnabledTemplates());
-
-				if (state.equals(BuildStateEnum.BUILD_STARTED)){
-					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.buildStarted(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getParams(), slackNotificationConfigWrapper.whc.getEnabledTemplates()));
+                if (state.equals(BuildStateEnum.BUILD_STARTED)){
+					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.buildStarted(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getEnabledTemplates()));
 					slackNotificationConfigWrapper.slackNotification.setEnabled(slackNotificationConfigWrapper.whc.isEnabledForBuildType(sRunningBuild.getBuildType()) && slackNotificationConfigWrapper.slackNotification.getBuildStates().enabled(BuildStateEnum.BUILD_STARTED));
 				} else if (state.equals(BuildStateEnum.BUILD_INTERRUPTED)){
-					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.buildInterrupted(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getParams(), slackNotificationConfigWrapper.whc.getEnabledTemplates()));
+					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.buildInterrupted(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getEnabledTemplates()));
 					slackNotificationConfigWrapper.slackNotification.setEnabled(slackNotificationConfigWrapper.whc.isEnabledForBuildType(sRunningBuild.getBuildType()) && slackNotificationConfigWrapper.slackNotification.getBuildStates().enabled(BuildStateEnum.BUILD_INTERRUPTED));
 				} else if (state.equals(BuildStateEnum.BEFORE_BUILD_FINISHED)){
-					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.beforeBuildFinish(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getParams(), slackNotificationConfigWrapper.whc.getEnabledTemplates()));
+					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.beforeBuildFinish(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getEnabledTemplates()));
 					slackNotificationConfigWrapper.slackNotification.setEnabled(slackNotificationConfigWrapper.whc.isEnabledForBuildType(sRunningBuild.getBuildType()) && slackNotificationConfigWrapper.slackNotification.getBuildStates().enabled(BuildStateEnum.BEFORE_BUILD_FINISHED));
 				} else if (state.equals(BuildStateEnum.BUILD_FINISHED)){
 					slackNotificationConfigWrapper.slackNotification.setEnabled(slackNotificationConfigWrapper.whc.isEnabledForBuildType(sRunningBuild.getBuildType()) && slackNotificationConfigWrapper.slackNotification.getBuildStates().enabled(
 							BuildStateEnum.BUILD_FINISHED, 
 							sRunningBuild.getStatusDescriptor().isSuccessful(),
 							this.hasBuildChangedHistoricalState(sRunningBuild)));
-					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.buildFinished(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getParams(), slackNotificationConfigWrapper.whc.getEnabledTemplates()));;
+					slackNotificationConfigWrapper.slackNotification.setPayload(myManager.buildFinished(sRunningBuild, getPreviousNonPersonalBuild(sRunningBuild), slackNotificationConfigWrapper.whc.getEnabledTemplates()));;
 				}
 				
 				doPost(slackNotificationConfigWrapper.slackNotification);
@@ -199,7 +196,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
                                 responsibilityInfoOld,
                                 responsibilityInfoNew,
                                 isUserAction,
-                                whcw.whc.getParams(), whcw.whc.getEnabledTemplates()));
+                                whcw.whc.getEnabledTemplates()));
 						whcw.slackNotification.setEnabled(whcw.whc.isEnabledForBuildType(sBuildType) && whcw.slackNotification.getBuildStates().enabled(BuildStateEnum.RESPONSIBILITY_CHANGED));
 						doPost(whcw.slackNotification);
 						//Loggers.ACTIVITIES.debug("SlackNotificationListener :: " + myManager.getFormat(whcw.whc.getPayloadFormat()).getFormatDescription());
@@ -216,7 +213,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
                                 testNames,
                                 entry,
                                 isUserAction,
-                                whcw.whc.getParams(), whcw.whc.getEnabledTemplates()));
+                                whcw.whc.getEnabledTemplates()));
 						whcw.slackNotification.setEnabled(whcw.slackNotification.getBuildStates().enabled(BuildStateEnum.RESPONSIBILITY_CHANGED));
 						doPost(whcw.slackNotification);
 						//Loggers.ACTIVITIES.debug("SlackNotificationListener :: " + myManager.getFormat(whcw.whc.getPayloadFormat()).getFormatDescription());
@@ -233,7 +230,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
                                 oldTestNameResponsibilityEntry,
                                 newTestNameResponsibilityEntry,
                                 isUserAction,
-                                whcw.whc.getParams(), whcw.whc.getEnabledTemplates()));
+                                whcw.whc.getEnabledTemplates()));
 						whcw.slackNotification.setEnabled(whcw.slackNotification.getBuildStates().enabled(BuildStateEnum.RESPONSIBILITY_CHANGED));
 						doPost(whcw.slackNotification);
 						//Loggers.ACTIVITIES.debug("SlackNotificationListener :: " + myManager.getFormat(whcw.whc.getPayloadFormat()).getFormatDescription());
@@ -260,7 +257,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
                         whcw.slackNotification.setPayload(myManager.responsibleChanged(sBuildType,
                                 responsibilityEntryOld,
                                 responsibilityEntryNew,
-                                whcw.whc.getParams(), whcw.whc.getEnabledTemplates()));
+                                whcw.whc.getEnabledTemplates()));
 						whcw.slackNotification.setEnabled(whcw.whc.isEnabledForBuildType(sBuildType) && whcw.slackNotification.getBuildStates().enabled(BuildStateEnum.RESPONSIBILITY_CHANGED));
 						doPost(whcw.slackNotification);
 						//Loggers.ACTIVITIES.debug("SlackNotificationListener :: " + myManager.getFormat(whcw.whc.getPayloadFormat()).getFormatDescription());

@@ -26,18 +26,16 @@ public class VariableMessageBuilderTest {
 	SFinishedBuild previousSuccessfulBuild = mock(SFinishedBuild.class);
 	MockSProject sProject = new MockSProject("Test Project", "A test project", "project1", "ATestProject", sBuildType);
 	SBuildServer sBuildServer;
-	SortedMap<String, String> extraParameters;
 
 	@Before
 	public void setup(){
 		sBuildType.setProject(sProject);
-		extraParameters = new TreeMap<String, String>();
 		sBuildServer = mock(SBuildServer.class);
 	}
 	
 	@Test
 	public void testBuild() {
-		SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(sBuildServer, sRunningBuild, previousSuccessfulBuild, BuildStateEnum.BEFORE_BUILD_FINISHED, extraParameters, SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates());
+		SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(sBuildServer, sRunningBuild, previousSuccessfulBuild, BuildStateEnum.BEFORE_BUILD_FINISHED, SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates());
 		VariableMessageBuilder builder = VariableMessageBuilder.create("This is a test ${buildFullName}", new SlackNotificationBeanUtilsVariableResolver(content));
 		System.out.println(builder.build());
 		System.out.println(content.getBuildFullName());

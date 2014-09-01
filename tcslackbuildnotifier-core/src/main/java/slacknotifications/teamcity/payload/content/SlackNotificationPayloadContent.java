@@ -57,7 +57,6 @@ public class SlackNotificationPayloadContent {
 
     Branch branch;
     List<String> buildRunners;
-    ExtraParametersMap extraParameters;
 
 /*
     public final static String BUILD_STATUS_FAILURE   = "failure";
@@ -88,11 +87,9 @@ public class SlackNotificationPayloadContent {
 		 * @param server
 		 * @param buildType
 		 * @param buildState
-		 * @param extraParameters
 		 */
-		public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState, Map<String, String> extraParameters, Map<String, String> templates) {
+		public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState, Map<String, String> templates) {
 			populateCommonContent(server, buildType, buildState, templates);
-			this.extraParameters =  new ExtraParametersMap(extraParameters);
 		}
 
 		/**
@@ -101,11 +98,9 @@ public class SlackNotificationPayloadContent {
 		 * @param sRunningBuild
 		 * @param previousBuild
 		 * @param buildState
-		 * @param extraParameters
 		 */
 		public SlackNotificationPayloadContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
                                                BuildStateEnum buildState,
-                                               Map<String, String> extraParameters,
                                                Map<String, String> templates) {
 
             this.commits = new ArrayList<Commit>();
@@ -113,7 +108,6 @@ public class SlackNotificationPayloadContent {
     		populateMessageAndText(sRunningBuild, buildState, templates);
             populateCommits(sRunningBuild);
     		populateArtifacts(sRunningBuild);
-    		this.extraParameters =  new ExtraParametersMap(extraParameters);
 
 		}
 
@@ -549,26 +543,6 @@ public class SlackNotificationPayloadContent {
 
 		public void setText(String text) {
 			this.text = text;
-		}
-
-		public ExtraParametersMap getExtraParameters() {
-			if (this.extraParameters.size() > 0){
-				VariableMessageBuilder builder;
-                SlackNotificationBeanUtilsVariableResolver resolver = new SlackNotificationBeanUtilsVariableResolver(this);
-				ExtraParametersMap resolvedParametersMap = new ExtraParametersMap(extraParameters);
-				for (Entry<String,String> entry  : extraParameters.getEntriesAsSet()){
-					builder = VariableMessageBuilder.create(entry.getValue(), resolver);
-					resolvedParametersMap.put(entry.getKey(), builder.build());
-				}
-				return resolvedParametersMap;
-			} else {
-				return null;
-			}
-				
-		}
-
-		public void setExtraParameters(SortedMap<String, String> extraParameters) {
-			this.extraParameters = new ExtraParametersMap(extraParameters);
 		}
 
 

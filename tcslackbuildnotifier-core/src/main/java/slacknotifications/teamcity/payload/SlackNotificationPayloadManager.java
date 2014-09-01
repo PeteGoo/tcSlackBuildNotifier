@@ -25,32 +25,32 @@ public class SlackNotificationPayloadManager {
     @Deprecated
     public String buildChangedStatus(SRunningBuild runningBuild, SFinishedBuild previousBuild,
                                      Status oldStatus, Status newStatus,
-                                     SortedMap<String,String> extraParameters, Map<String,String> templates) {
+                                     Map<String,String> templates) {
         return "";
     }
 
     public SlackNotificationPayloadContent beforeBuildFinish(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                    SortedMap<String,String> extraParameters, Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BEFORE_BUILD_FINISHED, extraParameters, templates);
+                                    Map<String,String> templates) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BEFORE_BUILD_FINISHED, templates);
         return content;
     }
 
 
     public SlackNotificationPayloadContent buildFinished(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                SortedMap<String,String> extraParameters, Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_FINISHED, extraParameters, templates);
+                                Map<String,String> templates) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_FINISHED, templates);
         return content;
     }
 
     public SlackNotificationPayloadContent buildInterrupted(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                   SortedMap<String,String> extraParameters, Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_INTERRUPTED, extraParameters, templates);
+                                   Map<String,String> templates) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_INTERRUPTED, templates);
         return content;
     }
 
     public SlackNotificationPayloadContent buildStarted(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                               SortedMap<String,String> extraParameters, Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_STARTED, extraParameters, templates);
+                               Map<String,String> templates) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_STARTED, templates);
         return content;
     }
 
@@ -59,9 +59,9 @@ public class SlackNotificationPayloadManager {
     public SlackNotificationPayloadContent responsibleChanged(SBuildType buildType,
                                      ResponsibilityInfo responsibilityInfoOld,
                                      ResponsibilityInfo responsibilityInfoNew, boolean isUserAction,
-                                     SortedMap<String,String> extraParameters, Map<String,String> templates) {
+                                     Map<String,String> templates) {
 
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED, extraParameters, templates);
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED, templates);
         String oldUser = "Nobody";
         String newUser = "Nobody";
         try {
@@ -98,9 +98,9 @@ public class SlackNotificationPayloadManager {
     public SlackNotificationPayloadContent responsibleChanged(SBuildType buildType,
                                      ResponsibilityEntry responsibilityEntryOld,
                                      ResponsibilityEntry responsibilityEntryNew,
-                                     SortedMap<String,String> extraParameters, Map<String,String> templates) {
+                                     Map<String,String> templates) {
 
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED, extraParameters, templates);
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED, templates);
         String oldUser = "Nobody";
         String newUser = "Nobody";
         if (responsibilityEntryOld.getState() != ResponsibilityEntry.State.NONE) {
@@ -135,14 +135,14 @@ public class SlackNotificationPayloadManager {
     public SlackNotificationPayloadContent responsibleChanged(SProject project,
                                      TestNameResponsibilityEntry oldTestNameResponsibilityEntry,
                                      TestNameResponsibilityEntry newTestNameResponsibilityEntry,
-                                     boolean isUserAction, SortedMap<String,String> extraParameters, Map<String,String> templates) {
+                                     boolean isUserAction, Map<String,String> templates) {
         // TODO Auto-generated method stub
         return null;
     }
 
     public SlackNotificationPayloadContent responsibleChanged(SProject project,
                                      Collection<TestName> testNames, ResponsibilityEntry entry,
-                                     boolean isUserAction, SortedMap<String,String> extraParameters, Map<String,String> templates) {
+                                     boolean isUserAction, Map<String,String> templates) {
         // TODO Auto-generated method stub
         return null;
     }

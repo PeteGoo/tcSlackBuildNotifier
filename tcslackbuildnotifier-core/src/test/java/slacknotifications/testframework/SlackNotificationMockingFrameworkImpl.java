@@ -27,7 +27,6 @@ import slacknotifications.teamcity.*;
 import slacknotifications.teamcity.SlackNotificationListener;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadDefaultTemplates;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
-import slacknotifications.teamcity.payload.content.ExtraParametersMap;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
@@ -66,7 +65,6 @@ public class SlackNotificationMockingFrameworkImpl implements SlackNotificationM
 	SBuildType build3 = mock(SBuildType.class);
 	
 	SlackNotificationListener whl;
-	SortedMap<String, String> extraParameters;
 	BuildStateEnum buildstateEnum;
 	
 	private SlackNotificationMockingFrameworkImpl() {
@@ -107,11 +105,10 @@ public class SlackNotificationMockingFrameworkImpl implements SlackNotificationM
 		
 	}
 
-	public static SlackNotificationMockingFramework create(BuildStateEnum buildState, ExtraParametersMap extraParameters) {
+	public static SlackNotificationMockingFramework create(BuildStateEnum buildState) {
 		SlackNotificationMockingFrameworkImpl framework = new SlackNotificationMockingFrameworkImpl();
 		framework.buildstateEnum = buildState;
-		framework.extraParameters = extraParameters;
-		framework.content = new SlackNotificationPayloadContent(framework.sBuildServer, framework.sRunningBuild, framework.previousSuccessfulBuild, buildState, extraParameters, SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates());
+		framework.content = new SlackNotificationPayloadContent(framework.sBuildServer, framework.sRunningBuild, framework.previousSuccessfulBuild, buildState, SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates());
 		return framework;
 	}
 
@@ -132,9 +129,8 @@ public class SlackNotificationMockingFrameworkImpl implements SlackNotificationM
 
 	@Override
 	public void loadSlackNotificationConfigXml(File xmlConfigFile) throws JDOMException, IOException {
-		//slackNotificationConfig = new SlackNotificationConfig(ConfigLoaderUtil.getFullConfigElement(xmlConfigFile));
 		slackNotificationConfig = ConfigLoaderUtil.getFirstSlackNotificationInConfig(xmlConfigFile);
-		this.content = new SlackNotificationPayloadContent(this.sBuildServer, this.sRunningBuild, this.previousSuccessfulBuild, this.buildstateEnum, extraParameters, slackNotificationConfig.getEnabledTemplates());
+		this.content = new SlackNotificationPayloadContent(this.sBuildServer, this.sRunningBuild, this.previousSuccessfulBuild, this.buildstateEnum, slackNotificationConfig.getEnabledTemplates());
 		
 	}
 	
