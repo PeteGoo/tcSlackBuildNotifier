@@ -5,11 +5,7 @@
           teamName="myteam"
           token="thisismytoken"
           iconurl="http://www.myicon.com/icon.gif"
-          botname="Team City"
-          showBuildAgent="true"
-          showElapsedBuildTime="true"
-          showCommits="false"
-          maxCommitsToDisplay="15">
+          botname="Team City">
     <proxy host="myproxy.mycompany.com" port="8080">
       <noproxy url=".mycompany.com" />
       <noproxy url="192.168.0." />

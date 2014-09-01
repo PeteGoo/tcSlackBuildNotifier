@@ -96,4 +96,11 @@ public interface SlackNotification {
 
     public abstract PostMessageResponse getResponse();
 
+    public abstract void setShowBuildAgent(Boolean showBuildAgent);
+
+    public abstract void setShowElapsedBuildTime(Boolean showElapsedBuildTime);
+
+    public abstract void setShowCommits(boolean showCommits);
+
+    public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 }

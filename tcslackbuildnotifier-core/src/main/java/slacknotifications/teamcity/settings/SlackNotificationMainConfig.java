@@ -31,6 +31,10 @@ public class SlackNotificationMainConfig {
 	private Pattern singleHostPattern, hostnameOnlyPattern ;
     private String iconUrl;
     private String botName;
+    private Boolean showBuildAgent;
+    private Boolean showElapsedBuildTime;
+    private boolean showCommits = true;
+    private int maxCommitsToDisplay = 5;
 
 
     public SlackNotificationMainConfig() {
@@ -299,5 +303,39 @@ public class SlackNotificationMainConfig {
 	}
 
 
+    public Boolean getShowBuildAgent() {
+        return showBuildAgent;
+    }
 
+    public void setShowBuildAgent(Boolean showBuildAgent) {
+        this.showBuildAgent = showBuildAgent;
+    }
+
+    public Boolean getShowElapsedBuildTime() {
+        return showElapsedBuildTime;
+    }
+
+    public void setShowElapsedBuildTime(Boolean showElapsedBuildTime) {
+        this.showElapsedBuildTime = showElapsedBuildTime;
+    }
+
+    public boolean getShowCommits() {
+        return showCommits;
+    }
+
+    public boolean isShowCommits() {
+        return showCommits;
+    }
+
+    public void setShowCommits(boolean showCommits) {
+        this.showCommits = showCommits;
+    }
+
+    public int getMaxCommitsToDisplay() {
+        return maxCommitsToDisplay;
+    }
+
+    public void setMaxCommitsToDisplay(int maxCommitsToDisplay) {
+        this.maxCommitsToDisplay = maxCommitsToDisplay;
+    }
 }

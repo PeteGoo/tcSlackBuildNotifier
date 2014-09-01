@@ -1,20 +1,16 @@
 package slacknotifications;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.functions.FuncUnparsedEntityURI;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import org.apache.http.HttpHost;
+import jetbrains.buildServer.util.StringUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -24,12 +20,9 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import slacknotifications.teamcity.BuildState;
@@ -63,6 +56,10 @@ public class SlackNotificationImpl implements SlackNotification {
     private String botName;
     private final static String CONTENT_TYPE = "application/x-www-form-urlencoded";
     private PostMessageResponse response;
+    private Boolean showBuildAgent;
+    private Boolean showElapsedBuildTime;
+    private boolean showCommits;
+    private int maxCommitsToDisplay;
 
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
@@ -263,30 +260,54 @@ public class SlackNotificationImpl implements SlackNotification {
     private List<Attachment> getAttachments() {
         List<Attachment> attachments = new ArrayList<Attachment>();
         Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
-        attachment.addField(this.payload.getBuildResult(), "Agent: " + this.payload.getAgentName(), false);
+
+        List<String> firstDetailLines = new ArrayList<String>();
+        if(showBuildAgent == null || showBuildAgent){
+            firstDetailLines.add("Agent: " + this.payload.getAgentName());
+        }
+        if(showElapsedBuildTime == null || showElapsedBuildTime){
+            firstDetailLines.add("Elapsed: " + formatTime(this.payload.getElapsedTime()));
+        }
+
+        attachment.addField(this.payload.getBuildResult(), StringUtil.join(firstDetailLines, "\n"), false);
 
         StringBuilder sbCommits = new StringBuilder();
 
         List<Commit> commits = this.payload.getCommits();
 
-        boolean truncated = false;
-        int totalCommits = commits.size();
-        if (commits.size() > 5) {
-            commits = commits.subList(0, 5 > commits.size() ? commits.size() : 5);
-        }
+        if(showCommits) {
+            boolean truncated = false;
+            int totalCommits = commits.size();
+            if (commits.size() > maxCommitsToDisplay) {
+                commits = commits.subList(0, maxCommitsToDisplay > commits.size() ? commits.size() : 5);
+                truncated = true;
+            }
 
-        for (Commit commit : commits) {
-            String revision = commit.getRevision();
-            revision = revision == null ? "" : revision;
-            sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
-        }
+            for (Commit commit : commits) {
+                String revision = commit.getRevision();
+                revision = revision == null ? "" : revision;
+                sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
+            }
 
-        if (truncated) {
-            sbCommits.append(String.format("(+ %d more)\n", totalCommits - 5));
-        }
+            if (truncated) {
+                sbCommits.append(String.format("(+ %d more)\n", totalCommits - 5));
+            }
 
-        if (!commits.isEmpty()) {
-            attachment.addField("Commits", sbCommits.toString(), false);
+            if (!commits.isEmpty()) {
+                attachment.addField("Commits", sbCommits.toString(), false);
+            }
+        }
+        else {
+            List<String> committers = new ArrayList<String>();
+            for (Commit commit : commits) {
+                committers.add(commit.getUserName());
+            }
+
+            String committersString = StringUtil.join(", ", committers);
+
+            if (!commits.isEmpty()) {
+                attachment.addField("Changes By", committersString, false);
+            }
         }
 
         attachments.add(attachment);
@@ -537,7 +558,38 @@ public class SlackNotificationImpl implements SlackNotification {
         return response;
     }
 
+    @Override
+    public void setShowBuildAgent(Boolean showBuildAgent) {
+        this.showBuildAgent = showBuildAgent;
+    }
+
+    @Override
+    public void setShowElapsedBuildTime(Boolean showElapsedBuildTime) {
+        this.showElapsedBuildTime = showElapsedBuildTime;
+    }
+
+    @Override
+    public void setShowCommits(boolean showCommits) {
+        this.showCommits = showCommits;
+    }
+
+    @Override
+    public void setMaxCommitsToDisplay(int maxCommitsToDisplay) {
+        this.maxCommitsToDisplay = maxCommitsToDisplay;
+    }
+
     public boolean getIsApiToken() {
         return this.token == null || this.token.split("-").length > 1;
+    }
+
+    private String formatTime(long seconds){
+        if(seconds < 60){
+            return seconds + "s";
+        }
+        return String.format("%dm:%ds",
+                TimeUnit.SECONDS.toMinutes(seconds),
+                TimeUnit.SECONDS.toSeconds(seconds) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(seconds))
+        );
     }
 }

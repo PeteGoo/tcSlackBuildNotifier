@@ -62,6 +62,22 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
             {
                 tempConfig.setBotName(slackNotificationsElement.getAttributeValue("botname"));
             }
+            if(slackNotificationsElement.getAttribute("showBuildAgent") != null)
+            {
+                tempConfig.setShowBuildAgent(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showBuildAgent")));
+            }
+            if(slackNotificationsElement.getAttribute("showElapsedBuildTime") != null)
+            {
+                tempConfig.setShowElapsedBuildTime(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showElapsedBuildTime")));
+            }
+            if(slackNotificationsElement.getAttribute("showCommits") != null)
+            {
+                tempConfig.setShowCommits(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommits")));
+            }
+            if(slackNotificationsElement.getAttribute("maxCommitsToDisplay") != null)
+            {
+                tempConfig.setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue("maxCommitsToDisplay")));
+            }
 			Element extraInfoElement = slackNotificationsElement.getChild("info");
 	        if(extraInfoElement != null)
 	        {
@@ -177,6 +193,19 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         return this.slackNotificationMainConfig.getBotName();
     }
 
+
+    public Boolean getShowBuildAgent() {
+        return this.slackNotificationMainConfig.getShowBuildAgent();
+    }
+
+    public Boolean getShowElapsedBuildTime() {
+        return this.slackNotificationMainConfig.getShowElapsedBuildTime();
+    }
+
+    public boolean getShowCommits(){
+        return this.slackNotificationMainConfig.getShowCommits();
+    }
+
     public Boolean getSlackNotificationShowFurtherReading(){
     	return this.slackNotificationMainConfig.getSlackNotificationShowFurtherReading();
     }
@@ -189,4 +218,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 		return this.slackNotificationMainConfig.getProxyConfigForUrl(url);	}
 
 
+    public int getMaxCommitsToDisplay() {
+        return this.slackNotificationMainConfig.getMaxCommitsToDisplay();
+    }
 }

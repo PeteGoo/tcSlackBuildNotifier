@@ -79,6 +79,10 @@ public class SlackNotificationListener extends BuildServerAdapter {
 		slackNotification.setEnabled(slackNotificationConfig.getEnabled());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
 		slackNotification.setProxy(myMainSettings.getProxyConfigForUrl(slackNotificationConfig.getChannel()));
+        slackNotification.setShowBuildAgent(myMainSettings.getShowBuildAgent());
+        slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
+        slackNotification.setShowCommits(myMainSettings.getShowCommits());
+        slackNotification.setMaxCommitsToDisplay(myMainSettings.getMaxCommitsToDisplay());
 		Loggers.ACTIVITIES.debug("SlackNotificationListener :: SlackNotification proxy set to "
 				+ slackNotification.getProxyHost() + " for " + slackNotificationConfig.getChannel());
 	}

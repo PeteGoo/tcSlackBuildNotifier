@@ -1,6 +1,6 @@
 package slacknotifications.teamcity.settings;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 import java.io.IOException;
@@ -40,22 +40,54 @@ public class SlackNotificationMainSettingsTest {
         assertTrue(whms.getToken().equals(this.token));
         assertTrue(whms.getIconUrl().equals(this.iconUrl));
         assertTrue(whms.getBotName().equals(this.botName));
-	}
-	
-	private Element getFullConfigElement(){
-		SAXBuilder builder = new SAXBuilder();
-		builder.setIgnoringElementContentWhitespace(true);
-		try {
-			Document doc = builder.build("src/test/resources/main-config-full.xml");
-			return doc.getRootElement();
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+        assertTrue(whms.getShowBuildAgent());
+        assertTrue(whms.getShowElapsedBuildTime());
+        assertFalse(whms.getShowCommits());
+        assertEquals(15, whms.getMaxCommitsToDisplay());
 	}
 
+    @Test
+    public void TestEmptyDefaultsConfig(){
+        SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server);
+        whms.register();
+        whms.readFrom(getEmptyDefaultsConfigElement());
+        String proxy = whms.getProxyForUrl("http://something.somecompany.com");
+        SlackNotificationProxyConfig whpc = whms.getProxyConfigForUrl("http://something.somecompany.com");
+        assertTrue(proxy.equals(this.proxyHost));
+        assertTrue(whpc.getProxyHost().equals(this.proxyHost ));
+        assertTrue(whpc.getProxyPort().equals(this.proxyPort));
+        assertTrue(whms.getDefaultChannel().equals(this.defaultChannel));
+        assertTrue(whms.getTeamName().equals(this.teamName));
+        assertTrue(whms.getToken().equals(this.token));
+        assertTrue(whms.getIconUrl().equals(this.iconUrl));
+        assertTrue(whms.getBotName().equals(this.botName));
+        assertNull(whms.getShowBuildAgent());
+        assertNull(whms.getShowElapsedBuildTime());
+        assertTrue(whms.getShowCommits());
+        assertEquals(5, whms.getMaxCommitsToDisplay());
+    }
+
+    private Element getFullConfigElement(){
+        return getElement("src/test/resources/main-config-full.xml");
+    }
+
+    private Element getEmptyDefaultsConfigElement(){
+        return getElement("src/test/resources/main-config-empty-defaults.xml");
+    }
+
+    private Element getElement(String filePath){
+        SAXBuilder builder = new SAXBuilder();
+        builder.setIgnoringElementContentWhitespace(true);
+        try {
+            Document doc = builder.build(filePath);
+            return doc.getRootElement();
+        } catch (JDOMException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
