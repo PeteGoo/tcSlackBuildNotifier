@@ -174,8 +174,6 @@ public class SlackNotificationImpl implements SlackNotification {
             if (this.filename.length() > 0) {
                 File file = new File(this.filename);
                 throw new NotImplementedException();
-                //httppost.setRequestEntity(new InputStreamRequestEntity(new FileInputStream(file)));
-                //httppost.setContentChunked(true);
             }
             if (this.payload != null) {
 
