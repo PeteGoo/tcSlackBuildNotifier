@@ -24,7 +24,11 @@ Drop the following configuration into your main-config somewhere within the <ser
   teamName="<your team name>" 
   token="<Your user token available from the API page on slack>" 
   iconurl="https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity32.png" 
-  botname="Team City">
+  botname="Team City"
+  showBuildAgent="true"
+  showElapsedBuildTime="true"
+  showCommits="true"
+  maxCommitsToDisplay="5">
 </slacknotifications>
 ```
 
