@@ -263,7 +263,7 @@ public class SlackNotificationImpl implements SlackNotification {
         if(showBuildAgent == null || showBuildAgent){
             firstDetailLines.add("Agent: " + this.payload.getAgentName());
         }
-        if(showElapsedBuildTime == null || showElapsedBuildTime){
+        if(this.payload.getIsComplete() && (showElapsedBuildTime == null || showElapsedBuildTime)){
             firstDetailLines.add("Elapsed: " + formatTime(this.payload.getElapsedTime()));
         }
 

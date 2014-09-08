@@ -78,8 +78,9 @@ public class SlackNotificationPayloadContent {
     private String buildLink;
     private String color;
     private long elapsedTime;
+    private boolean isComplete;
 
-        public SlackNotificationPayloadContent(){
+    public SlackNotificationPayloadContent(){
 
         }
 
@@ -291,6 +292,7 @@ public class SlackNotificationPayloadContent {
 		private void setBuildResult(SRunningBuild sRunningBuild,
 				SFinishedBuild previousBuild, BuildStateEnum buildState) {
 
+
 			if (previousBuild != null){
 				if (previousBuild.isFinished()){ 
 					if (previousBuild.getStatusDescriptor().isSuccessful()){
@@ -304,6 +306,8 @@ public class SlackNotificationPayloadContent {
 			} else {
 				this.buildResultPrevious = BUILD_STATUS_UNKNOWN;
 			}
+
+            isComplete = buildState == BuildStateEnum.BUILD_FINISHED;
 
 			if (buildState == BuildStateEnum.BEFORE_BUILD_FINISHED || buildState == BuildStateEnum.BUILD_FINISHED){ 
 				if (sRunningBuild.getStatusDescriptor().isSuccessful()){
@@ -588,5 +592,13 @@ public class SlackNotificationPayloadContent {
 
     public void setCommits(List<Commit> commits) {
         this.commits = commits;
+    }
+
+    public boolean getIsComplete() {
+        return isComplete;
+    }
+
+    public void setIsComplete(boolean isComplete) {
+        this.isComplete = isComplete;
     }
 }
