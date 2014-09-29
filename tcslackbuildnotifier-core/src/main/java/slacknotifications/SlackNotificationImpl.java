@@ -257,7 +257,7 @@ public class SlackNotificationImpl implements SlackNotification {
 
     private List<Attachment> getAttachments() {
         List<Attachment> attachments = new ArrayList<Attachment>();
-        Attachment attachment = new Attachment(this.payload.getBuildResult(), null, null, this.payload.getColor());
+        Attachment attachment = new Attachment(this.payload.getBuildName(), null, null, this.payload.getColor());
 
         List<String> firstDetailLines = new ArrayList<String>();
         if(showBuildAgent == null || showBuildAgent){
@@ -267,7 +267,7 @@ public class SlackNotificationImpl implements SlackNotification {
             firstDetailLines.add("Elapsed: " + formatTime(this.payload.getElapsedTime()));
         }
 
-        attachment.addField(this.payload.getBuildResult(), StringUtil.join(firstDetailLines, "\n"), false);
+        attachment.addField(this.payload.getBuildName(), StringUtil.join(firstDetailLines, "\n"), false);
 
         StringBuilder sbCommits = new StringBuilder();
 

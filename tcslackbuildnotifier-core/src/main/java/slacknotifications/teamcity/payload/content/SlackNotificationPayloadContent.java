@@ -215,7 +215,7 @@ public class SlackNotificationPayloadContent {
         }
         setBuildStatusUrl(server.getRootUrl() + "/viewLog.html?buildTypeId=" + getBuildTypeId() + "&buildId=" + getBuildId());
         String branchSuffix = (getBranchIsDefault() != null && getBranchIsDefault()) || getBranchDisplayName() == null ? "" : (" [" + getBranchDisplayName() + "]");
-        setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + sRunningBuild.getBuildType().getFullName().toString() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
+        setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName().toString() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
         setBuildStateDescription(buildState.getDescriptionSuffix());
         setRootUrl(server.getRootUrl());
         setBuildStatusHtml(buildState, templates.get(SlackNotificationPayloadDefaultTemplates.HTML_BUILDSTATUS_TEMPLATE));
