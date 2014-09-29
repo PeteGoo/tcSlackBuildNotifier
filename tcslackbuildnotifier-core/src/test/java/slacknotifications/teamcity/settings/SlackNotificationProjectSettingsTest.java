@@ -26,5 +26,9 @@ public class SlackNotificationProjectSettingsTest {
 		psf.createProjectSettings("project1");
 	}
 
+	@Test
+	public void TestSettings(){
+
+	}
 	
 }
