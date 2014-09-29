@@ -5,7 +5,7 @@
 	<artifactId>tcslackbuildnotifier</artifactId>
 	<properties>
     	<majorVersion>1.0</majorVersion>
-    	<minorVersion>1</minorVersion>
+    	<minorVersion>2</minorVersion>
     	<currentVersion>${majorVersion}.${minorVersion}</currentVersion>
     </properties>
 	<version>${currentVersion}</version>
