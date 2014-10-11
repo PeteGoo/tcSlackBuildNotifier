@@ -129,6 +129,12 @@
 														</tbody></table>
 													</td>
 												</tr>
+                                                <tr style="border:none;">
+													<td>Mention @channel on first failure:</td>
+													<td style="padding-left:3px;" colspan=2>
+													    <input id="mentionChannelEnabled" type=checkbox name="mentionChannelEnabled"/>
+                                                    </td>
+												</tr>
 					    					</table>     
 					    					
 					    			</div><!--hookPane -->

@@ -132,7 +132,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
         }    	
     }
 
-	public void updateSlackNotification(String ProjectId, String slackNotificationId, String channel, Boolean enabled, BuildState buildState, boolean buildTypeAll, boolean buildSubProjects, Set<String> buildTypesEnabled) {
+	public void updateSlackNotification(String ProjectId, String slackNotificationId, String channel, Boolean enabled, BuildState buildState, boolean buildTypeAll, boolean buildSubProjects, Set<String> buildTypesEnabled, boolean mentionChannelEnabled) {
         if(this.slackNotificationsConfigs != null)
         {
         	updateSuccess = false;
@@ -142,6 +142,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
                 if (whc.getUniqueKey().equals(slackNotificationId)){
                 	whc.setEnabled(enabled);
                 	whc.setChannel(channel);
+                    whc.setMentionChannelEnabled(mentionChannelEnabled);
                 	whc.setBuildStates(buildState);
                 	whc.enableForSubProjects(buildSubProjects);
                 	whc.enableForAllBuildsInProject(buildTypeAll);
@@ -158,8 +159,8 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
         }    			
 	}
 
-	public void addNewSlackNotification(String ProjectId, String channel, String teamName, Boolean enabled, BuildState buildState, boolean buildTypeAll, boolean buildTypeSubProjects, Set<String> buildTypesEnabled) {
-		this.slackNotificationsConfigs.add(new SlackNotificationConfig(channel, teamName, enabled, buildState, buildTypeAll, buildTypeSubProjects, buildTypesEnabled));
+	public void addNewSlackNotification(String ProjectId, String channel, String teamName, Boolean enabled, BuildState buildState, boolean buildTypeAll, boolean buildTypeSubProjects, Set<String> buildTypesEnabled, boolean mentionChannelEnabled) {
+		this.slackNotificationsConfigs.add(new SlackNotificationConfig(channel, teamName, enabled, buildState, buildTypeAll, buildTypeSubProjects, buildTypesEnabled, mentionChannelEnabled));
 		Loggers.SERVER.debug(NAME + ":addNewSlackNotification :: Adding slack notifications to " + ProjectId + " with channel " + channel);
 		this.updateSuccess = true;
 	}

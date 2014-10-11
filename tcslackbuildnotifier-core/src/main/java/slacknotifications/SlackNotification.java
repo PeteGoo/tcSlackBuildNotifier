@@ -103,4 +103,6 @@ public interface SlackNotification {
     public abstract void setShowCommits(boolean showCommits);
 
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
+
+    public abstract void setMentionChannelEnabled(boolean mentionChannelEnabled);
 }

@@ -40,8 +40,9 @@ public class SlackNotificationConfig {
 	private Boolean allBuildTypesEnabled = true;
 	private Boolean subProjectsEnabled = true;
 	private Set<String> enabledBuildTypesSet = new HashSet<String>();
-	
-	@SuppressWarnings("unchecked")
+    private boolean mentionChannelEnabled;
+
+    @SuppressWarnings("unchecked")
 	public SlackNotificationConfig(Element e) {
 		
 		int Min = 1000000, Max = 1000000000;
@@ -68,6 +69,10 @@ public class SlackNotificationConfig {
 		if (e.getAttribute("key") != null){
 			this.setUniqueKey(e.getAttributeValue("key"));
 		}
+
+        if (e.getAttribute("mention-channel-enabled") != null){
+            this.setMentionChannelEnabled(Boolean.parseBoolean(e.getAttributeValue("mention-channel-enabled")));
+        }
 		
 		if(e.getChild("states") != null){
 			Element eStates = e.getChild("states");
@@ -129,41 +134,45 @@ public class SlackNotificationConfig {
 		}
 		
 	}
-	
-	/**
-	 * SlackNotificationsConfig constructor. Unchecked version. Use with caution!!
-	 * This constructor does not check if the payloadFormat is valid.
-	 * It will still allow you to add the format, but the slacknotifications might not
-	 * fire at runtime if the payloadFormat configured is not available.
-	 *  
-	 * @param channel
-	 * @param enabled
-	 * @param states
-	 */
-	public SlackNotificationConfig(String channel, String teamName, Boolean enabled, BuildState states, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes){
-		int Min = 1000000, Max = 1000000000;
-		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
-		this.uniqueKey = Rand.toString();
-		this.templates = new TreeMap<String,CustomMessageTemplate>();
-		this.setChannel(channel);
+
+    /**
+     * SlackNotificationsConfig constructor. Unchecked version. Use with caution!!
+     * This constructor does not check if the payloadFormat is valid.
+     * It will still allow you to add the format, but the slacknotifications might not
+     * fire at runtime if the payloadFormat configured is not available.
+     *
+     * @param channel
+     * @param enabled
+     * @param states
+     */
+    public SlackNotificationConfig(String channel, String teamName, Boolean enabled, BuildState states, boolean buildTypeAllEnabled, boolean buildTypeSubProjects, Set<String> enabledBuildTypes, boolean mentionChannelEnabled) {
+        int Min = 1000000, Max = 1000000000;
+        Integer Rand = Min + (int) (Math.random() * ((Max - Min) + 1));
+        this.uniqueKey = Rand.toString();
+        this.templates = new TreeMap<String, CustomMessageTemplate>();
+        this.setChannel(channel);
         this.setTeamName(teamName);
-		this.setEnabled(enabled);
-		this.setBuildStates(states);
-		this.subProjectsEnabled = buildTypeSubProjects;
-		this.allBuildTypesEnabled = buildTypeAllEnabled;
-		if (!this.allBuildTypesEnabled){
-			this.enabledBuildTypesSet = enabledBuildTypes;
-		}
-	}
+        this.setEnabled(enabled);
+        this.setBuildStates(states);
+        this.subProjectsEnabled = buildTypeSubProjects;
+        this.allBuildTypesEnabled = buildTypeAllEnabled;
+        this.setMentionChannelEnabled(mentionChannelEnabled);
+
+        if (!this.allBuildTypesEnabled) {
+            this.enabledBuildTypesSet = enabledBuildTypes;
+        }
+    }
 	
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
 		el.setAttribute("channel", this.getChannel());
+
         if(StringUtil.isNotEmpty(this.getTeamName())) {
             el.setAttribute("teamName", this.getTeamName());
         }
 		el.setAttribute("enabled", String.valueOf(this.enabled));
-		
+        el.setAttribute("mention-channel-enabled", String.valueOf(this.getMentionChannelEnabled()));
+
 		Element statesEl = new Element("states");
 		for (BuildStateEnum state : states.getStateSet()){
 			Element e = new Element("state");
@@ -425,6 +434,13 @@ public class SlackNotificationConfig {
 			}
 		}
 		return mT;
-	}	
-	
+	}
+
+    public void setMentionChannelEnabled(boolean mentionChannelEnabled) {
+        this.mentionChannelEnabled = mentionChannelEnabled;
+    }
+
+    public boolean getMentionChannelEnabled() {
+        return mentionChannelEnabled;
+    }
 }

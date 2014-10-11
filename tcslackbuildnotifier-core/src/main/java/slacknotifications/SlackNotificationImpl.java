@@ -60,6 +60,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
     private int maxCommitsToDisplay;
+    private boolean mentionChannelEnabled;
 
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
@@ -306,6 +307,10 @@ public class SlackNotificationImpl implements SlackNotification {
             if (!commits.isEmpty()) {
                 attachment.addField("Changes By", committersString, false);
             }
+        }
+
+        if(mentionChannelEnabled && payload.getIsFirstFailedBuild()){
+            attachment.addField("", ":arrow_up: <!channel>", true);
         }
 
         attachments.add(attachment);
@@ -574,6 +579,11 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setMaxCommitsToDisplay(int maxCommitsToDisplay) {
         this.maxCommitsToDisplay = maxCommitsToDisplay;
+    }
+
+    @Override
+    public void setMentionChannelEnabled(boolean mentionChannelEnabled) {
+        this.mentionChannelEnabled = mentionChannelEnabled;
     }
 
     public boolean getIsApiToken() {

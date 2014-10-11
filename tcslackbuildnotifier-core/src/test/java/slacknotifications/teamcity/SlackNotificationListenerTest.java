@@ -127,7 +127,7 @@ public class SlackNotificationListenerTest {
 	@Test
 	public void testBuildStartedSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState().setAllEnabled();
-		projSettings.addNewSlackNotification("project1", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("project1", "my-channel", "myteam", true, state, true, true, new HashSet<String>(), true);
 		when(slacknotification.isEnabled()).thenReturn(state.allEnabled());
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
@@ -138,7 +138,7 @@ public class SlackNotificationListenerTest {
 	@Test
 	public void testBuildFinishedSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState().setAllEnabled();
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state , true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state , true, true, new HashSet<String>(), true);
 		when(slacknotification.isEnabled()).thenReturn(state.allEnabled());
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
@@ -152,7 +152,7 @@ public class SlackNotificationListenerTest {
 		state.enable(BuildStateEnum.BUILD_FIXED);
 		state.enable(BuildStateEnum.BUILD_FINISHED);
 		state.enable(BuildStateEnum.BUILD_SUCCESSFUL);
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>(), true);
 		when(slacknotification.isEnabled()).thenReturn(state.enabled(BuildStateEnum.BUILD_FIXED));
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedFailedBuilds);
 		
@@ -164,7 +164,7 @@ public class SlackNotificationListenerTest {
 	public void testBuildFinishedSRunningBuildSuccessAfterSuccess() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState();
 		state.enable(BuildStateEnum.BUILD_FIXED);
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>(), true);
 		when(slacknotification.isEnabled()).thenReturn(state.enabled(BuildStateEnum.BUILD_FIXED));
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
@@ -175,7 +175,7 @@ public class SlackNotificationListenerTest {
 	@Test
 	public void testBuildInterruptedSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState().setAllEnabled();
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>(), true);
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
 		whl.buildInterrupted(sRunningBuild);
@@ -186,7 +186,7 @@ public class SlackNotificationListenerTest {
 	public void testBeforeBuildFinishSRunningBuild() throws FileNotFoundException, IOException {
 		BuildState state = new BuildState();
 		state.enable(BuildStateEnum.BEFORE_BUILD_FINISHED);
-		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>());
+		projSettings.addNewSlackNotification("1234", "my-channel", "myteam", true, state, true, true, new HashSet<String>(), true);
 		when(buildHistory.getEntriesBefore(sRunningBuild, false)).thenReturn(finishedSuccessfulBuilds);
 		
 		whl.beforeBuildFinish(sRunningBuild);

@@ -27,7 +27,7 @@ public class ProjectSlackNotificationsBean {
 		bean.slackNotificationList = new LinkedHashMap<String, SlacknotificationConfigAndBuildTypeListHolder>();
 
 		/* Create a "new" config with blank stuff so that clicking the "new" button has a bunch of defaults to load in */
-		SlackNotificationConfig newBlankConfig = new SlackNotificationConfig("", "", true, new BuildState().setAllEnabled(), true, true, null);
+		SlackNotificationConfig newBlankConfig = new SlackNotificationConfig("", "", true, new BuildState().setAllEnabled(), true, true, null, true);
 		newBlankConfig.setUniqueKey("new");
 		/* And add it to the list */
 		addSlackNotificationConfigHolder(bean, projectBuildTypes, newBlankConfig);
@@ -51,7 +51,7 @@ public class ProjectSlackNotificationsBean {
 		bean.slackNotificationList = new LinkedHashMap<String, SlacknotificationConfigAndBuildTypeListHolder>();
 		
 		/* Create a "new" config with blank stuff so that clicking the "new" button has a bunch of defaults to load in */
-		SlackNotificationConfig newBlankConfig = new SlackNotificationConfig("", "", true, new BuildState().setAllEnabled(), false, false, enabledBuildTypes);
+		SlackNotificationConfig newBlankConfig = new SlackNotificationConfig("", "", true, new BuildState().setAllEnabled(), false, false, enabledBuildTypes, true);
 		newBlankConfig.setUniqueKey("new");
 		/* And add it to the list */
 		addSlackNotificationConfigHolder(bean, projectBuildTypes, newBlankConfig);

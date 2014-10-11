@@ -53,6 +53,7 @@ public class SlackNotificationPayloadContent {
     String buildStateDescription;
     String progressSummary;
     List<Commit> commits;
+    private boolean isFirstFailedBuild;
 
     Boolean branchIsDefault;
 
@@ -325,6 +326,7 @@ public class SlackNotificationPayloadContent {
 						this.buildResultDelta = BUILD_STATUS_NO_CHANGE;
 					} else {
 						this.buildResultDelta = BUILD_STATUS_BROKEN;
+                        this.setFirstFailedBuild(true);
 					}
 				}
 			} else {
@@ -600,5 +602,13 @@ public class SlackNotificationPayloadContent {
 
     public void setIsComplete(boolean isComplete) {
         this.isComplete = isComplete;
+    }
+
+    public boolean getIsFirstFailedBuild() {
+        return isFirstFailedBuild;
+    }
+
+    public void setFirstFailedBuild(boolean isFirstFailedBuild) {
+        this.isFirstFailedBuild = isFirstFailedBuild;
     }
 }
