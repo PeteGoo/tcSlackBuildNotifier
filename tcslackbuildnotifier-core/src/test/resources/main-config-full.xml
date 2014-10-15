@@ -9,6 +9,7 @@
           showBuildAgent="true"
           showElapsedBuildTime="true"
           showCommits="false"
+          showCommitters="false"
           maxCommitsToDisplay="15">
     <proxy host="myproxy.mycompany.com" port="8080">
       <noproxy url=".mycompany.com" />

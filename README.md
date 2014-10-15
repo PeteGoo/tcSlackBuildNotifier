@@ -28,6 +28,7 @@ Drop the following configuration into your main-config somewhere within the <ser
   showBuildAgent="true"
   showElapsedBuildTime="true"
   showCommits="true"
+  showCommitters="false"
   maxCommitsToDisplay="5">
 </slacknotifications>
 ```

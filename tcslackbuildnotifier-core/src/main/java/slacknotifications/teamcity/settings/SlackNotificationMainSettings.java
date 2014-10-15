@@ -74,6 +74,10 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
             {
                 tempConfig.setShowCommits(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommits")));
             }
+            if(slackNotificationsElement.getAttribute("showCommitters") != null)
+            {
+                tempConfig.setShowCommitters(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommitters")));
+            }
             if(slackNotificationsElement.getAttribute("maxCommitsToDisplay") != null)
             {
                 tempConfig.setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue("maxCommitsToDisplay")));
@@ -204,6 +208,10 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
     public boolean getShowCommits(){
         return this.slackNotificationMainConfig.getShowCommits();
+    }
+	
+    public boolean getShowCommitters(){
+        return this.slackNotificationMainConfig.getShowCommitters();
     }
 
     public Boolean getSlackNotificationShowFurtherReading(){
