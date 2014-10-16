@@ -34,6 +34,7 @@ public class SlackNotificationMainConfig {
     private Boolean showBuildAgent;
     private Boolean showElapsedBuildTime;
     private boolean showCommits = true;
+    private boolean showCommitters = true;
     private int maxCommitsToDisplay = 5;
 
 
@@ -322,13 +323,25 @@ public class SlackNotificationMainConfig {
     public boolean getShowCommits() {
         return showCommits;
     }
-
+	
     public boolean isShowCommits() {
         return showCommits;
     }
 
     public void setShowCommits(boolean showCommits) {
         this.showCommits = showCommits;
+    }
+	
+    public boolean getShowCommitters() {
+        return showCommitters;
+    }
+	
+    public boolean isShowCommitters() {
+        return showCommitters;
+    }
+
+    public void setShowCommitters(boolean showCommitters) {
+        this.showCommitters = showCommitters;
     }
 
     public int getMaxCommitsToDisplay() {

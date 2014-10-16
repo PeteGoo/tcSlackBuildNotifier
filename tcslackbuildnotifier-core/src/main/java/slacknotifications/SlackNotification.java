@@ -101,6 +101,8 @@ public interface SlackNotification {
     public abstract void setShowElapsedBuildTime(Boolean showElapsedBuildTime);
 
     public abstract void setShowCommits(boolean showCommits);
+	
+    public abstract void setShowCommitters(boolean showCommitters);
 
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 

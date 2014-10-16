@@ -59,6 +59,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showBuildAgent;
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
+    private boolean showCommitters;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
 
@@ -296,7 +297,7 @@ public class SlackNotificationImpl implements SlackNotification {
                 attachment.addField("Commits", sbCommits.toString(), false);
             }
         }
-        else {
+        if(showCommitters) {
             List<String> committers = new ArrayList<String>();
             for (Commit commit : commits) {
                 committers.add(commit.getUserName());
@@ -574,6 +575,11 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setShowCommits(boolean showCommits) {
         this.showCommits = showCommits;
+    }
+	
+    @Override
+    public void setShowCommitters(boolean showCommitters) {
+        this.showCommitters = showCommitters;
     }
 
     @Override
