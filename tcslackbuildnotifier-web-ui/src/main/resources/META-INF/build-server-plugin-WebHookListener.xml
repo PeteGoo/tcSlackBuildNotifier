@@ -12,7 +12,12 @@
 		class="slacknotifications.teamcity.TestListener"
   		init-method="register" 
   		/-->
-  
+
+	<bean id="slackNotificationNotificator"
+		  class="slacknotifications.teamcity.SlackNotificator"
+		  init-method="register"
+			/>
+
 	<bean id="slackNotificationProjectTabExtension"
         class="slacknotifications.teamcity.extension.SlackNotificationProjectTabExtension"
         init-method="register" 
