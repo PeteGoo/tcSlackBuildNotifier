@@ -26,7 +26,6 @@ import org.jdom.Element;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.TeamCityIdResolver;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadDefaultTemplates;
 import slacknotifications.teamcity.settings.converter.SlackNotificationBuildStateConverter;
 
 
@@ -424,16 +423,6 @@ public class SlackNotificationConfig {
 	
 	public void enableBuildInProject(String buildTypeId) {
 		this.enabledBuildTypesSet.add(buildTypeId);
-	}
-
-	public Map<String,String> getEnabledTemplates() {
-		Map<String,String> mT = SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates();
-		for (CustomMessageTemplate t : templates.values()){
-			if (t.enabled){
-				mT.put(t.templateType, t.templateText);
-			}
-		}
-		return mT;
 	}
 
     public void setMentionChannelEnabled(boolean mentionChannelEnabled) {

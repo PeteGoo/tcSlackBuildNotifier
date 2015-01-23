@@ -16,7 +16,6 @@ import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.MockSBuildType;
 import slacknotifications.teamcity.MockSProject;
 import slacknotifications.teamcity.MockSRunningBuild;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadDefaultTemplates;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 public class VariableMessageBuilderTest {
@@ -35,7 +34,7 @@ public class VariableMessageBuilderTest {
 	
 	@Test
 	public void testBuild() {
-		SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(sBuildServer, sRunningBuild, previousSuccessfulBuild, BuildStateEnum.BEFORE_BUILD_FINISHED, SlackNotificationPayloadDefaultTemplates.getDefaultEnabledPayloadTemplates());
+		SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(sBuildServer, sRunningBuild, previousSuccessfulBuild, BuildStateEnum.BEFORE_BUILD_FINISHED);
 		VariableMessageBuilder builder = VariableMessageBuilder.create("This is a test ${buildFullName}", new SlackNotificationBeanUtilsVariableResolver(content));
 		System.out.println(builder.build());
 		System.out.println(content.getBuildFullName());

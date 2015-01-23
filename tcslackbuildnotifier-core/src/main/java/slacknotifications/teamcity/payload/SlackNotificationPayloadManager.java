@@ -24,33 +24,28 @@ public class SlackNotificationPayloadManager {
 
     @Deprecated
     public String buildChangedStatus(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                     Status oldStatus, Status newStatus,
-                                     Map<String,String> templates) {
+                                     Status oldStatus, Status newStatus) {
         return "";
     }
 
-    public SlackNotificationPayloadContent beforeBuildFinish(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                    Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BEFORE_BUILD_FINISHED, templates);
+    public SlackNotificationPayloadContent beforeBuildFinish(SRunningBuild runningBuild, SFinishedBuild previousBuild) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BEFORE_BUILD_FINISHED);
         return content;
     }
 
 
-    public SlackNotificationPayloadContent buildFinished(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_FINISHED, templates);
+    public SlackNotificationPayloadContent buildFinished(SRunningBuild runningBuild, SFinishedBuild previousBuild) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_FINISHED);
         return content;
     }
 
-    public SlackNotificationPayloadContent buildInterrupted(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                   Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_INTERRUPTED, templates);
+    public SlackNotificationPayloadContent buildInterrupted(SRunningBuild runningBuild, SFinishedBuild previousBuild) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_INTERRUPTED);
         return content;
     }
 
-    public SlackNotificationPayloadContent buildStarted(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                               Map<String,String> templates) {
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_STARTED, templates);
+    public SlackNotificationPayloadContent buildStarted(SRunningBuild runningBuild, SFinishedBuild previousBuild) {
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BUILD_STARTED);
         return content;
     }
 
@@ -58,10 +53,9 @@ public class SlackNotificationPayloadManager {
      */
     public SlackNotificationPayloadContent responsibleChanged(SBuildType buildType,
                                      ResponsibilityInfo responsibilityInfoOld,
-                                     ResponsibilityInfo responsibilityInfoNew, boolean isUserAction,
-                                     Map<String,String> templates) {
+                                     ResponsibilityInfo responsibilityInfoNew, boolean isUserAction) {
 
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED, templates);
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED);
         String oldUser = "Nobody";
         String newUser = "Nobody";
         try {
@@ -97,10 +91,9 @@ public class SlackNotificationPayloadManager {
      */
     public SlackNotificationPayloadContent responsibleChanged(SBuildType buildType,
                                      ResponsibilityEntry responsibilityEntryOld,
-                                     ResponsibilityEntry responsibilityEntryNew,
-                                     Map<String,String> templates) {
+                                     ResponsibilityEntry responsibilityEntryNew) {
 
-        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED, templates);
+        SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED);
         String oldUser = "Nobody";
         String newUser = "Nobody";
         if (responsibilityEntryOld.getState() != ResponsibilityEntry.State.NONE) {
@@ -135,14 +128,14 @@ public class SlackNotificationPayloadManager {
     public SlackNotificationPayloadContent responsibleChanged(SProject project,
                                      TestNameResponsibilityEntry oldTestNameResponsibilityEntry,
                                      TestNameResponsibilityEntry newTestNameResponsibilityEntry,
-                                     boolean isUserAction, Map<String,String> templates) {
+                                     boolean isUserAction) {
         // TODO Auto-generated method stub
         return null;
     }
 
     public SlackNotificationPayloadContent responsibleChanged(SProject project,
                                      Collection<TestName> testNames, ResponsibilityEntry entry,
-                                     boolean isUserAction, Map<String,String> templates) {
+                                     boolean isUserAction) {
         // TODO Auto-generated method stub
         return null;
     }

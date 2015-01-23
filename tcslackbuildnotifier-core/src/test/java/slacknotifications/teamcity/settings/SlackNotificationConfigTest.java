@@ -10,7 +10,6 @@ import org.jdom.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
 
-import slacknotifications.teamcity.payload.SlackNotificationPayloadDefaultTemplates;
 import slacknotifications.testframework.util.ConfigLoaderUtil;
 
 public class SlackNotificationConfigTest {
@@ -37,11 +36,6 @@ public class SlackNotificationConfigTest {
 //		assertTrue("One and only one slacknotifications expected when loading test config from file : " + f.getName(), fileAsElement.getChild("slackNotifications").getChildren("slacknotifications").size() == 1);
 //		return new SlackNotificationConfig((Element) fileAsElement.getChild("slackNotifications").getChildren("slacknotifications").get(0));
 //	}
-
-	@Test
-	public void printDefaultHtmlMessage(){
-		System.out.println(SlackNotificationPayloadDefaultTemplates.DEFAULT_HTML_BUILDSTATUS_TEMPLATE);
-	}
 
 	@Test
 	public void testGetEnabled() {

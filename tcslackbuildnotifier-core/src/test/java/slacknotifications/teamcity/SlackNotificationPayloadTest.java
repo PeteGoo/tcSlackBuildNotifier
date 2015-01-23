@@ -18,7 +18,6 @@ import org.springframework.util.Assert;
 import slacknotifications.*;
 import slacknotifications.SlackNotification;
 import slacknotifications.SlackNotificationImpl;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadDefaultTemplates;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;

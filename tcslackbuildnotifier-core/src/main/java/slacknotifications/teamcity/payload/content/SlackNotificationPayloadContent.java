@@ -17,7 +17,6 @@ import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.TeamCityIdResolver;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadDefaultTemplates;
 import slacknotifications.teamcity.payload.util.SlackNotificationBeanUtilsVariableResolver;
 import slacknotifications.teamcity.payload.util.VariableMessageBuilder;
 
@@ -91,8 +90,8 @@ public class SlackNotificationPayloadContent {
 		 * @param buildType
 		 * @param buildState
 		 */
-		public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState, Map<String, String> templates) {
-			populateCommonContent(server, buildType, buildState, templates);
+		public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState) {
+			populateCommonContent(server, buildType, buildState);
 		}
 
 		/**
@@ -103,12 +102,11 @@ public class SlackNotificationPayloadContent {
 		 * @param buildState
 		 */
 		public SlackNotificationPayloadContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
-                                               BuildStateEnum buildState,
-                                               Map<String, String> templates) {
+                                               BuildStateEnum buildState) {
 
             this.commits = new ArrayList<Commit>();
-            populateCommonContent(server, sRunningBuild, previousBuild, buildState, templates);
-    		populateMessageAndText(sRunningBuild, buildState, templates);
+            populateCommonContent(server, sRunningBuild, previousBuild, buildState);
+    		populateMessageAndText(sRunningBuild, buildState);
             populateCommits(sRunningBuild);
     		populateArtifacts(sRunningBuild);
 
@@ -138,7 +136,7 @@ public class SlackNotificationPayloadContent {
 		 * @param buildType
 		 * @param state
 		 */
-		private void populateCommonContent(SBuildServer server, SBuildType buildType, BuildStateEnum state, Map<String,String> templates) {
+		private void populateCommonContent(SBuildServer server, SBuildType buildType, BuildStateEnum state) {
 			setNotifyType(state.getShortName());
 			setBuildRunners(buildType.getBuildRunners());
 			setBuildFullName(buildType.getFullName().toString());
@@ -156,7 +154,7 @@ public class SlackNotificationPayloadContent {
 		}
 		
 		private void populateMessageAndText(SRunningBuild sRunningBuild,
-				BuildStateEnum state, Map<String,String> templates) {
+				BuildStateEnum state) {
 			// Message is a long form message, for on webpages or in email.
     		setMessage("Build " + getBuildDescriptionWithLinkSyntax()
     				+ " has " + state.getDescriptionSuffix() + ". This is build number " + sRunningBuild.getBuildNumber()
@@ -180,7 +178,7 @@ public class SlackNotificationPayloadContent {
      * @param buildState
      */
     private void populateCommonContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
-                                       BuildStateEnum buildState, Map<String, String> templates) {
+                                       BuildStateEnum buildState) {
         setBuildStatus(sRunningBuild.getStatusDescriptor().getText());
         setBuildResult(sRunningBuild, previousBuild, buildState);
         setNotifyType(buildState.getShortName());
@@ -219,7 +217,6 @@ public class SlackNotificationPayloadContent {
         setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName().toString() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
         setBuildStateDescription(buildState.getDescriptionSuffix());
         setRootUrl(server.getRootUrl());
-        setBuildStatusHtml(buildState, templates.get(SlackNotificationPayloadDefaultTemplates.HTML_BUILDSTATUS_TEMPLATE));
     }
 		
 		
@@ -511,21 +508,6 @@ public class SlackNotificationPayloadContent {
 			this.buildStateDescription = buildStateDescription;
 		}
 
-		public String getBuildStatusHtml() {
-			return buildStatusHtml;
-		}
-
-		public void setBuildStatusHtml(String buildStatusHtml) {
-			this.buildStatusHtml = buildStatusHtml;
-		}
-
-		
-		private void setBuildStatusHtml(BuildStateEnum buildState, final String htmlStatusTemplate) {
-			
-			VariableMessageBuilder builder = VariableMessageBuilder.create(htmlStatusTemplate, new SlackNotificationBeanUtilsVariableResolver(this));
-			this.buildStatusHtml = builder.build();
-		}		
-		
 		public String getComment() {
 			return comment;
 		}
