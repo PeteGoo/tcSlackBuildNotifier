@@ -288,25 +288,20 @@
       </div>
     <div id=sidebarAdmin>
       <div class=configurationSection>
-      	<h2>SlackNotification Information</h2>
-          <p>SlackNotifications are simply HTTP POST requests or "callbacks" triggered by events. They allow one web application (in this case TeamCity) to notify another web app of events.</p>
-          <p>When an event occurs, the tcSlackNotifications plugin will submit message to the Slack channel configured. </p>
+      	<h2>Slack Notification Information</h2>
+          <p>Slack notifications appear in your slack channels when builds are started and/or completed. </p>
 
 			<c:choose>
 				<c:when test="${ShowFurtherReading == 'ALL'}">
 				          <p>Further Reading:
 				          <ul>${moreInfoText}
-				          	<li><a href="http://blog.petegoo.com/">tcSlackNotifications plugin</a></li>
-				          	<li><a href="http://blog.slacknotifications.org/">Jeff Lindsay's SlackNotifications blog</a></li>
-				          	<li><a href="http://www.postbin.org/">PostBin</a></li>
+				          	<li><a href="https://github.com/PeteGoo/tcSlackBuildNotifier">tcSlackBuildNotifier plugin</a></li>
 				          </ul>	
 				</c:when>
 		
 				<c:when test="${ShowFurtherReading == 'DEFAULT'}">
 				          <p>Further Reading:
-				          <ul><li><a href="http://blog.petegoo.com/">tcSlackNotifications plugin</a></li>
-				          	<li><a href="http://blog.slacknotifications.org/">Jeff Lindsay's SlackNotifications blog</a></li>
-				          	<li><a href="http://www.postbin.org/">PostBin</a></li>
+				          <li><a href="https://github.com/PeteGoo/tcSlackBuildNotifier">tcSlackBuildNotifier plugin</a></li>
 				          </ul>	
 				</c:when>
 		
