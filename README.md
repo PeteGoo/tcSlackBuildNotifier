@@ -32,8 +32,9 @@ Drop the following configuration into your main-config somewhere within the <ser
   maxCommitsToDisplay="5">
 </slacknotifications>
 ```
-
-The user token is available when you got to https://api.slack.com while logged in to your Slack instance. Under "authentication" you should see a token displayed like below.
+- *your default channel* is the channel with the # in front of it e.g. #general
+- *your team name* is the team e.g. mycoolteam NOT mycoolteam.slack.com
+- The user token is available when you got to https://api.slack.com/web while logged in to your Slack instance. Under "authentication" you should see a token displayed like below.
 
 ![Sample Auth Token](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/SlackToken.png)
 
@@ -42,3 +43,5 @@ The user token is available when you got to https://api.slack.com while logged i
 From the Slack tab on the Project or Build Configuration page, add a new Slack Notification and you're away!
 
 ![Sample Build Configuration](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-slack-config.png)
+
+- Remember to put the # in front of the channel name if applicable.
