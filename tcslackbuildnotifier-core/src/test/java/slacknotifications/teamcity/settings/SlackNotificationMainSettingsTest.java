@@ -13,11 +13,15 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import slacknotifications.SlackNotificationProxyConfig;
 
+import java.io.File;
 import org.apache.http.auth.Credentials;
+
 
 public class SlackNotificationMainSettingsTest {
 	SBuildServer server = mock(SBuildServer.class);
@@ -29,7 +33,21 @@ public class SlackNotificationMainSettingsTest {
 	String iconUrl = "http://www.myicon.com/icon.gif";
     String botName = "Team City";
 
-	@Test
+    @After
+    @Before
+    public void deleteSlackConfigFile(){
+        DeleteConfigFiles();
+    }
+
+    private void DeleteConfigFiles() {
+        File outputFile = new File("slack", "slack-config.xml");
+        outputFile.delete();
+
+        File outputDir = new File("slack");
+        outputDir.delete();
+    }
+
+    @Test
 	public void TestFullConfig(){
         String expectedConfigDirectory = ".";
         ServerPaths serverPaths = mock(ServerPaths.class);
