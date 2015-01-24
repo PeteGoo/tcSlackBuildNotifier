@@ -10,6 +10,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import slacknotifications.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -19,11 +23,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-
 public class SlackNotificationSettingsTest {
 
 	@After
@@ -31,8 +30,8 @@ public class SlackNotificationSettingsTest {
 	public void deleteSlackConfigFile(){
 		DeleteConfigFiles();
 	}
-
-	private void DeleteConfigFiles() {
+	
+    private void DeleteConfigFiles() {
 		File outputFile = new File("slack", "slack-config.xml");
 		outputFile.delete();
 
