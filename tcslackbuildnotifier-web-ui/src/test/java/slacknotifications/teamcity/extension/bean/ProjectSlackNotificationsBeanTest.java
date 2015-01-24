@@ -1,16 +1,15 @@
 package slacknotifications.teamcity.extension.bean;
 
+import org.jdom.JDOMException;
+import org.junit.Test;
+import slacknotifications.teamcity.BuildStateEnum;
+import slacknotifications.testframework.SlackNotificationMockingFramework;
+import slacknotifications.testframework.SlackNotificationMockingFrameworkImpl;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import org.jdom.JDOMException;
-import org.junit.Test;
-
-import slacknotifications.teamcity.BuildStateEnum;
-import slacknotifications.testframework.SlackNotificationMockingFramework;
-import slacknotifications.testframework.SlackNotificationMockingFrameworkImpl;
 
 public class ProjectSlackNotificationsBeanTest {
 

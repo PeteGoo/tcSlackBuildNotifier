@@ -1,11 +1,5 @@
 package slacknotifications.teamcity.extension;
 
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
@@ -16,10 +10,8 @@ import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
 import jetbrains.buildServer.web.util.SessionUser;
-
 import org.jetbrains.annotations.Nullable;
 import org.springframework.web.servlet.ModelAndView;
-
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBean;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBeanJsonSerialiser;
@@ -27,6 +19,11 @@ import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class SlackNotificationIndexPageController extends BaseController {

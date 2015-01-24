@@ -1,11 +1,11 @@
 package slacknotifications.teamcity;
 
 
-import java.util.List;
-
 import jetbrains.buildServer.serverSide.ProjectManager;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SProject;
+
+import java.util.List;
 
 public final class TeamCityIdResolver {
 	

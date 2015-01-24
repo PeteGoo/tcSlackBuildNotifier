@@ -1,6 +1,5 @@
 package slacknotifications.teamcity.payload.content;
 
-import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.util.StringUtil;
 
 /**

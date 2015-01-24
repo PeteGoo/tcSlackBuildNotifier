@@ -1,11 +1,5 @@
 package slacknotifications.teamcity.extension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import jetbrains.buildServer.serverSide.ProjectManager;
 import jetbrains.buildServer.serverSide.SProject;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
@@ -13,12 +7,15 @@ import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.web.openapi.PagePlaces;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.project.ProjectTab;
-
 import org.jetbrains.annotations.NotNull;
-
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.extension.bean.ProjectAndBuildSlacknotificationsBean;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 

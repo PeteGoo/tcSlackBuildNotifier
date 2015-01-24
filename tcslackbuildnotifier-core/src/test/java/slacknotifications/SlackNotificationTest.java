@@ -1,34 +1,30 @@
 package slacknotifications;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.util.*;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.mockito.ArgumentCaptor;
-import slacknotifications.teamcity.*;
+import slacknotifications.teamcity.BuildStateEnum;
+import slacknotifications.teamcity.SlackNotificationFactory;
+import slacknotifications.teamcity.SlackNotificationFactoryImpl;
 import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class SlackNotificationTest {

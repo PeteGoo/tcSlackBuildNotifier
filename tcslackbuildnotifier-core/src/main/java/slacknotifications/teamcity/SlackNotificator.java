@@ -1,7 +1,6 @@
 package slacknotifications.teamcity;
 
 import jetbrains.buildServer.Build;
-import jetbrains.buildServer.BuildType;
 import jetbrains.buildServer.notification.Notificator;
 import jetbrains.buildServer.notification.NotificatorRegistry;
 import jetbrains.buildServer.responsibility.ResponsibilityEntry;
@@ -13,10 +12,7 @@ import jetbrains.buildServer.tests.TestName;
 import jetbrains.buildServer.users.NotificatorPropertyKey;
 import jetbrains.buildServer.users.PropertyKey;
 import jetbrains.buildServer.users.SUser;
-import jetbrains.buildServer.users.User;
 import jetbrains.buildServer.util.StringUtil;
-import jetbrains.buildServer.vcs.SelectPrevBuildPolicy;
-import jetbrains.buildServer.vcs.VcsModification;
 import jetbrains.buildServer.vcs.VcsRoot;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;

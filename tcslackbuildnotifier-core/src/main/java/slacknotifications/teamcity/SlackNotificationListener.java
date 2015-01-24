@@ -1,34 +1,25 @@
 package slacknotifications.teamcity;
 
+import jetbrains.buildServer.responsibility.ResponsibilityEntry;
+import jetbrains.buildServer.responsibility.TestNameResponsibilityEntry;
+import jetbrains.buildServer.serverSide.*;
+import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
+import jetbrains.buildServer.tests.TestName;
+import jetbrains.buildServer.util.StringUtil;
+import org.apache.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import slacknotifications.SlackNotification;
+import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
+import slacknotifications.teamcity.settings.SlackNotificationConfig;
+import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
+import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import jetbrains.buildServer.responsibility.ResponsibilityEntry;
-import jetbrains.buildServer.responsibility.TestNameResponsibilityEntry;
-import jetbrains.buildServer.serverSide.BuildServerAdapter;
-import jetbrains.buildServer.serverSide.ResponsibilityInfo;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
-import jetbrains.buildServer.serverSide.SProject;
-import jetbrains.buildServer.serverSide.SRunningBuild;
-import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
-import jetbrains.buildServer.tests.TestName;
-
-import jetbrains.buildServer.util.StringUtil;
-import org.apache.http.HttpStatus;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import slacknotifications.SlackNotification;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
-import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
-import slacknotifications.teamcity.settings.SlackNotificationConfig;
-import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
-import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
 
 /**

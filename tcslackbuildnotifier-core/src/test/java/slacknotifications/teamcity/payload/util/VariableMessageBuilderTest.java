@@ -1,22 +1,17 @@
 package slacknotifications.teamcity.payload.util;
 
-import static org.mockito.Mockito.mock;
-
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import jetbrains.buildServer.messages.Status;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SFinishedBuild;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.MockSBuildType;
 import slacknotifications.teamcity.MockSProject;
 import slacknotifications.teamcity.MockSRunningBuild;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
+
+import static org.mockito.Mockito.mock;
 
 public class VariableMessageBuilderTest {
 	

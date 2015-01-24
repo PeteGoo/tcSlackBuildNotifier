@@ -1,11 +1,24 @@
 package slacknotifications.teamcity;
 
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import jetbrains.buildServer.messages.Status;
+import jetbrains.buildServer.serverSide.BuildHistory;
+import jetbrains.buildServer.serverSide.ProjectManager;
+import jetbrains.buildServer.serverSide.SBuildServer;
+import jetbrains.buildServer.serverSide.SFinishedBuild;
+import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
+import org.apache.http.ProtocolVersion;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHttpResponse;
+import org.apache.http.message.BasicStatusLine;
+import org.junit.*;
+import slacknotifications.SlackNotification;
+import slacknotifications.SlackNotificationImpl;
+import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
+import slacknotifications.teamcity.payload.content.PostMessageResponse;
+import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
+import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,31 +26,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import jetbrains.buildServer.messages.Status;
-import jetbrains.buildServer.serverSide.BuildHistory;
-import jetbrains.buildServer.serverSide.ProjectManager;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
-import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
-
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHttpResponse;
-import org.apache.http.message.BasicStatusLine;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import slacknotifications.SlackNotification;
-import slacknotifications.SlackNotificationImpl;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
-import slacknotifications.teamcity.payload.content.PostMessageResponse;
-import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
-import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.*;
 
 public class SlackNotificationListenerTest {
 	SBuildServer sBuildServer = mock(SBuildServer.class);
