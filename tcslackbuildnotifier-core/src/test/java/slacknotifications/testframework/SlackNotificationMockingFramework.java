@@ -1,18 +1,16 @@
 package slacknotifications.testframework;
 
-import java.io.File;
-import java.io.IOException;
-
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SRunningBuild;
-
 import org.jdom.JDOMException;
-
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
+import java.io.File;
+import java.io.IOException;
 
 public interface SlackNotificationMockingFramework {
 	

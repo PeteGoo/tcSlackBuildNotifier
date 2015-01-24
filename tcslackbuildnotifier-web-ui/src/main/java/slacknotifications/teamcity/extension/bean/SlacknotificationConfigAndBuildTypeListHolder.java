@@ -1,11 +1,10 @@
 package slacknotifications.teamcity.extension.bean;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SlacknotificationConfigAndBuildTypeListHolder {
 	public String channel;

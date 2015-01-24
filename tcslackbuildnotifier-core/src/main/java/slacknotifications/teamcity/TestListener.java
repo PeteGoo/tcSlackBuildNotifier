@@ -1,19 +1,13 @@
 package slacknotifications.teamcity;
 
-import java.util.Collection;
-
-import org.jetbrains.annotations.NotNull;
-
 import jetbrains.buildServer.responsibility.ResponsibilityEntry;
 import jetbrains.buildServer.responsibility.TestNameResponsibilityEntry;
-import jetbrains.buildServer.serverSide.BuildServerAdapter;
-import jetbrains.buildServer.serverSide.ResponsibilityInfo;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.SProject;
-import jetbrains.buildServer.serverSide.SRunningBuild;
+import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.tests.TestName;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 public class TestListener extends BuildServerAdapter {
 	

@@ -1,18 +1,13 @@
 package slacknotifications.teamcity.extension.bean;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SProject;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
+import java.util.*;
 
 public class ProjectSlackNotificationsBean {
 	String projectId;

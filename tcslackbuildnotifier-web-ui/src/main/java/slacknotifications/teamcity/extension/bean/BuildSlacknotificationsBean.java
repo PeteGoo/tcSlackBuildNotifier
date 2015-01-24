@@ -1,10 +1,10 @@
 package slacknotifications.teamcity.extension.bean;
 
-import java.util.List;
-
 import jetbrains.buildServer.serverSide.SBuildType;
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
+
+import java.util.List;
 
 public class BuildSlacknotificationsBean{
 	

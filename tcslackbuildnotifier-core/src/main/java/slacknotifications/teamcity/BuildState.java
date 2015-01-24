@@ -1,14 +1,10 @@
 package slacknotifications.teamcity;
 
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_BROKEN;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_FAILED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_FINISHED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_FIXED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_SUCCESSFUL;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static slacknotifications.teamcity.BuildStateEnum.*;
 
 public class BuildState {
 

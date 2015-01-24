@@ -1,17 +1,16 @@
 
 package slacknotifications.teamcity.payload;
 
-import java.util.*;
-
 import jetbrains.buildServer.messages.Status;
 import jetbrains.buildServer.responsibility.ResponsibilityEntry;
 import jetbrains.buildServer.responsibility.TestNameResponsibilityEntry;
 import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.tests.TestName;
-import slacknotifications.SlackNotification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
+
+import java.util.Collection;
 
 public class SlackNotificationPayloadManager {
 

@@ -1,26 +1,13 @@
 package slacknotifications.teamcity;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-
-import jetbrains.buildServer.messages.Status;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
-
-import org.junit.Ignore;
 import org.junit.Test;
-
-import org.springframework.util.Assert;
-import slacknotifications.*;
-import slacknotifications.SlackNotification;
+import slacknotifications.Attachment;
 import slacknotifications.SlackNotificationImpl;
-import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
-import slacknotifications.teamcity.settings.SlackNotificationConfig;
-import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class SlackNotificationPayloadTest {

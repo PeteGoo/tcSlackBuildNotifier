@@ -1,12 +1,5 @@
 package slacknotifications.teamcity.extension;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SProject;
@@ -16,10 +9,8 @@ import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
 import jetbrains.buildServer.web.util.SessionUser;
-
 import org.jetbrains.annotations.Nullable;
 import org.springframework.web.servlet.ModelAndView;
-
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.TeamCityIdResolver;
@@ -27,6 +18,12 @@ import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBean;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBeanJsonSerialiser;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class SlackNotificationAjaxEditPageController extends BaseController {

@@ -1,11 +1,5 @@
 package slacknotifications.teamcity;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.PatternSyntaxException;
-
 import jetbrains.buildServer.Build;
 import jetbrains.buildServer.BuildAgent;
 import jetbrains.buildServer.BuildTypeDescriptor;
@@ -15,33 +9,7 @@ import jetbrains.buildServer.messages.Status;
 import jetbrains.buildServer.parameters.ParametersProvider;
 import jetbrains.buildServer.parameters.ValueResolver;
 import jetbrains.buildServer.requirements.Requirement;
-import jetbrains.buildServer.serverSide.AgentCompatibility;
-import jetbrains.buildServer.serverSide.AgentDescription;
-import jetbrains.buildServer.serverSide.BuildNumbers;
-import jetbrains.buildServer.serverSide.BuildRunnerDescriptor;
-import jetbrains.buildServer.serverSide.BuildTypeRenamingFailedException;
-import jetbrains.buildServer.serverSide.BuildTypeTemplate;
-import jetbrains.buildServer.serverSide.CannotAttachToTemplateException;
-import jetbrains.buildServer.serverSide.CompatibilityResult;
-import jetbrains.buildServer.serverSide.CustomDataStorage;
-import jetbrains.buildServer.serverSide.DuplicateBuildTypeNameException;
-import jetbrains.buildServer.serverSide.InvalidIdentifierException;
-import jetbrains.buildServer.serverSide.InvalidVcsRootScopeException;
-import jetbrains.buildServer.serverSide.Parameter;
-import jetbrains.buildServer.serverSide.PersistFailedException;
-import jetbrains.buildServer.serverSide.ResolvedSettings;
-import jetbrains.buildServer.serverSide.ResponsibilityInfo;
-import jetbrains.buildServer.serverSide.RunType;
-import jetbrains.buildServer.serverSide.SBuild;
-import jetbrains.buildServer.serverSide.SBuildAgent;
-import jetbrains.buildServer.serverSide.SBuildFeatureDescriptor;
-import jetbrains.buildServer.serverSide.SBuildRunnerDescriptor;
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
-import jetbrains.buildServer.serverSide.SPersistentEntity;
-import jetbrains.buildServer.serverSide.SProject;
-import jetbrains.buildServer.serverSide.SQueuedBuild;
-import jetbrains.buildServer.serverSide.SRunningBuild;
+import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.artifacts.SArtifactDependency;
 import jetbrains.buildServer.serverSide.comments.Comment;
 import jetbrains.buildServer.serverSide.dependency.CyclicDependencyFoundException;
@@ -51,19 +19,14 @@ import jetbrains.buildServer.serverSide.identifiers.DuplicateExternalIdException
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.users.User;
 import jetbrains.buildServer.util.Option;
-import jetbrains.buildServer.vcs.CheckoutRules;
-import jetbrains.buildServer.vcs.FilteredVcsChange;
-import jetbrains.buildServer.vcs.PathMapping;
-import jetbrains.buildServer.vcs.SVcsModification;
-import jetbrains.buildServer.vcs.SVcsRoot;
-import jetbrains.buildServer.vcs.VcsException;
-import jetbrains.buildServer.vcs.VcsRoot;
-import jetbrains.buildServer.vcs.VcsRootEntry;
-import jetbrains.buildServer.vcs.VcsRootInstance;
-import jetbrains.buildServer.vcs.VcsRootInstanceEntry;
-import jetbrains.buildServer.vcs.VcsRootNotFoundException;
-
+import jetbrains.buildServer.vcs.*;
 import org.jdom.Element;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.PatternSyntaxException;
 
 public class MockSBuildType implements SBuildType {
 	

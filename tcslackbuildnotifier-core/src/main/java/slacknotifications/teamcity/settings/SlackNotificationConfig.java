@@ -1,32 +1,17 @@
 package slacknotifications.teamcity.settings;
 
-import static slacknotifications.teamcity.BuildStateEnum.BEFORE_BUILD_FINISHED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_BROKEN;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_FAILED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_FINISHED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_FIXED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_INTERRUPTED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_STARTED;
-import static slacknotifications.teamcity.BuildStateEnum.BUILD_SUCCESSFUL;
-import static slacknotifications.teamcity.BuildStateEnum.RESPONSIBILITY_CHANGED;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.serverSide.SBuildType;
-
 import org.jdom.DataConversionException;
 import org.jdom.Element;
-
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.settings.converter.SlackNotificationBuildStateConverter;
+
+import java.util.*;
+
+import static slacknotifications.teamcity.BuildStateEnum.*;
 
 
 public class SlackNotificationConfig {
