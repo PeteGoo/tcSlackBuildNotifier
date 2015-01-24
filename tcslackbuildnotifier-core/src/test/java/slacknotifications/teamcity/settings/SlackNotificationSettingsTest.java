@@ -3,6 +3,8 @@ package slacknotifications.teamcity.settings;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import jetbrains.buildServer.serverSide.ServerPaths;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -24,10 +27,41 @@ import slacknotifications.SlackNotification;
 
 
 public class SlackNotificationSettingsTest {
+	
+	@Test
+	public void test_SingleProxyHostRegex(){
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
+		mainConfig.setProxyShortNames(false);
+		assertFalse(mainConfig.matchProxyForURL("test"));
+		assertNull(mainConfig.getProxyConfigForUrl("test"));
+		mainConfig.setProxyHost("someproxy");
+		mainConfig.setProxyPort(8080);
+		assertFalse(mainConfig.matchProxyForURL("test"));
+		assertNull(mainConfig.getProxyConfigForUrl("test"));
+
+		mainConfig.setProxyShortNames(true);
+		SlackNotificationProxyConfig proxyConfig = mainConfig.getProxyConfigForUrl("test");
+		assertTrue(proxyConfig.getProxyHost().equals("someproxy"));
+		assertTrue(proxyConfig.getProxyPort().equals(8080));
+
+		mainConfig.setProxyShortNames(false);
+		assertNull(mainConfig.getProxyConfigForUrl("test"));
+		
+		
+	}
 
 	@Test 
 	public void test_Regex(){
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		assertTrue(mainConfig.isUrlShortName("test"));
 		assertTrue(mainConfig.isUrlShortName("test:80"));
 		
@@ -58,6 +92,34 @@ public class SlackNotificationSettingsTest {
 		
 	}
 	
+	@Test
+	public void test_ProxyUrlMatching(){
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
+		mainConfig.addNoProxyUrl(".example.com");
+		mainConfig.addNoProxyUrl("192.168.0.");
+		mainConfig.addNoProxyUrl("10.");
+		mainConfig.setProxyShortNames(false);
+		mainConfig.setProxyHost("localhost");
+		mainConfig.setProxyPort(8002);
+		assertFalse(mainConfig.matchProxyForURL("test"));
+		
+		assertTrue(mainConfig.matchProxyForURL("http://test.test.test/test?state=test"));
+		assertTrue(mainConfig.matchProxyForURL("http://test.test.test/test?state=test"));
+		assertFalse(mainConfig.matchProxyForURL("test.example.com"));
+		assertFalse(mainConfig.matchProxyForURL("test1.test2.example.com/test"));
+		assertFalse(mainConfig.matchProxyForURL("http://test1.test2.example.com/test"));
+		assertFalse(mainConfig.matchProxyForURL("https://test1.test2.example.com/test"));
+		assertTrue(mainConfig.matchProxyForURL("https://test1.test2/test/TEST.example.com/dkjf"));
+		
+		assertFalse(mainConfig.matchProxyForURL("192.168.0.99"));
+		assertFalse(mainConfig.matchProxyForURL("192.168.0.100"));
+		assertFalse(mainConfig.matchProxyForURL("http://10.10.0.1"));
+		assertTrue(mainConfig.matchProxyForURL("http://100.10.10.1/test1.test2.example.com/test"));
+	}
 /*
     @Ignore
 	@Test
@@ -81,8 +143,12 @@ public class SlackNotificationSettingsTest {
     @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
 		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		mainConfig.setProxyHost(test.proxy);
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);
@@ -101,8 +167,12 @@ public class SlackNotificationSettingsTest {
     @Ignore
 	@Test
 	public void test_AuthFailNoCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
 		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		mainConfig.setProxyHost(test.proxy);
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);
