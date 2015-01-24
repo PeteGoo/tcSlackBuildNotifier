@@ -5,11 +5,14 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import slacknotifications.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +25,20 @@ import static org.mockito.Mockito.when;
 
 
 public class SlackNotificationSettingsTest {
+
+	@After
+	@Before
+	public void deleteSlackConfigFile(){
+		DeleteConfigFiles();
+	}
+
+	private void DeleteConfigFiles() {
+		File outputFile = new File("slack", "slack-config.xml");
+		outputFile.delete();
+
+		File outputDir = new File("slack");
+		outputDir.delete();
+	}
 	
 	@Test
 	public void test_SingleProxyHostRegex(){

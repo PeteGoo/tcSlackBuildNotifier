@@ -404,10 +404,18 @@ public class SlackNotificationMainConfig implements ChangeListener {
 						rootElement.setAttribute("token", SlackNotificationMainConfig.this.token);
 						rootElement.setAttribute("iconurl", SlackNotificationMainConfig.this.iconUrl);
 						rootElement.setAttribute("botname", SlackNotificationMainConfig.this.botName);
-						rootElement.setAttribute("showBuildAgent", Boolean.toString(SlackNotificationMainConfig.this.showBuildAgent));
-						rootElement.setAttribute("showElapsedBuildTime", Boolean.toString(SlackNotificationMainConfig.this.showElapsedBuildTime));
-						rootElement.setAttribute("showCommits", Boolean.toString(SlackNotificationMainConfig.this.showCommits));
-						rootElement.setAttribute("showCommitters", Boolean.toString(SlackNotificationMainConfig.this.showCommitters));
+						if(SlackNotificationMainConfig.this.showBuildAgent != null){
+							rootElement.setAttribute("showBuildAgent", Boolean.toString(SlackNotificationMainConfig.this.showBuildAgent));
+						}
+						if(SlackNotificationMainConfig.this.showElapsedBuildTime != null) {
+							rootElement.setAttribute("showElapsedBuildTime", Boolean.toString(SlackNotificationMainConfig.this.showElapsedBuildTime));
+						}
+						if(SlackNotificationMainConfig.this.showCommits != null) {
+							rootElement.setAttribute("showCommits", Boolean.toString(SlackNotificationMainConfig.this.showCommits));
+						}
+						if(SlackNotificationMainConfig.this.showCommitters != null) {
+							rootElement.setAttribute("showCommitters", Boolean.toString(SlackNotificationMainConfig.this.showCommitters));
+						}
 						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.maxCommitsToDisplay));
 
 						Element el = new Element("slackNotification");
