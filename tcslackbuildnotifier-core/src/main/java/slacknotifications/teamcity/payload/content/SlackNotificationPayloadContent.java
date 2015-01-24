@@ -1,10 +1,7 @@
 package slacknotifications.teamcity.payload.content;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
 
 import jetbrains.buildServer.serverSide.Branch;
@@ -13,9 +10,11 @@ import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SFinishedBuild;
 import jetbrains.buildServer.serverSide.SRunningBuild;
+import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
+import slacknotifications.teamcity.SlackNotificator;
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.payload.util.SlackNotificationBeanUtilsVariableResolver;
 import slacknotifications.teamcity.payload.util.VariableMessageBuilder;
@@ -119,7 +118,13 @@ public class SlackNotificationPayloadContent {
         }
 
         for(SVcsModification change : changes){
-            commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName()));
+			Collection<SUser> committers = change.getCommitters();
+			String slackUserName = null;
+			if(committers != null && !committers.isEmpty()){
+				SUser committer = committers.iterator().next();
+				slackUserName = committer.getPropertyValue(SlackNotificator.USERNAME_KEY);
+			}
+			commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName(), slackUserName));
         }
     }
 

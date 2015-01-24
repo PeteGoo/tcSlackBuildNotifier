@@ -1,19 +1,24 @@
 package slacknotifications.teamcity.payload.content;
 
+import jetbrains.buildServer.users.SUser;
+import jetbrains.buildServer.util.StringUtil;
+
 /**
  * Created by Peter on 4/06/2014.
  */
 public class Commit {
 
-    public Commit(String revision, String description, String userName) {
+    public Commit(String revision, String description, String userName, String slackUserName) {
         this.description = description;
         this.userName = userName;
         this.revision = revision;
+        this.slackUserName = slackUserName;
     }
 
     private String description;
     private String userName;
     private String revision;
+    private String slackUserName;
 
     public String getRevision() {
         return revision;
@@ -39,5 +44,15 @@ public class Commit {
         this.userName = userName;
     }
 
+    public String getSlackUserName() {
+        return slackUserName;
+    }
 
+    public void setSlackUserName(String slackUserName) {
+        this.slackUserName = slackUserName;
+    }
+
+    public boolean hasSlackUsername(){
+        return slackUserName != null && StringUtil.isNotEmpty(slackUserName);
+    }
 }

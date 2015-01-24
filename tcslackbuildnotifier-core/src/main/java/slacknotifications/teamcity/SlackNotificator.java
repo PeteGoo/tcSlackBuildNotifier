@@ -43,7 +43,7 @@ public class SlackNotificator implements Notificator {
     private static final String SLACK_USERNAME_KEY = "tcSlackNotifier.userName";
     private static final String TYPE = "tcSlackBuildNotifier";
 
-    private static final PropertyKey USERNAME_KEY = new NotificatorPropertyKey(TYPE, SLACK_USERNAME_KEY);
+    public static final PropertyKey USERNAME_KEY = new NotificatorPropertyKey(TYPE, SLACK_USERNAME_KEY);
 
     public SlackNotificator(NotificatorRegistry notificatorRegistry,
                             SBuildServer sBuildServer,
