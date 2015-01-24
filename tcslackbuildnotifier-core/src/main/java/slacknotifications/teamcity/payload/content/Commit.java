@@ -12,6 +12,10 @@ public class Commit {
         this.description = description;
         this.userName = userName;
         this.revision = revision;
+
+        if(slackUserName != null && slackUserName.startsWith("@")){
+            slackUserName = slackUserName.substring(1);
+        }
         this.slackUserName = slackUserName;
     }
 
@@ -49,6 +53,9 @@ public class Commit {
     }
 
     public void setSlackUserName(String slackUserName) {
+        if(slackUserName != null && slackUserName.startsWith("@")){
+            slackUserName = slackUserName.substring(1);
+        }
         this.slackUserName = slackUserName;
     }
 

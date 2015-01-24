@@ -129,11 +129,16 @@
 														</tbody></table>
 													</td>
 												</tr>
-                                                <tr style="border:none;">
-													<td>Mention @channel on first failure:</td>
-													<td style="padding-left:3px;" colspan=2>
-													    <input id="mentionChannelEnabled" type=checkbox name="mentionChannelEnabled"/>
-                                                    </td>
+												<tr style="border:none;">
+													<td>Mention on first failure:</td>
+													<td style="padding-left:3px;"><label style='white-space:nowrap;'>
+														<input class="buildState" id="mentionChannelEnabled" name="mentionChannelEnabled" type=checkbox />
+														 @channel</label>
+													</td>
+													<td><label style='white-space:nowrap;'>
+														<input class="buildState" id="mentionSlackUserEnabled" name="mentionSlackUserEnabled" type=checkbox />
+														 Slack User (if known)</label>
+													</td>
 												</tr>
 					    					</table>     
 					    					

@@ -123,6 +123,7 @@ public class SlackNotificationPayloadContent {
 			if(committers != null && !committers.isEmpty()){
 				SUser committer = committers.iterator().next();
 				slackUserName = committer.getPropertyValue(SlackNotificator.USERNAME_KEY);
+				Loggers.ACTIVITIES.debug("Resolved committer " + change.getUserName() + " to Slack User " + slackUserName);
 			}
 			commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName(), slackUserName));
         }

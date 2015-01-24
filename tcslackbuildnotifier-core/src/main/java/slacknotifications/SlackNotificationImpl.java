@@ -62,6 +62,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private boolean showCommitters;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
+    private boolean mentionSlackUserEnabled;
 
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
@@ -275,15 +276,17 @@ public class SlackNotificationImpl implements SlackNotification {
 
         List<Commit> commits = this.payload.getCommits();
 
+        List<Commit> commitsToDisplay = new ArrayList<Commit>(commits);
+
         if(showCommits) {
             boolean truncated = false;
-            int totalCommits = commits.size();
-            if (commits.size() > maxCommitsToDisplay) {
-                commits = commits.subList(0, maxCommitsToDisplay > commits.size() ? commits.size() : 5);
+            int totalCommits = commitsToDisplay.size();
+            if (commitsToDisplay.size() > maxCommitsToDisplay) {
+                commitsToDisplay = commitsToDisplay.subList(0, maxCommitsToDisplay > commitsToDisplay.size() ? commitsToDisplay.size() : 5);
                 truncated = true;
             }
 
-            for (Commit commit : commits) {
+            for (Commit commit : commitsToDisplay) {
                 String revision = commit.getRevision();
                 revision = revision == null ? "" : revision;
                 sbCommits.append(String.format("%s :: %s :: %s\n", revision.substring(0, Math.min(revision.length(), 10)), commit.getUserName(), commit.getDescription()));
@@ -293,10 +296,20 @@ public class SlackNotificationImpl implements SlackNotification {
                 sbCommits.append(String.format("(+ %d more)\n", totalCommits - 5));
             }
 
-            if (!commits.isEmpty()) {
+            if (!commitsToDisplay.isEmpty()) {
                 attachment.addField("Commits", sbCommits.toString(), false);
             }
         }
+
+        List<String> slackUsers = new ArrayList<String>();
+
+
+        for(Commit commit : commits){
+            if(commit.hasSlackUsername()){
+                slackUsers.add("@" + commit.getSlackUserName());
+            }
+        }
+
         if(showCommitters) {
             List<String> committers = new ArrayList<String>();
             for (Commit commit : commits) {
@@ -310,8 +323,16 @@ public class SlackNotificationImpl implements SlackNotification {
             }
         }
 
-        if(mentionChannelEnabled && payload.getIsFirstFailedBuild()){
-            attachment.addField("", ":arrow_up: <!channel>", true);
+        // Mention the channel and/or the Slack Username of any committers if known
+        if(payload.getIsFirstFailedBuild() && (mentionChannelEnabled || (mentionSlackUserEnabled && !slackUsers.isEmpty()))){
+            String mentionContent = ":arrow_up: \"" + this.payload.getBuildName() + "\" Failed ";
+            if(mentionChannelEnabled){
+                mentionContent += "<!channel> ";
+            }
+            if(mentionSlackUserEnabled && !slackUsers.isEmpty()){
+                mentionContent += StringUtil.join(" ", slackUsers);
+            }
+            attachment.addField("", mentionContent, true);
         }
 
         attachments.add(attachment);
@@ -590,6 +611,11 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setMentionChannelEnabled(boolean mentionChannelEnabled) {
         this.mentionChannelEnabled = mentionChannelEnabled;
+    }
+
+    @Override
+    public void setMentionSlackUserEnabled(boolean mentionSlackUserEnabled) {
+        this.mentionSlackUserEnabled = mentionSlackUserEnabled;
     }
 
     public boolean getIsApiToken() {

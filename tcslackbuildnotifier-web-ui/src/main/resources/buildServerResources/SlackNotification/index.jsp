@@ -126,6 +126,7 @@
 						 }
 					});
 					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', mentionChannelEnabled.enabled);
+					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', mentionSlackUserEnabled.enabled);
 				}
 			});
 			updateSelectedBuildTypes();
