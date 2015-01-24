@@ -3,6 +3,8 @@ package slacknotifications.teamcity.settings;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import jetbrains.buildServer.serverSide.ServerPaths;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -27,7 +30,11 @@ public class SlackNotificationSettingsTest {
 
 	@Test 
 	public void test_Regex(){
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		assertTrue(mainConfig.isUrlShortName("test"));
 		assertTrue(mainConfig.isUrlShortName("test:80"));
 		
@@ -81,8 +88,12 @@ public class SlackNotificationSettingsTest {
     @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
 		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		mainConfig.setProxyHost(test.proxy);
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);
@@ -101,8 +112,12 @@ public class SlackNotificationSettingsTest {
     @Ignore
 	@Test
 	public void test_AuthFailNoCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
 		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		mainConfig.setProxyHost(test.proxy);
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);

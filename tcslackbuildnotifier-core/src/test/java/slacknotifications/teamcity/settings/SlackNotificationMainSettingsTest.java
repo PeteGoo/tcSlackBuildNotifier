@@ -2,11 +2,13 @@ package slacknotifications.teamcity.settings;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
 import jetbrains.buildServer.serverSide.SBuildServer;
 
+import jetbrains.buildServer.serverSide.ServerPaths;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -30,7 +32,11 @@ public class SlackNotificationMainSettingsTest {
 
 	@Test
 	public void TestFullConfig(){
-		SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server);
+        String expectedConfigDirectory = ".";
+        ServerPaths serverPaths = mock(ServerPaths.class);
+        when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+		SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server, serverPaths);
 		whms.register();
 		whms.readFrom(getFullConfigElement());
 		String proxy = whms.getProxyForUrl("http://something.somecompany.com");
@@ -56,7 +62,11 @@ public class SlackNotificationMainSettingsTest {
 
     @Test
     public void TestEmptyDefaultsConfig(){
-        SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server);
+        String expectedConfigDirectory = ".";
+        ServerPaths serverPaths = mock(ServerPaths.class);
+        when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+        SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server, serverPaths);
         whms.register();
         whms.readFrom(getEmptyDefaultsConfigElement());
         String proxy = whms.getProxyForUrl("http://something.somecompany.com");
