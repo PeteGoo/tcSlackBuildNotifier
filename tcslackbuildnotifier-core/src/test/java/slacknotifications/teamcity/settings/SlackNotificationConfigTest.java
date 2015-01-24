@@ -1,16 +1,15 @@
 package slacknotifications.teamcity.settings;
 
-import static org.junit.Assert.*;
+import org.jdom.JDOMException;
+import org.junit.Before;
+import org.junit.Test;
+import slacknotifications.testframework.util.ConfigLoaderUtil;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.junit.Before;
-import org.junit.Test;
-
-import slacknotifications.testframework.util.ConfigLoaderUtil;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class SlackNotificationConfigTest {
 	

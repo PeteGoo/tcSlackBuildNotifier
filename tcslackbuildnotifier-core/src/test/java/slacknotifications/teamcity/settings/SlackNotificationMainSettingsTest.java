@@ -18,7 +18,6 @@ import org.junit.Test;
 import slacknotifications.SlackNotificationProxyConfig;
 
 import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
 
 public class SlackNotificationMainSettingsTest {
 	SBuildServer server = mock(SBuildServer.class);

@@ -1,11 +1,10 @@
 package slacknotifications.teamcity.settings.converter;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.BuildStateEnum;
+
+import static org.junit.Assert.assertTrue;
 
 public class SlackNotificationBuildStateConverterTest {
 

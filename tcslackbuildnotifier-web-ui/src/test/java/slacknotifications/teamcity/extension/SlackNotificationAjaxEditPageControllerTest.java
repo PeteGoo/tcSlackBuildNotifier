@@ -1,17 +1,17 @@
 package slacknotifications.teamcity.extension;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static slacknotifications.teamcity.extension.SlackNotificationAjaxEditPageController.*;
+import org.junit.Before;
+import org.junit.Test;
+import slacknotifications.teamcity.BuildState;
+import slacknotifications.teamcity.BuildStateEnum;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import slacknotifications.teamcity.BuildState;
-import slacknotifications.teamcity.BuildStateEnum;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static slacknotifications.teamcity.extension.SlackNotificationAjaxEditPageController.*;
 
 public class SlackNotificationAjaxEditPageControllerTest {
 	

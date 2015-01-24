@@ -1,23 +1,16 @@
 package slacknotifications.teamcity.payload.content;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.TimeUnit;
-
-import jetbrains.buildServer.serverSide.Branch;
-import jetbrains.buildServer.serverSide.SBuildRunnerDescriptor;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
-import jetbrains.buildServer.serverSide.SRunningBuild;
+import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.SlackNotificator;
 import slacknotifications.teamcity.TeamCityIdResolver;
-import slacknotifications.teamcity.payload.util.SlackNotificationBeanUtilsVariableResolver;
-import slacknotifications.teamcity.payload.util.VariableMessageBuilder;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class SlackNotificationPayloadContent {
     String buildStatus;

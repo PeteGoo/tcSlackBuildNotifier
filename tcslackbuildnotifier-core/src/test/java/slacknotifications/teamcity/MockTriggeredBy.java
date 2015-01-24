@@ -1,11 +1,11 @@
 package slacknotifications.teamcity;
 
-import java.util.Date;
-import java.util.Map;
-
 import jetbrains.buildServer.serverSide.TriggeredBy;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.util.filters.Filter;
+
+import java.util.Date;
+import java.util.Map;
 
 public class MockTriggeredBy implements TriggeredBy {
 

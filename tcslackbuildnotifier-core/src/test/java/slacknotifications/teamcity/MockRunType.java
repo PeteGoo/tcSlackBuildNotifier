@@ -1,9 +1,9 @@
 package slacknotifications.teamcity;
 
-import java.util.Map;
-
 import jetbrains.buildServer.serverSide.PropertiesProcessor;
 import jetbrains.buildServer.serverSide.RunType;
+
+import java.util.Map;
 
 public class MockRunType extends RunType {
 
