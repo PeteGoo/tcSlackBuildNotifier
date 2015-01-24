@@ -125,8 +125,8 @@
 						 	 jQuerySlacknotification('#buildList').append('<p style="border-bottom:solid 1px #cccccc; margin:0; padding:0.5em;"><label><input onclick="updateSelectedBuildTypes();" type=checkbox style="padding-right: 1em;" name="buildTypeId" value="' + this.buildTypeId + '"class="buildType_single">' + this.buildTypeName + '</label></p>');
 						 }
 					});
-					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', mentionChannelEnabled.enabled);
-					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', mentionSlackUserEnabled.enabled);
+					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', slacknotification.mentionChannelEnabled);
+					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', slacknotification.mentionSlackUserEnabled);
 				}
 			});
 			updateSelectedBuildTypes();

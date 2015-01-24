@@ -18,6 +18,8 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private List<SlacknotificationBuildTypeEnabledStatusBean> builds = new ArrayList<SlacknotificationBuildTypeEnabledStatusBean>();
 	private String enabledEventsListForWeb;
 	private String enabledBuildsListForWeb;
+	private boolean mentionChannelEnabled;
+	private boolean mentionSlackUserEnabled;
 	
 	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config) {
 		channel = config.getChannel();
@@ -30,6 +32,8 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 		for (BuildStateEnum state : config.getBuildStates().getStateSet()){
 			states.add(new StateBean(state.getShortName(), config.getBuildStates().enabled(state)));
 		}
+		mentionChannelEnabled = config.getMentionChannelEnabled();
+		mentionSlackUserEnabled = config.getMentionSlackUserEnabled();
 	}
 
 	public List<SlacknotificationBuildTypeEnabledStatusBean> getBuilds() {
