@@ -70,6 +70,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	private void reloadConfiguration() {
 		Loggers.ACTIVITIES.info("Loading configuration file: " + this.myConfigFile.getAbsolutePath());
 
+		myConfigDir.mkdirs();
 		FileUtil.copyResourceIfNotExists(getClass(), "/config_templates/slack-config.xml", new File(this.myConfigDir, "slack-config.xml"));
 
 		Document document = parseFile(this.myConfigFile);
