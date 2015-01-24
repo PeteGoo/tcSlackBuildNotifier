@@ -2,7 +2,6 @@ package slacknotifications.teamcity.settings;
 
 import jetbrains.buildServer.serverSide.MainConfigProcessor;
 import jetbrains.buildServer.serverSide.SBuildServer;
-
 import jetbrains.buildServer.serverSide.ServerPaths;
 import jetbrains.buildServer.serverSide.ServerPaths;
 import org.jdom.Element;

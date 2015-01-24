@@ -13,29 +13,11 @@ import slacknotifications.teamcity.Loggers;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.intellij.openapi.util.JDOMUtil;
-import jetbrains.buildServer.configuration.FileWatcher;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.ServerPaths;
-import jetbrains.buildServer.util.FileUtil;
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Element;
-
-import org.jdom.JDOMException;
-import slacknotifications.SlackNotificationProxyConfig;
-
-import jetbrains.buildServer.configuration.ChangeListener;
-import slacknotifications.teamcity.Loggers;
-
 
 public class SlackNotificationMainConfig implements ChangeListener {
 	private final FileWatcher myChangeObserver;

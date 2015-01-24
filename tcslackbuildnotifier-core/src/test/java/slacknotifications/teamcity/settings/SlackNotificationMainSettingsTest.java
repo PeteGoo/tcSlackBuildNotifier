@@ -1,13 +1,6 @@
 package slacknotifications.teamcity.settings;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-
 import jetbrains.buildServer.serverSide.SBuildServer;
-
 import jetbrains.buildServer.serverSide.ServerPaths;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -16,8 +9,13 @@ import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import slacknotifications.SlackNotificationProxyConfig;
+
+import java.io.IOException;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import org.apache.http.auth.Credentials;
