@@ -45,3 +45,7 @@ From the Slack tab on the Project or Build Configuration page, add a new Slack N
 ![Sample Build Configuration](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-slack-config.png)
 
 - Remember to put the # in front of the channel name if applicable.
+
+### Mentions
+
+In order to receive mentions and direct messages from the notifier you must go to your profile page in TeamCity and tell it your slack username (no need to include the @). Once you have done this you can be mentioned on failed builds. You can also subscribe to notifications on your profile page.
