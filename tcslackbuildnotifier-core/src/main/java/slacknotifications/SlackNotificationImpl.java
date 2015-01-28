@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -309,6 +310,8 @@ public class SlackNotificationImpl implements SlackNotification {
                 slackUsers.add("@" + commit.getSlackUserName());
             }
         }
+        HashSet<String> tempHash = new HashSet<String>(slackUsers);
+        slackUsers = new ArrayList<String>(tempHash);
 
         if(showCommitters) {
             List<String> committers = new ArrayList<String>();
@@ -329,7 +332,7 @@ public class SlackNotificationImpl implements SlackNotification {
             if(mentionChannelEnabled){
                 mentionContent += "<!channel> ";
             }
-            if(mentionSlackUserEnabled && !slackUsers.isEmpty()){
+            if(mentionSlackUserEnabled && !slackUsers.isEmpty() && !this.payload.isMergeBranch()) {
                 mentionContent += StringUtil.join(" ", slackUsers);
             }
             attachment.addField("", mentionContent, true);

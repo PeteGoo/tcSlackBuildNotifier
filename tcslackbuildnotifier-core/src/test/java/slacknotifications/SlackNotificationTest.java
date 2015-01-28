@@ -516,5 +516,5 @@ public class SlackNotificationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}	
+	}
 }

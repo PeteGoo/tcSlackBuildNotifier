@@ -282,6 +282,8 @@ public class SlackNotificationPayloadContent {
 			return branchIsDefault;
 		}
 
+		public Boolean isMergeBranch() { return this.branchName != null && this.branchName.endsWith("/merge");}
+
 		public void setBranchIsDefault(boolean branchIsDefault) {
 			this.branchIsDefault = branchIsDefault;
 		}
