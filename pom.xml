@@ -10,7 +10,7 @@
     </properties>
 	<version>${currentVersion}</version>
 	<name>tcSlackNotifications - A SlackNotifications plugin for TeamCity</name>
- 	<build>
+ 	<!--<build>
 		<defaultGoal>package</defaultGoal>
 		
 		<resources>
@@ -82,7 +82,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.6</version>
                 <executions>
@@ -118,7 +118,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
            <plugin>
                <artifactId>maven-antrun-plugin</artifactId>
                <executions>
@@ -156,12 +156,12 @@
                    </goals>
                  </execution>
                </executions>
-           </plugin>
+           </plugin> 
 
 
 
         </plugins>
-	</build>
+	</build>-->
 	<reporting>
 		<plugins>
 			<plugin>
