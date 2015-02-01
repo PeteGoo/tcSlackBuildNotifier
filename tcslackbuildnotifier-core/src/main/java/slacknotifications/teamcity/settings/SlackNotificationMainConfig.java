@@ -415,11 +415,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
 			{
 				FileUtil.processXmlFile(SlackNotificationMainConfig.this.myConfigFile, new FileUtil.Processor() {
 					public void process(Element rootElement) {
-						rootElement.setAttribute("defaultChannel", SlackNotificationMainConfig.this.defaultChannel);
-						rootElement.setAttribute("teamName", SlackNotificationMainConfig.this.teamName);
-						rootElement.setAttribute("token", SlackNotificationMainConfig.this.token);
-						rootElement.setAttribute("iconurl", SlackNotificationMainConfig.this.iconUrl);
-						rootElement.setAttribute("botname", SlackNotificationMainConfig.this.botName);
+						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
+						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));
+						rootElement.setAttribute("iconurl", emptyIfNull(SlackNotificationMainConfig.this.iconUrl));
+						rootElement.setAttribute("botname", emptyIfNull(SlackNotificationMainConfig.this.botName));
 						if(SlackNotificationMainConfig.this.showBuildAgent != null){
 							rootElement.setAttribute("showBuildAgent", Boolean.toString(SlackNotificationMainConfig.this.showBuildAgent));
 						}
@@ -462,6 +461,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
 			}
 		});
 	}
+
+    private String emptyIfNull(String str){
+        return str == null ? "" : str;
+    }
 
 	@Override
 	public void changeOccured(String s) {
