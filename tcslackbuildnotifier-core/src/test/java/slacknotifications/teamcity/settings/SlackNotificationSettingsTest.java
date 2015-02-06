@@ -40,6 +40,8 @@ public class SlackNotificationSettingsTest {
 		outputDir.delete();
 	}
 	
+
+
 	@Test 
 	public void test_Regex(){
 		String expectedConfigDirectory = ".";
