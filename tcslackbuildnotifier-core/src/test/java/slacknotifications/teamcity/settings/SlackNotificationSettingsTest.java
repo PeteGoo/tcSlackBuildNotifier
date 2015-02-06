@@ -41,7 +41,7 @@ public class SlackNotificationSettingsTest {
 	}
 
 
-	@Test 
+	@Test
 	public void test_Regex(){
 		String expectedConfigDirectory = ".";
 		ServerPaths serverPaths = mock(ServerPaths.class);

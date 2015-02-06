@@ -1,5 +1,15 @@
 package slacknotifications;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import com.google.gson.Gson;
 import jetbrains.buildServer.util.StringUtil;
 import org.apache.http.HttpResponse;
@@ -23,15 +33,7 @@ import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 
 public class SlackNotificationImpl implements SlackNotification {
