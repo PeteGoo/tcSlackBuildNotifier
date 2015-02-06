@@ -11,11 +11,15 @@ import org.springframework.web.servlet.ModelAndView;
 import slacknotifications.SlackNotification;
 import slacknotifications.SlackNotificationImpl;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
+import slacknotifications.teamcity.payload.content.Commit;
+import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import slacknotifications.teamcity.settings.SlackNotificationMainConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SlackNotifierSettingsController extends BaseController {
@@ -109,7 +113,30 @@ public class SlackNotifierSettingsController extends BaseController {
         notification.setShowCommits(showCommits);
         notification.setShowCommitters(showCommitters);
 
-        notification.setPayload(payloadManager.buildFinished(null, null));
+
+        SlackNotificationPayloadContent payload = new SlackNotificationPayloadContent();
+        payload.setAgentName("Build Agent 1");
+
+        payload.setBranchDisplayName("master");
+        payload.setBranchIsDefault(true);
+        payload.setBuildDescriptionWithLinkSyntax(String.format("<http://buildserver/builds/|Failed - My Awesome Build #5>"));
+        payload.setBuildFullName("The Awesome Build");
+        payload.setBuildId("b123");
+        payload.setBuildName("My Awesome Build");
+        payload.setBuildResult("Failed");
+        payload.setBuildStatusUrl("http://buildserver/builds");
+        payload.setBuildTypeId("b123");
+        payload.setColor("danger");
+        List<Commit> commits = new ArrayList<Commit>();
+        commits.add(new Commit("a5bdc78", "Bug fix for that awful thing", "jbloggs", "jbloggs"));
+        commits.add(new Commit("cc4500d", "New feature that rocks", "bbrave", "bbrave"));
+        commits.add(new Commit("abb23b4", "Merge of branch xyz", "ddruff", "ddruff"));
+        payload.setCommits(commits);
+        payload.setElapsedTime(13452);
+        payload.setFirstFailedBuild(true);
+        payload.setIsComplete(true);
+        payload.setText("My Awesome build");
+        notification.setPayload(payload);
 
         return notification;
     }

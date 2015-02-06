@@ -18,7 +18,6 @@ public class SlackNotificationSettingsControllerTest {
     WebControllerManager webControllerManager = mock(WebControllerManager.class);
 
     @Test
-    @Ignore
     public void createMockNotification_constructsValidNotification(){
         String expectedConfigDirectory = ".";
         ServerPaths serverPaths = mock(ServerPaths.class);
