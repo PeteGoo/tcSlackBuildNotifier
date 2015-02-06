@@ -24,6 +24,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpHost;
@@ -95,14 +96,14 @@ public class SlackNotificationImpl implements SlackNotification {
                 ex.printStackTrace();
             }
         }
-        this.setProxy(proxyHost, this.proxyPort);
+        this.setProxy(proxyHost, this.proxyPort, null);
     }
 
     public SlackNotificationImpl(String channel, String proxyHost, Integer proxyPort) {
         this.channel = channel;
         this.client = HttpClients.createDefault();
         this.params = new ArrayList<NameValuePair>();
-        this.setProxy(proxyHost, proxyPort);
+        this.setProxy(proxyHost, proxyPort, null);
     }
 
     public SlackNotificationImpl(String channel, SlackNotificationProxyConfig proxyConfig) {
@@ -119,28 +120,27 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public void setProxy(SlackNotificationProxyConfig proxyConfig) {
         if ((proxyConfig != null) && (proxyConfig.getProxyHost() != null) && (proxyConfig.getProxyPort() != null)) {
-            this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort());
+            this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort(), proxyConfig.getCreds());
         }
     }
 
-    void setProxyCredentials(Credentials credentials) {
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(
-                new AuthScope(proxyHost, proxyPort),
-                credentials);
-        this.client = HttpClients.custom()
-                .setDefaultCredentialsProvider(credsProvider).build();
-    }
-
-    public void setProxy(String proxyHost, Integer proxyPort) {
+    public void setProxy(String proxyHost, Integer proxyPort, Credentials credentials) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
         
 		if (this.proxyHost.length() > 0 && !this.proxyPort.equals(0)) {
-           this.client = HttpClients.custom()
+            HttpClientBuilder clientBuilder = HttpClients.custom()
                 .useSystemProperties()
-                .setProxy(new HttpHost(proxyHost, proxyPort))
-                .build();
+                .setProxy(new HttpHost(proxyHost, proxyPort, "http"));
+                
+            if (credentials != null) {
+                CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(new AuthScope(proxyHost, proxyPort), credentials);
+                clientBuilder.setDefaultCredentialsProvider(credsProvider);
+                Loggers.SERVER.debug("SlackNotification ::using proxy credentials " + credentials.getUserPrincipal().getName());
+            }
+            
+            this.client = clientBuilder.build();
 		}
     }
 

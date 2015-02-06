@@ -11,7 +11,7 @@
           showCommits="false"
           showCommitters="false"
           maxCommitsToDisplay="15">
-    <proxy host="myproxy.mycompany.com" port="8080" />
+    <proxy host="myproxy.mycompany.com" port="8080" username="some-username" password="some-password" />
     <info url="http://intranet.mycompany.com/docs/UsingSlackNotifications" text="Using SlackNotifications in myCompany Inc." />
   </slacknotifications>
 </server>

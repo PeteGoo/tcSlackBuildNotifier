@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.Credentials;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
@@ -13,7 +14,7 @@ public interface SlackNotification {
 
 	public abstract void setProxy(SlackNotificationProxyConfig proxyConfig);
 
-	public abstract void setProxy(String proxyHost, Integer proxyPort);
+	public abstract void setProxy(String proxyHost, Integer proxyPort, Credentials credentials);
 
 	public abstract void post() throws FileNotFoundException, IOException;
 

@@ -88,7 +88,7 @@ public class SlackNotificationSettingsTest {
 		mainConfig.setProxyShortNames(true);
 		String url = "http://" + test.webserverHost + ":" + test.webserverPort + "/200";
 		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfigForUrl(url));
-		w.setProxyUserAndPass("somethingIncorrect", "somethingIncorrect");
+		// w.setProxyUserAndPass("somethingIncorrect", "somethingIncorrect");
 		SlackNotificationTestServer s = test.startWebServer();
 		SlackNotificationTestProxyServer p = test.startProxyServerAuth("somthingCorrect", "somethingCorrect");
 		w.setEnabled(true);
@@ -108,7 +108,7 @@ public class SlackNotificationSettingsTest {
 		mainConfig.setProxyShortNames(true);
 		String url = "http://" + test.webserverHost + ":" + test.webserverPort + "/200";
 		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfigForUrl(url));
-		w.setProxyUserAndPass("somethingIncorrect", "somethingIncorrect");
+		// w.setProxyUserAndPass("somethingIncorrect", "somethingIncorrect");
 		SlackNotificationTestServer s = test.startWebServer();
 		SlackNotificationTestProxyServer p = test.startProxyServerAuth("somethingCorrect", "somethingCorrect");
 		w.setEnabled(true);
