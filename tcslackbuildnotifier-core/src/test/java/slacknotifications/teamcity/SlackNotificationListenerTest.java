@@ -1,5 +1,6 @@
 package slacknotifications.teamcity;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -32,12 +33,18 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import slacknotifications.SlackNotification;
 import slacknotifications.SlackNotificationImpl;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+import slacknotifications.teamcity.settings.SlackNotificationConfig;
 
 public class SlackNotificationListenerTest {
 	SBuildServer sBuildServer = mock(SBuildServer.class);
@@ -119,10 +126,39 @@ public class SlackNotificationListenerTest {
 		verify(sBuildServer).addListener(whl);
 	}
 
-//	@Test
-//	public void testGetFromConfig() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testGetFromConfig() {
+	    BuildState buildState = new BuildState();
+	    SlackNotificationMainSettings mainSettings = new SlackNotificationMainSettings(sBuildServer);
+	    mainSettings.readFrom(getFullConfigElement());
+	    SlackNotificationConfig config = new SlackNotificationConfig("#general", "teamName", true, buildState, true, true, null, true, true);
+	    SlackNotificationListener whl = new SlackNotificationListener(sBuildServer, settings, mainSettings, manager, factory);
+	    
+	    whl.getFromConfig(slackNotificationImpl, config);
+	    
+		assertEquals("myproxy.mycompany.com", slackNotificationImpl.getProxyHost());
+		assertEquals(8080, slackNotificationImpl.getProxyPort());
+	}
+	
+	private Element getFullConfigElement(){
+        return getElement("src/test/resources/main-config-full.xml");
+    }
+
+    private Element getElement(String filePath){
+        SAXBuilder builder = new SAXBuilder();
+        builder.setIgnoringElementContentWhitespace(true);
+        try {
+            Document doc = builder.build(filePath);
+            return doc.getRootElement();
+        } catch (JDOMException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 	@Test
 	public void testBuildStartedSRunningBuild() throws FileNotFoundException, IOException {

@@ -113,23 +113,8 @@ public class SlackNotificationMainConfig {
 			 * configured, don't proxy the URL. 
 			 */
 			return false;
-		} else if (this.proxyShortNames == false && this.isUrlShortName(url)){
-			/* If the hostname part of the URL does not contain a dot, and we have proxyShortNames unset
-			 * then don't proxy the URL. 
-			 */
-			return false;
-		} else {
-			/* Else loop around the patterns matching the URL and don't 
-			 * proxy the URL if we have a match.
-			 */
-	    	for(Iterator<Pattern> noProxyPattern = noProxyPatterns.iterator(); noProxyPattern.hasNext();)
-	    	{	
-	    		Pattern tempPat = noProxyPattern.next();
-	    		if (tempPat.matcher(this.getHostNameFromUrl(url)).find()){
-	    			return false;
-	    		}
-	    	}
 		}
+		
 		return true;
 	}
 	
