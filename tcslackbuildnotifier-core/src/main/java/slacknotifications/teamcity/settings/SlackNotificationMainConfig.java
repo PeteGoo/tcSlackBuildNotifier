@@ -404,6 +404,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 			{
 				FileUtil.processXmlFile(SlackNotificationMainConfig.this.myConfigFile, new FileUtil.Processor() {
 					public void process(Element rootElement) {
+                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
                         rootElement.setAttribute("teamName", SlackNotificationMainConfig.this.teamName);
 						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));

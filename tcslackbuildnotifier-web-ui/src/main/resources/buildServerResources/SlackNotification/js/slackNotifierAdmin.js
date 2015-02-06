@@ -63,10 +63,11 @@ var SlackNotifierAdmin = {
 
         jQuery.ajax(
             {
-                url: $("slackNotifierAdmin").action,
+                url: $("slackNotifierAdminForm").action,
                 data: {
                     test: 1,
                     teamName: $("teamName").value,
+                    defaultChannel: $("defaultChannel").value,
                     token: $("token").value,
                     botName: $("botName").value,
                     iconUrl: $("iconUrl").value,
@@ -93,21 +94,23 @@ var SlackNotifierAdmin = {
 
         jQuery.ajax(
             {
-                url: $("slackNotifierAdmin").action,
+                url: $("slackNotifierAdminForm").action,
                 data: {
                     edit: 1,
                     teamName: $("teamName").value,
+                    defaultChannel: $("defaultChannel").value,
                     token: $("token").value,
                     botName: $("botName").value,
                     iconUrl: $("iconUrl").value,
                     maxCommitsToDisplay: $("maxCommitsToDisplay").value,
-                    showCommits: $("showCommits").value,
-                    showCommitters: $("showCommitters").value,
-                    showElapsedBuildTime: $("showElapsedBuildTime").value,
-                    showBuildAgent: $("showBuildAgent").value
+                    showCommits: $("showCommits").checked,
+                    showCommitters: $("showCommitters").checked,
+                    showElapsedBuildTime: $("showElapsedBuildTime").checked,
+                    showBuildAgent: $("showBuildAgent").checked
                 },
                 type: "POST"
             }).done(function() {
+
             }).fail(function() {
                 alert("Failed to save configuration!")
             });

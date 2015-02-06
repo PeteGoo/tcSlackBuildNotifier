@@ -22,7 +22,7 @@
               </div>
             </c:otherwise>
           </c:choose>
-          <bs:messages key="configurationSaved" />
+          <bs:messages key="message" />
           <br/>
           <div style="slack-config-errors" id="slackNotificationErrors">
           </div>

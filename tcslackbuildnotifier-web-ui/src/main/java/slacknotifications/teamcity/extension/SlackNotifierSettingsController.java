@@ -4,6 +4,7 @@ package slacknotifications.teamcity.extension;
 import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.serverSide.*;
+import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -34,18 +36,21 @@ public class SlackNotifierSettingsController extends BaseController {
     private WebControllerManager manager;
     private SlackNotificationMainConfig config;
     private SlackNotificationPayloadManager payloadManager;
+    private PluginDescriptor descriptor;
 
     public SlackNotifierSettingsController(@NotNull SBuildServer server,
                                            @NotNull ServerPaths serverPaths,
                                            @NotNull WebControllerManager manager,
                                            @NotNull SlackNotificationMainConfig config,
-                                           SlackNotificationPayloadManager payloadManager){
+                                           SlackNotificationPayloadManager payloadManager,
+                                           PluginDescriptor descriptor){
 
         this.server = server;
         this.serverPaths = serverPaths;
         this.manager = manager;
         this.config = config;
         this.payloadManager = payloadManager;
+        this.descriptor = descriptor;
 
         manager.registerController(CONTROLLER_PATH, this);
     }
@@ -53,19 +58,20 @@ public class SlackNotifierSettingsController extends BaseController {
     @Nullable
     @Override
     protected ModelAndView doHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws Exception {
+        HashMap<String, Object> params = new HashMap<String, Object>();
 
         if(request.getParameter(EDIT_PARAMETER) != null){
             logger.debug("Updating configuration");
-            this.handleConfigurationChange(request);
+            params = this.handleConfigurationChange(request);
         }
         else if(request.getParameter(TEST_PARAMETER) != null){
             logger.debug("Sending test notification");
-            this.handleTestNotification(request);
+            params = this.handleTestNotification(request);
         }
-        return new ModelAndView();
+        return new ModelAndView(descriptor.getPluginResourcesPath() + "SlackNotification/ajaxEdit.jsp", params);
     }
 
-    private void handleTestNotification(HttpServletRequest request) throws IOException {
+    private HashMap<String, Object> handleTestNotification(HttpServletRequest request) throws IOException {
         String teamName = request.getParameter("teamName");
         String token = request.getParameter("token");
         String botName = request.getParameter("botName");
@@ -95,8 +101,13 @@ public class SlackNotifierSettingsController extends BaseController {
 
             notification.post();
 
-            return;
+            this.getOrCreateMessages(request).addMessage("notificationSent", "The notification has been sent");
+
+            return null;
         }
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("message", "Sent");
+        return params;
     }
     public SlackNotification createMockNotification(String teamName, String defaultChannel, String botName,
                                                     String token, String iconUrl, Integer maxCommitsToDisplay,
@@ -151,7 +162,7 @@ public class SlackNotifierSettingsController extends BaseController {
         return retVal;
     }
 
-    private void handleConfigurationChange(HttpServletRequest request) throws IOException {
+    private HashMap<String, Object> handleConfigurationChange(HttpServletRequest request) throws IOException {
         String teamName = request.getParameter("teamName");
         String token = request.getParameter("token");
         String botName = request.getParameter("botName");
@@ -175,5 +186,9 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
 
         this.config.save();
+
+        HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("message", "Saved");
+        return params;
     }
 }
