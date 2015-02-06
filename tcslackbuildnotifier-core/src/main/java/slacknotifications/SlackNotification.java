@@ -15,8 +15,6 @@ public interface SlackNotification {
 
 	public abstract void setProxy(String proxyHost, Integer proxyPort);
 
-	public abstract void setProxyUserAndPass(String username, String password);
-
 	public abstract void post() throws FileNotFoundException, IOException;
 
 	public abstract Integer getStatus();

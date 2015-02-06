@@ -6,10 +6,7 @@
           token="thisismytoken"
           iconurl="http://www.myicon.com/icon.gif"
           botname="Team City">
-    <proxy host="myproxy.mycompany.com" port="8080">
-      <noproxy url=".mycompany.com" />
-      <noproxy url="192.168.0." />
-    </proxy>
+    <proxy host="myproxy.mycompany.com" port="8080"/>
     <info url="http://intranet.mycompany.com/docs/UsingSlackNotifications" text="Using SlackNotifications in myCompany Inc." />
   </slacknotifications>
 </server>
