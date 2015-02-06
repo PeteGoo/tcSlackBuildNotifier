@@ -20,7 +20,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SlackNotificationMainConfig implements ChangeListener {
-	private final FileWatcher myChangeObserver;
+    public final String DEFAULT_BOTNAME = "TeamCity";
+    public static final String DEFAULT_ICONURL = "https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity32.png";
+
+
+    private final FileWatcher myChangeObserver;
 	private final File myConfigDir;
 	private final File myConfigFile;
 	private String slacknotificationInfoUrl = null;
@@ -40,14 +44,15 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	public final String SINGLE_HOST_REGEX = "^[^./~`'\"]+(?:/.*)?$";
 	public final String HOSTNAME_ONLY_REGEX = "^([^/]+)(?:/.*)?$";
 	private Pattern singleHostPattern, hostnameOnlyPattern ;
-    private String iconUrl;
-    private String botName;
+    private String iconUrl = DEFAULT_ICONURL;
+    private String botName = DEFAULT_BOTNAME;
     private Boolean showBuildAgent;
     private Boolean showElapsedBuildTime;
     private Boolean showCommits = true;
     private Boolean showCommitters = true;
     private int maxCommitsToDisplay = 5;
 	private boolean configFileExists;
+
 
 
 	public SlackNotificationMainConfig(ServerPaths serverPaths) {

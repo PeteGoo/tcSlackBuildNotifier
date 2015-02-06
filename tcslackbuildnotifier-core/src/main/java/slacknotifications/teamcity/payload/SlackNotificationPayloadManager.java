@@ -21,11 +21,6 @@ public class SlackNotificationPayloadManager {
         Loggers.SERVER.info("SlackNotificationPayloadManager :: Starting");
     }
 
-    @Deprecated
-    public String buildChangedStatus(SRunningBuild runningBuild, SFinishedBuild previousBuild,
-                                     Status oldStatus, Status newStatus) {
-        return "";
-    }
 
     public SlackNotificationPayloadContent beforeBuildFinish(SRunningBuild runningBuild, SFinishedBuild previousBuild) {
         SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, runningBuild, previousBuild, BuildStateEnum.BEFORE_BUILD_FINISHED);
@@ -63,15 +58,7 @@ public class SlackNotificationPayloadManager {
         try {
             newUser = responsibilityInfoNew.getResponsibleUser().getDescriptiveName();
         } catch (Exception e) {}
-        content.setMessage("Build " + buildType.getFullName().toString()
-                        + " has changed responsibility from "
-                        + oldUser
-                        + " to "
-                        + newUser
-                        + " with comment '"
-                        + responsibilityInfoNew.getComment().toString().trim()
-                        + "'"
-        );
+
         content.setText(buildType.getFullName().toString()
                         + " changed responsibility from "
                         + oldUser
@@ -82,7 +69,6 @@ public class SlackNotificationPayloadManager {
                         + "'"
         );
 
-        content.setComment(responsibilityInfoNew.getComment());
         return content;
     }
 
@@ -101,15 +87,8 @@ public class SlackNotificationPayloadManager {
         if (responsibilityEntryNew.getState() != ResponsibilityEntry.State.NONE) {
             newUser = responsibilityEntryNew.getResponsibleUser().getDescriptiveName();
         }
-        content.setMessage("Build " + buildType.getFullName().toString()
-                        + " has changed responsibility from "
-                        + oldUser
-                        + " to "
-                        + newUser
-                        + " with comment '"
-                        + responsibilityEntryNew.getComment()
-                        + "'"
-        );
+
+
         content.setText(buildType.getFullName().toString().toString().trim()
                         + " changed responsibility from "
                         + oldUser
@@ -120,7 +99,6 @@ public class SlackNotificationPayloadManager {
                         + "'"
         );
 
-        content.setComment(responsibilityEntryNew.getComment());
         return content;
     }
 

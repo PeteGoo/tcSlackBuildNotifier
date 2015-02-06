@@ -143,7 +143,7 @@ public class SlackNotificationImpl implements SlackNotification {
 		}
     }
 
-    public void post() throws FileNotFoundException, IOException {
+    public void post() throws IOException {
         if(getIsApiToken()){
             postViaApi();
         }

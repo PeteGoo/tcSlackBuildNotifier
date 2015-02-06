@@ -25,6 +25,7 @@ public class SlackNotifierAdminPage extends AdminPage {
     private static final String PAGE = "SlackNotification/slackAdminSettings.jsp";
     private static final String PLUGIN_NAME = "slackNotifications";
     private static final String TAB_TITLE = "Slack Notifications";
+    private final String jspHome;
     private SBuildServer sBuildServer;
     private SlackNotificationMainSettings slackMainSettings;
 
@@ -38,6 +39,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         this.slackMainSettings = slackMainSettings;
         setPluginName(PLUGIN_NAME);
         setIncludeUrl(descriptor.getPluginResourcesPath(PAGE));
+        jspHome = descriptor.getPluginResourcesPath();
         setTabTitle(TAB_TITLE);
         ArrayList<String> after = new ArrayList<String>();
         after.add(AFTER_PAGE_ID);
@@ -52,6 +54,17 @@ public class SlackNotifierAdminPage extends AdminPage {
     public void fillModel(@NotNull Map<String, Object> model, @NotNull HttpServletRequest request){
         super.fillModel(model, request);
 
+        model.put("teamName", this.slackMainSettings.getTeamName());
+        model.put("token", this.slackMainSettings.getToken());
+        model.put("botName", this.slackMainSettings.getBotName());
+        model.put("iconUrl", this.slackMainSettings.getIconUrl());
+        model.put("defaultChannel", this.slackMainSettings.getDefaultChannel());
+        model.put("maxCommitsToDisplay", this.slackMainSettings.getMaxCommitsToDisplay());
+        model.put("showBuildAgent", this.slackMainSettings.getShowBuildAgent());
+        model.put("showCommits", this.slackMainSettings.getShowCommits());
+        model.put("showCommitters", this.slackMainSettings.getShowCommitters());
+        model.put("showElapsedBuildTime", this.slackMainSettings.getShowElapsedBuildTime());
+        model.put("jspHome", this.jspHome);
     }
 
     @NotNull
