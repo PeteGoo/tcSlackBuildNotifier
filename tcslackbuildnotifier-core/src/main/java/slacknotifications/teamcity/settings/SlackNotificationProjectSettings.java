@@ -1,18 +1,16 @@
 package slacknotifications.teamcity.settings;
 
+import jetbrains.buildServer.serverSide.SBuildType;
+import jetbrains.buildServer.serverSide.settings.ProjectSettings;
+import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
+import org.jdom.Element;
+import slacknotifications.teamcity.BuildState;
+import slacknotifications.teamcity.Loggers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.settings.ProjectSettings;
-import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
-
-import org.jdom.Element;
-
-import slacknotifications.teamcity.BuildState;
-import slacknotifications.teamcity.Loggers;
 
 
 public class SlackNotificationProjectSettings implements ProjectSettings {

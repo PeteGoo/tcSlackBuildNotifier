@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,23 +16,15 @@ import java.util.HashSet;
 import java.util.List;
 
 import jetbrains.buildServer.messages.Status;
-import jetbrains.buildServer.serverSide.BuildHistory;
-import jetbrains.buildServer.serverSide.ProjectManager;
-import jetbrains.buildServer.serverSide.SBuildServer;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
+import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
-
 import org.apache.http.ProtocolVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicStatusLine;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -44,6 +37,7 @@ import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
+
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
 
 public class SlackNotificationListenerTest {
@@ -67,6 +61,21 @@ public class SlackNotificationListenerTest {
 	MockSRunningBuild sRunningBuild = new MockSRunningBuild(sBuildType, "SubVersion", Status.NORMAL, "Running", "TestBuild01");
 	MockSProject sProject = new MockSProject("Test Project", "A test project", "project1", "ATestProject", sBuildType);
 	SlackNotificationListener whl;
+
+
+    @After
+    @Before
+    public void deleteSlackConfigFile(){
+        DeleteConfigFiles();
+    }
+    
+    private void DeleteConfigFiles() {
+        File outputFile = new File("slack", "slack-config.xml");
+        outputFile.delete();
+
+        File outputDir = new File("slack");
+        outputDir.delete();
+    }
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -124,12 +133,13 @@ public class SlackNotificationListenerTest {
 		SlackNotificationListener whl = new SlackNotificationListener(sBuildServer, settings,configSettings, manager, factory);
 		whl.register();
 		verify(sBuildServer).addListener(whl);
-	}
-
-	@Test
+	}	@Test
 	public void testGetFromConfig() {
+        String expectedConfigDirectory = ".";
+        ServerPaths serverPaths = mock(ServerPaths.class);
+        when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
 	    BuildState buildState = new BuildState();
-	    SlackNotificationMainSettings mainSettings = new SlackNotificationMainSettings(sBuildServer);
+	    SlackNotificationMainSettings mainSettings = new SlackNotificationMainSettings(sBuildServer, serverPaths);
 	    mainSettings.readFrom(getFullConfigElement());
 	    SlackNotificationConfig config = new SlackNotificationConfig("#general", "teamName", true, buildState, true, true, null, true, true);
 	    SlackNotificationListener whl = new SlackNotificationListener(sBuildServer, settings, mainSettings, manager, factory);

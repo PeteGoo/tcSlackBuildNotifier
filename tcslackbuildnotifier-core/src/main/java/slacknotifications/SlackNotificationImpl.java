@@ -1,15 +1,5 @@
 package slacknotifications;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import com.google.gson.Gson;
 import jetbrains.buildServer.util.StringUtil;
 import org.apache.http.HttpResponse;
@@ -17,7 +7,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -34,6 +23,18 @@ import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+
 
 public class SlackNotificationImpl implements SlackNotification {
 
@@ -144,7 +145,7 @@ public class SlackNotificationImpl implements SlackNotification {
 		}
     }
 
-    public void post() throws FileNotFoundException, IOException {
+    public void post() throws IOException {
         if(getIsApiToken()){
             postViaApi();
         }
@@ -205,9 +206,16 @@ public class SlackNotificationImpl implements SlackNotification {
             if (this.teamName == null) {
                 this.teamName = "";
             }
-            String url = String.format("https://%s.slack.com/services/hooks/incoming-webhook?token=%s",
-                    this.teamName.toLowerCase(),
-                    this.token);
+
+            String url = "";
+            if(this.token != null && this.token.startsWith("http")){
+                url = this.token;
+            }
+             else {
+                url = String.format("https://%s.slack.com/services/hooks/incoming-webhook?token=%s",
+                        this.teamName.toLowerCase(),
+                        this.token);
+            }
 
             Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
 
@@ -617,6 +625,10 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public boolean getIsApiToken() {
+        if(this.token != null && this.token.startsWith("http")){
+            // We now accept a webhook url.
+            return false;
+        }
         return this.token == null || this.token.split("-").length > 1;
     }
 

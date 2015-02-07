@@ -18,6 +18,10 @@
 		  init-method="register"
 			/>
 
+	<bean id="slackNotifierAdminPage" class="slacknotifications.teamcity.extension.SlackNotifierAdminPage"/>
+
+    <bean id="slackNotifierSettingsController" class="slacknotifications.teamcity.extension.SlackNotifierSettingsController"/>
+
 	<bean id="slackNotificationProjectTabExtension"
         class="slacknotifications.teamcity.extension.SlackNotificationProjectTabExtension"
         init-method="register" 
@@ -59,6 +63,9 @@
 		class="slacknotifications.teamcity.settings.SlackNotificationMainSettings"
 		init-method="register"
 		/>
+
+    <bean id="slackNotificationMainConfig"
+          class="slacknotifications.teamcity.settings.SlackNotificationMainConfig"/>
 
 	<bean id="slackNotificationPayloadManager"
 		class="slacknotifications.teamcity.payload.SlackNotificationPayloadManager"

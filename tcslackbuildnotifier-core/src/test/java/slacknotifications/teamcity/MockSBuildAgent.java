@@ -1,19 +1,15 @@
 package slacknotifications.teamcity;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import jetbrains.buildServer.BuildAgent;
 import jetbrains.buildServer.LicenseNotGrantedException;
-import jetbrains.buildServer.serverSide.RunType;
-import jetbrains.buildServer.serverSide.SBuildAgent;
-import jetbrains.buildServer.serverSide.SBuildType;
-import jetbrains.buildServer.serverSide.SFinishedBuild;
-import jetbrains.buildServer.serverSide.SRunningBuild;
+import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.comments.Comment;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.users.User;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class MockSBuildAgent implements SBuildAgent, BuildAgent {
 

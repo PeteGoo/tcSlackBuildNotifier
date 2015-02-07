@@ -1,33 +1,54 @@
 package slacknotifications.teamcity.settings;
 
+import jetbrains.buildServer.serverSide.ServerPaths;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import slacknotifications.*;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import slacknotifications.*;
-import slacknotifications.SlackNotification;
-
 
 public class SlackNotificationSettingsTest {
 
+	@After
+	@Before
+	public void deleteSlackConfigFile(){
+		DeleteConfigFiles();
+	}
+	
+    private void DeleteConfigFiles() {
+		File outputFile = new File("slack", "slack-config.xml");
+		outputFile.delete();
+
+		File outputDir = new File("slack");
+		outputDir.delete();
+	}
+	
+
+
 	@Test 
 	public void test_Regex(){
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		assertTrue(mainConfig.isUrlShortName("test"));
 		assertTrue(mainConfig.isUrlShortName("test:80"));
 		
@@ -58,31 +79,15 @@ public class SlackNotificationSettingsTest {
 		
 	}
 	
-/*
-    @Ignore
-	@Test
-	public void test_200UsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
-		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
-		mainConfig.setProxyHost(test.proxy);
-		mainConfig.setProxyPort(test.proxyPort);
-		mainConfig.setProxyShortNames(true);
-		String url = "http://localhost:" + test.webserverPort + "/200";
-		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfigForUrl(url));
-		SlackNotificationTestServer s = test.startWebServer();
-		SlackNotificationTestProxyServer p = test.startProxyServer();
-		w.setEnabled(true);
-		w.post();
-		test.stopWebServer(s);
-		test.stopProxyServer(p);
-		assertTrue(w.getStatus() == HttpStatus.SC_OK);		
-	}
-*/
     @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
 		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		mainConfig.setProxyHost(test.proxy);
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);
@@ -101,8 +106,12 @@ public class SlackNotificationSettingsTest {
     @Ignore
 	@Test
 	public void test_AuthFailNoCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
+		String expectedConfigDirectory = ".";
+		ServerPaths serverPaths = mock(ServerPaths.class);
+		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
+
 		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
+		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
 		mainConfig.setProxyHost(test.proxy);
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);

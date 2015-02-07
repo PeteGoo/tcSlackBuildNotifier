@@ -1,14 +1,14 @@
 package slacknotifications;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.List;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.Credentials;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 public interface SlackNotification {
 

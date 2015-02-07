@@ -1,11 +1,10 @@
 package slacknotifications.teamcity.payload.util;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import slacknotifications.teamcity.Loggers;
-
 import slacknotifications.teamcity.payload.util.TemplateMatcher.VariableResolver;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * This is a VariableResolver for the TemplateMatcher

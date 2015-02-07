@@ -1,8 +1,8 @@
 package slacknotifications.teamcity.settings;
 
-import slacknotifications.teamcity.Loggers;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsFactory;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
+import slacknotifications.teamcity.Loggers;
 
 
 public class SlackNotificationProjectSettingsFactory implements ProjectSettingsFactory {

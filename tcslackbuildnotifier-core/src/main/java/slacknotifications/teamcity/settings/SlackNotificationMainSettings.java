@@ -1,13 +1,9 @@
 package slacknotifications.teamcity.settings;
 
-import java.util.Iterator;
-import java.util.List;
-
 import jetbrains.buildServer.serverSide.MainConfigProcessor;
 import jetbrains.buildServer.serverSide.SBuildServer;
-
+import jetbrains.buildServer.serverSide.ServerPaths;
 import org.jdom.Element;
-
 import slacknotifications.SlackNotificationProxyConfig;
 import slacknotifications.teamcity.Loggers;
 
@@ -15,11 +11,14 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 	private static final String NAME = SlackNotificationMainSettings.class.getName();
 	private SlackNotificationMainConfig slackNotificationMainConfig;
 	private SBuildServer server;
+    private ServerPaths serverPaths;
 
-    public SlackNotificationMainSettings(SBuildServer server){
-		Loggers.SERVER.debug(NAME + " :: Constructor called");
+    public SlackNotificationMainSettings(SBuildServer server, ServerPaths serverPaths){
+        this.serverPaths = serverPaths;
+        Loggers.SERVER.debug(NAME + " :: Constructor called");
 		this.server = server;
-		slackNotificationMainConfig = new SlackNotificationMainConfig();
+		slackNotificationMainConfig = new SlackNotificationMainConfig(serverPaths);
+
 	}
 
     public void register(){
@@ -37,102 +36,18 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
      * Old settings should be overwritten.
      */
     {
-    	Loggers.SERVER.info("SlackNotificationMainSettings: re-reading main settings");
+        if(slackNotificationMainConfig.getConfigFileExists()){
+            // The MainConfigProcessor approach has been deprecated.
+            // Instead we will use our own config file so we have better control over when it is persisted
+            return;
+        }
+    	Loggers.SERVER.info("SlackNotificationMainSettings: re-reading main settings using old-style MainConfigProcessor. From now on we will use the slack/slack-config.xml file instead of main-config.xml");
     	Loggers.SERVER.debug(NAME + ":readFrom :: " + rootElement.toString());
-    	SlackNotificationMainConfig tempConfig = new SlackNotificationMainConfig();
+    	SlackNotificationMainConfig tempConfig = new SlackNotificationMainConfig(serverPaths);
     	Element slackNotificationsElement = rootElement.getChild("slacknotifications");
-    	if(slackNotificationsElement != null){
-            if(slackNotificationsElement.getAttribute("defaultChannel") != null)
-            {
-                tempConfig.setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));
-            }
-            if(slackNotificationsElement.getAttribute("teamName") != null)
-            {
-                tempConfig.setTeamName(slackNotificationsElement.getAttributeValue("teamName"));
-            }
-            if(slackNotificationsElement.getAttribute("token") != null)
-            {
-                tempConfig.setToken(slackNotificationsElement.getAttributeValue("token"));
-            }
-            if(slackNotificationsElement.getAttribute("iconurl") != null)
-            {
-                tempConfig.setIconUrl(slackNotificationsElement.getAttributeValue("iconurl"));
-            }
-            if(slackNotificationsElement.getAttribute("botname") != null)
-            {
-                tempConfig.setBotName(slackNotificationsElement.getAttributeValue("botname"));
-            }
-            if(slackNotificationsElement.getAttribute("showBuildAgent") != null)
-            {
-                tempConfig.setShowBuildAgent(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showBuildAgent")));
-            }
-            if(slackNotificationsElement.getAttribute("showElapsedBuildTime") != null)
-            {
-                tempConfig.setShowElapsedBuildTime(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showElapsedBuildTime")));
-            }
-            if(slackNotificationsElement.getAttribute("showCommits") != null)
-            {
-                tempConfig.setShowCommits(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommits")));
-            }
-            if(slackNotificationsElement.getAttribute("showCommitters") != null)
-            {
-                tempConfig.setShowCommitters(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommitters")));
-            }
-            if(slackNotificationsElement.getAttribute("maxCommitsToDisplay") != null)
-            {
-                tempConfig.setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue("maxCommitsToDisplay")));
-            }
-			Element extraInfoElement = slackNotificationsElement.getChild("info");
-	        if(extraInfoElement != null)
-	        {
-	        	if ((extraInfoElement.getAttribute("text") != null) 
-	        	 && (extraInfoElement.getAttribute("url")  != null)){
-	        		tempConfig.setSlackNotificationInfoText(extraInfoElement.getAttributeValue("text"));
-	        		tempConfig.setSlackNotificationInfoUrl(extraInfoElement.getAttributeValue("url"));
-	        		Loggers.SERVER.debug(NAME + ":readFrom :: info text " + tempConfig.getSlackNotificationInfoText());
-	        		Loggers.SERVER.debug(NAME + ":readFrom :: info url  " + tempConfig.getSlackNotificationInfoUrl());
-	        	}
-	        	if (extraInfoElement.getAttribute("show-reading") != null){
-	        		tempConfig.setSlackNotificationShowFurtherReading(Boolean.parseBoolean(extraInfoElement.getAttributeValue("show-reading")));
-	        		Loggers.SERVER.debug(NAME + ":readFrom :: show reading " + tempConfig.getSlackNotificationShowFurtherReading().toString());
-	        	}
-	        }
-    		Element proxyElement = slackNotificationsElement.getChild("proxy");
-	        if(proxyElement != null)
-	        {
-	        	if (proxyElement.getAttribute("proxyShortNames") != null){
-	        		tempConfig.setProxyShortNames(Boolean.parseBoolean(proxyElement.getAttributeValue("proxyShortNames")));
-	        	}
-	        	
-	        	if (proxyElement.getAttribute("host") != null){
-	        		tempConfig.setProxyHost(proxyElement.getAttributeValue("host"));
-	        	}
-	        	
-	        	if (proxyElement.getAttribute("port") != null){
-	        		tempConfig.setProxyPort(Integer.parseInt(proxyElement.getAttributeValue("port")));
-	        	}
-	
-	        	if (proxyElement.getAttribute("username") != null){
-	        		tempConfig.setProxyUsername(proxyElement.getAttributeValue("username"));
-	        	}
-	
-	        	if (proxyElement.getAttribute("password") != null){
-	        		tempConfig.setProxyPassword(proxyElement.getAttributeValue("password"));
-	        	}
-	
-	    		List<Element> namedChildren = proxyElement.getChildren("noproxy");
-	            if(namedChildren.size() > 0) {
-					for(Iterator<Element> i = namedChildren.iterator(); i.hasNext();)
-			        {
-						Element e = i.next();
-						String url = e.getAttributeValue("url");
-						tempConfig.addNoProxyUrl(url);
-						Loggers.SERVER.debug(NAME + ":readFrom :: noProxyUrl " + url);
-			        }
-		        }
-	    	}
-    	}
+        tempConfig.readConfigurationFromXmlElement(slackNotificationsElement);
         this.slackNotificationMainConfig = tempConfig;
+        tempConfig.save();
     }
 
     public void writeTo(Element parentElement)
@@ -140,27 +55,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
      * in memory. 
      */
     {
-    	Loggers.SERVER.info("SlackNotificationMainSettings: re-writing main settings");
-    	Loggers.SERVER.debug(NAME + ":writeTo :: " + parentElement.toString());
-    	Element el = new Element("slackNotification");
-        if(	  slackNotificationMainConfig != null
-           && slackNotificationMainConfig.getProxyHost() != null && slackNotificationMainConfig.getProxyHost().length() > 0
-           && slackNotificationMainConfig.getProxyPort() != null && slackNotificationMainConfig.getProxyPort() > 0 )
-        {
-        	el.addContent(slackNotificationMainConfig.getProxyAsElement());
-			Loggers.SERVER.debug(NAME + "writeTo :: proxyHost " + slackNotificationMainConfig.getProxyHost().toString());
-			Loggers.SERVER.debug(NAME + "writeTo :: proxyPort " + slackNotificationMainConfig.getProxyPort().toString());
-        }
-        
-        
-        if(slackNotificationMainConfig != null && slackNotificationMainConfig.getInfoUrlAsElement() != null){
-        	el.addContent(slackNotificationMainConfig.getInfoUrlAsElement());
-			Loggers.SERVER.debug(NAME + "writeTo :: infoText " + slackNotificationMainConfig.getSlackNotificationInfoText().toString());
-			Loggers.SERVER.debug(NAME + "writeTo :: InfoUrl  " + slackNotificationMainConfig.getSlackNotificationInfoUrl().toString());
-			Loggers.SERVER.debug(NAME + "writeTo :: show-reading  " + slackNotificationMainConfig.getSlackNotificationShowFurtherReading().toString());
-        }
-        
-        parentElement.addContent(el);
+
     }
     
     public String getProxyForUrl(String url){
@@ -197,6 +92,10 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         return this.slackNotificationMainConfig.getBotName();
     }
 
+    public boolean getEnabled(){
+        return this.slackNotificationMainConfig.getEnabled();
+    }
+
 
     public Boolean getShowBuildAgent() {
         return this.slackNotificationMainConfig.getShowBuildAgent();
@@ -228,5 +127,9 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
     public int getMaxCommitsToDisplay() {
         return this.slackNotificationMainConfig.getMaxCommitsToDisplay();
+    }
+
+    public void refresh() {
+        this.slackNotificationMainConfig.refresh();
     }
 }

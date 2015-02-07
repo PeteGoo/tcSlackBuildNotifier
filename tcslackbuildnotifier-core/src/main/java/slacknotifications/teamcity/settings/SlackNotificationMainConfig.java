@@ -1,17 +1,32 @@
 package slacknotifications.teamcity.settings;
 
+import com.intellij.openapi.util.JDOMUtil;
+import jetbrains.buildServer.configuration.ChangeListener;
+import jetbrains.buildServer.configuration.FileWatcher;
+import jetbrains.buildServer.serverSide.ServerPaths;
+import jetbrains.buildServer.util.FileUtil;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import slacknotifications.SlackNotificationProxyConfig;
+import slacknotifications.teamcity.Loggers;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jdom.Element;
+public class SlackNotificationMainConfig implements ChangeListener {
+    public final String DEFAULT_BOTNAME = "TeamCity";
+    public static final String DEFAULT_ICONURL = "https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity32.png";
 
-import slacknotifications.SlackNotificationProxyConfig;
 
-
-public class SlackNotificationMainConfig {
+    private final FileWatcher myChangeObserver;
+	private final File myConfigDir;
+	private final File myConfigFile;
 	private String slacknotificationInfoUrl = null;
 	private String slacknotificationInfoText = null;
 	private Boolean slacknotificationShowFurtherReading = true;
@@ -25,24 +40,73 @@ public class SlackNotificationMainConfig {
 	private Boolean proxyShortNames = false;
 	private List<String> noProxyUrls;
 	private List<Pattern> noProxyPatterns;
+    private boolean enabled = true;
 	
 	public final String SINGLE_HOST_REGEX = "^[^./~`'\"]+(?:/.*)?$";
 	public final String HOSTNAME_ONLY_REGEX = "^([^/]+)(?:/.*)?$";
 	private Pattern singleHostPattern, hostnameOnlyPattern ;
-    private String iconUrl;
-    private String botName;
+    private String iconUrl = DEFAULT_ICONURL;
+    private String botName = DEFAULT_BOTNAME;
     private Boolean showBuildAgent;
     private Boolean showElapsedBuildTime;
-    private boolean showCommits = true;
-    private boolean showCommitters = true;
+    private Boolean showCommits = true;
+    private Boolean showCommitters = true;
     private int maxCommitsToDisplay = 5;
+	private boolean configFileExists;
 
 
-    public SlackNotificationMainConfig() {
+
+	public SlackNotificationMainConfig(ServerPaths serverPaths) {
 		noProxyUrls = new ArrayList<String>();
 		noProxyPatterns = new ArrayList<Pattern>();
 		singleHostPattern = Pattern.compile(SINGLE_HOST_REGEX); 
 		hostnameOnlyPattern = Pattern.compile(HOSTNAME_ONLY_REGEX);
+
+		this.myConfigDir = new File(serverPaths.getConfigDir(), "slack");
+		this.myConfigFile = new File(this.myConfigDir, "slack-config.xml");
+		reloadConfiguration();
+
+		this.myChangeObserver = new FileWatcher(this.myConfigFile);
+		this.myChangeObserver.setSleepingPeriod(10000L);
+		this.myChangeObserver.registerListener(this);
+		this.myChangeObserver.start();
+	}
+
+    public void refresh(){
+        reloadConfiguration();
+    }
+
+	private void reloadConfiguration() {
+		Loggers.ACTIVITIES.info("Loading configuration file: " + this.myConfigFile.getAbsolutePath());
+
+		myConfigDir.mkdirs();
+		FileUtil.copyResourceIfNotExists(getClass(), "/config_templates/slack-config.xml", new File(this.myConfigDir, "slack-config.xml"));
+
+		Document document = parseFile(this.myConfigFile);
+		if (document != null)
+		{
+			Element rootElement = document.getRootElement();
+			readConfigurationFromXmlElement(rootElement);
+		}
+	}
+
+	private Document parseFile(File configFile)
+	{
+		try
+		{
+			if (configFile.isFile()) {
+				return JDOMUtil.loadDocument(configFile);
+			}
+		}
+		catch (JDOMException e)
+		{
+			Loggers.ACTIVITIES.error("Failed to parse xml configuration file: " + configFile.getAbsolutePath(), e);
+		}
+		catch (IOException e)
+		{
+			Loggers.ACTIVITIES.error("I/O error occurred on attempt to parse xml configuration file: " + configFile.getAbsolutePath(), e);
+		}
+		return null;
 	}
 
 	public String getProxyListasString(){
@@ -272,6 +336,14 @@ public class SlackNotificationMainConfig {
 		return slacknotificationInfoText;
 	}
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
 	public void setSlackNotificationInfoUrl(String slacknotificationInfoUrl) {
 		this.slacknotificationInfoUrl = slacknotificationInfoUrl;
 	}
@@ -335,5 +407,160 @@ public class SlackNotificationMainConfig {
 
     public void setMaxCommitsToDisplay(int maxCommitsToDisplay) {
         this.maxCommitsToDisplay = maxCommitsToDisplay;
+    }
+
+	public synchronized void save()
+	{
+		this.myChangeObserver.runActionWithDisabledObserver(new Runnable()
+		{
+			public void run()
+			{
+				FileUtil.processXmlFile(SlackNotificationMainConfig.this.myConfigFile, new FileUtil.Processor() {
+					public void process(Element rootElement) {
+                        rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
+                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
+						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
+                        rootElement.setAttribute("teamName", SlackNotificationMainConfig.this.teamName);
+						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));
+						rootElement.setAttribute("iconurl", emptyIfNull(SlackNotificationMainConfig.this.iconUrl));
+						rootElement.setAttribute("botname", emptyIfNull(SlackNotificationMainConfig.this.botName));
+						if(SlackNotificationMainConfig.this.showBuildAgent != null){
+							rootElement.setAttribute("showBuildAgent", Boolean.toString(SlackNotificationMainConfig.this.showBuildAgent));
+						}
+						if(SlackNotificationMainConfig.this.showElapsedBuildTime != null) {
+							rootElement.setAttribute("showElapsedBuildTime", Boolean.toString(SlackNotificationMainConfig.this.showElapsedBuildTime));
+						}
+						if(SlackNotificationMainConfig.this.showCommits != null) {
+							rootElement.setAttribute("showCommits", Boolean.toString(SlackNotificationMainConfig.this.showCommits));
+						}
+						if(SlackNotificationMainConfig.this.showCommitters != null) {
+							rootElement.setAttribute("showCommitters", Boolean.toString(SlackNotificationMainConfig.this.showCommitters));
+						}
+						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.maxCommitsToDisplay));
+
+						Element el = new Element("slackNotification");
+						boolean hasProxyDetails = false;
+						if(	  getProxyHost() != null && getProxyHost().length() > 0
+								&& getProxyPort() != null && getProxyPort() > 0 )
+						{
+							el.addContent(getProxyAsElement());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyHost " + getProxyHost().toString());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyPort " + getProxyPort().toString());
+							hasProxyDetails = true;
+						}
+
+
+						if(getInfoUrlAsElement() != null){
+							el.addContent(getInfoUrlAsElement());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: infoText " + getSlackNotificationInfoText().toString());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: InfoUrl  " + getSlackNotificationInfoUrl().toString());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: show-reading  " + getSlackNotificationShowFurtherReading().toString());
+							hasProxyDetails = true;
+						}
+
+						if(hasProxyDetails) {
+							rootElement.addContent(el);
+						}
+					}
+				});
+			}
+		});
+	}
+
+    private String emptyIfNull(String str){
+        return str == null ? "" : str;
+    }
+
+	@Override
+	public void changeOccured(String s) {
+		reloadConfiguration();
+	}
+
+	public boolean getConfigFileExists() {
+		return configFileExists;
+	}
+
+	void readConfigurationFromXmlElement(Element slackNotificationsElement) {
+        if(slackNotificationsElement != null){
+            if(slackNotificationsElement.getAttribute("enabled") != null)
+            {
+                setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("enabled")));
+            }
+            if(slackNotificationsElement.getAttribute("defaultChannel") != null)
+            {
+                setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));
+            }
+            if(slackNotificationsElement.getAttribute("teamName") != null)
+            {
+                setTeamName(slackNotificationsElement.getAttributeValue("teamName"));
+            }
+            if(slackNotificationsElement.getAttribute("token") != null)
+            {
+                setToken(slackNotificationsElement.getAttributeValue("token"));
+            }
+            if(slackNotificationsElement.getAttribute("iconurl") != null)
+            {
+                setIconUrl(slackNotificationsElement.getAttributeValue("iconurl"));
+            }
+            if(slackNotificationsElement.getAttribute("botname") != null)
+            {
+                setBotName(slackNotificationsElement.getAttributeValue("botname"));
+            }
+            if(slackNotificationsElement.getAttribute("showBuildAgent") != null)
+            {
+                setShowBuildAgent(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showBuildAgent")));
+            }
+            if(slackNotificationsElement.getAttribute("showElapsedBuildTime") != null)
+            {
+                setShowElapsedBuildTime(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showElapsedBuildTime")));
+            }
+            if(slackNotificationsElement.getAttribute("showCommits") != null)
+            {
+                setShowCommits(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommits")));
+            }
+            if(slackNotificationsElement.getAttribute("showCommitters") != null)
+            {
+                setShowCommitters(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommitters")));
+            }
+            if(slackNotificationsElement.getAttribute("maxCommitsToDisplay") != null)
+            {
+                setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue("maxCommitsToDisplay")));
+            }
+
+            Element proxyElement = slackNotificationsElement.getChild("proxy");
+            if(proxyElement != null)
+            {
+                if (proxyElement.getAttribute("proxyShortNames") != null){
+                    setProxyShortNames(Boolean.parseBoolean(proxyElement.getAttributeValue("proxyShortNames")));
+                }
+
+                if (proxyElement.getAttribute("host") != null){
+                    setProxyHost(proxyElement.getAttributeValue("host"));
+                }
+
+                if (proxyElement.getAttribute("port") != null){
+                    setProxyPort(Integer.parseInt(proxyElement.getAttributeValue("port")));
+                }
+
+                if (proxyElement.getAttribute("username") != null){
+                    setProxyUsername(proxyElement.getAttributeValue("username"));
+                }
+
+                if (proxyElement.getAttribute("password") != null){
+                    setProxyPassword(proxyElement.getAttributeValue("password"));
+                }
+
+                List<Element> namedChildren = proxyElement.getChildren("noproxy");
+                if(namedChildren.size() > 0) {
+                    for(Iterator<Element> i = namedChildren.iterator(); i.hasNext();)
+                    {
+                        Element e = i.next();
+                        String url = e.getAttributeValue("url");
+                        addNoProxyUrl(url);
+                        Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + ":readFrom :: noProxyUrl " + url);
+                    }
+                }
+            }
+        }
     }
 }

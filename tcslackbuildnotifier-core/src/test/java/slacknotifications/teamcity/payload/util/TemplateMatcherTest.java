@@ -1,10 +1,9 @@
 package slacknotifications.teamcity.payload.util;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-
 import slacknotifications.teamcity.payload.util.TemplateMatcher.VariableResolver;
+
+import static org.junit.Assert.assertTrue;
 
 public class TemplateMatcherTest {
 
