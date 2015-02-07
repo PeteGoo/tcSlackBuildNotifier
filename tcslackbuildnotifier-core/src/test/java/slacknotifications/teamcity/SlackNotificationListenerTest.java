@@ -133,9 +133,7 @@ public class SlackNotificationListenerTest {
 		SlackNotificationListener whl = new SlackNotificationListener(sBuildServer, settings,configSettings, manager, factory);
 		whl.register();
 		verify(sBuildServer).addListener(whl);
-	}
-
-	@Test
+	}	@Test
 	public void testGetFromConfig() {
         String expectedConfigDirectory = ".";
         ServerPaths serverPaths = mock(ServerPaths.class);

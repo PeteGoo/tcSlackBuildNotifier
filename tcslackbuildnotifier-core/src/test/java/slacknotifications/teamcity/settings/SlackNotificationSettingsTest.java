@@ -79,26 +79,6 @@ public class SlackNotificationSettingsTest {
 		
 	}
 	
-/*
-    @Ignore
-	@Test
-	public void test_200UsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
-		SlackNotificationTest test = new SlackNotificationTest();
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig();
-		mainConfig.setProxyHost(test.proxy);
-		mainConfig.setProxyPort(test.proxyPort);
-		mainConfig.setProxyShortNames(true);
-		String url = "http://localhost:" + test.webserverPort + "/200";
-		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfigForUrl(url));
-		SlackNotificationTestServer s = test.startWebServer();
-		SlackNotificationTestProxyServer p = test.startProxyServer();
-		w.setEnabled(true);
-		w.post();
-		test.stopWebServer(s);
-		test.stopProxyServer(p);
-		assertTrue(w.getStatus() == HttpStatus.SC_OK);		
-	}
-*/
     @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {

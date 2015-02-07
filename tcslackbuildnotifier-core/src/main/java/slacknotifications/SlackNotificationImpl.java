@@ -34,6 +34,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+
+
 public class SlackNotificationImpl implements SlackNotification {
 
     private String proxyHost;

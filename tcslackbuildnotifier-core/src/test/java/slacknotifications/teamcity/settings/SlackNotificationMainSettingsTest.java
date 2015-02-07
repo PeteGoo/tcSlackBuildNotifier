@@ -18,9 +18,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import org.apache.http.auth.Credentials;
-
 
 public class SlackNotificationMainSettingsTest {
 	SBuildServer server = mock(SBuildServer.class);
