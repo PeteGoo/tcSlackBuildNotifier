@@ -6,3 +6,8 @@ addons:
     # ...
     paths:
     - $HOME/tcslackbuildnotifier-web-ui/target/tcSlackNotificationsPlugin*.zip
+    bucket: slacknotifier-builds
+    key:
+      secure: Jgn0V3qiY/WX/Oo/9WOyi6V/g0oeaaP6fbZgs9nzMRCydOrUzJsh/ZCVX0Zc3jZBYARIuSbJJsNY5YBcdspGvM+tigpJsZaJ9po1cnHzDUIlciMpzu204APCMVF9Qp0aYzMnKoAUN/pMFP0BxclklpXHXtUZrAkaw7uerDzrnuQ=
+    secret:
+      secure: WkyF4Ih10IWkFZ+qNhnOUeCnWI2/r6j2QRjUY5TzRN1CjpCeRHLrKZ1OP6hc8SEamM0dLb/Iyk0ti0k4P738fow39d3/UMZB9MRlN2495TnfMOiAlAze3pSGzB26fRsvlfo18+R/GjpN8oPVJQmZrMSnl2ROgPbAg7qOnGajhhU=
