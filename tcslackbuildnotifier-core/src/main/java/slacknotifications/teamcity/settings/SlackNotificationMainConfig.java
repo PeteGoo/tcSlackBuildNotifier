@@ -13,11 +13,6 @@ import slacknotifications.teamcity.Loggers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SlackNotificationMainConfig implements ChangeListener {
     public final String DEFAULT_BOTNAME = "TeamCity";
