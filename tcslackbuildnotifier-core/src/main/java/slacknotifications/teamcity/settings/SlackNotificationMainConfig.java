@@ -329,7 +329,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                         rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
                         rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
-                        rootElement.setAttribute("teamName", SlackNotificationMainConfig.this.teamName);
+                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));
 						rootElement.setAttribute("iconurl", emptyIfNull(SlackNotificationMainConfig.this.iconUrl));
 						rootElement.setAttribute("botname", emptyIfNull(SlackNotificationMainConfig.this.botName));
