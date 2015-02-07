@@ -46,7 +46,7 @@
                     </th>
                     <td>
                         <forms:textField name="token" value="${token}" style="width: 300px;" />
-                        <span class="smallNote">A user OAuth token for your team. You can get this from the <a href="https://api.slack.com/web" target="_blank">api page</a> when you are signed in to your team</span>
+                        <span class="smallNote">A user OAuth token for your team. You can get this from the <a href="https://api.slack.com/web" target="_blank">api page</a> when you are signed in to your team. If you are using the "Incoming WebHooks" integration you can simply enter the webhook URL in here instead.</span>
                     </td>
                 </tr>
                 <tr>
