@@ -93,7 +93,7 @@ var SlackNotifierAdmin = {
                 },
                 type: "GET"
             }).done(function() {
-                alert("Notification sent");
+                alert("Notification sent\r\n\r\nNote: Any changes have not yet been saved.");
             }).fail(function() {
                 alert("Failed to send notification!")
             });
