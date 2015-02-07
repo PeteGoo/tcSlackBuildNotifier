@@ -29,6 +29,8 @@ public class SlackNotifierSettingsController extends BaseController {
     private static final String CONTROLLER_PATH = "/slackNotifier/adminSettings.html";
     public static final String EDIT_PARAMETER = "edit";
     public static final String TEST_PARAMETER = "test";
+    private static final Object ACTION_ENABLE = "enable";
+    private static final String ACTION_PARAMETER = "action";
 
 
     private SBuildServer server;
@@ -67,8 +69,19 @@ public class SlackNotifierSettingsController extends BaseController {
         else if(request.getParameter(TEST_PARAMETER) != null){
             logger.debug("Sending test notification");
             params = this.handleTestNotification(request);
+        } else if (request.getParameter(ACTION_PARAMETER) != null) {
+            logger.debug("Changing plugin status");
+            this.handlePluginStatusChange(request);
         }
         return new ModelAndView(descriptor.getPluginResourcesPath() + "SlackNotification/ajaxEdit.jsp", params);
+    }
+
+    private void handlePluginStatusChange(HttpServletRequest request) {
+        logger.debug("Changing status");
+        Boolean disabled = !request.getParameter(ACTION_PARAMETER).equals(ACTION_ENABLE);
+        logger.debug(String.format("Disabled status: %s", disabled));
+        this.config.setEnabled(!disabled);
+        this.config.save();
     }
 
     private HashMap<String, Object> handleTestNotification(HttpServletRequest request) throws IOException, SlackConfigValidationException {

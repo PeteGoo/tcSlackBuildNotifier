@@ -128,4 +128,8 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
     public int getMaxCommitsToDisplay() {
         return this.slackNotificationMainConfig.getMaxCommitsToDisplay();
     }
+
+    public void refresh() {
+        this.slackNotificationMainConfig.refresh();
+    }
 }

@@ -72,6 +72,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		this.myChangeObserver.start();
 	}
 
+    public void refresh(){
+        reloadConfiguration();
+    }
+
 	private void reloadConfiguration() {
 		Loggers.ACTIVITIES.info("Loading configuration file: " + this.myConfigFile.getAbsolutePath());
 

@@ -37,6 +37,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         super(pagePlaces);
         this.sBuildServer = sBuildServer;
         this.slackMainSettings = slackMainSettings;
+
         setPluginName(PLUGIN_NAME);
         setIncludeUrl(descriptor.getPluginResourcesPath(PAGE));
         jspHome = descriptor.getPluginResourcesPath();
@@ -53,7 +54,7 @@ public class SlackNotifierAdminPage extends AdminPage {
     @Override
     public void fillModel(@NotNull Map<String, Object> model, @NotNull HttpServletRequest request){
         super.fillModel(model, request);
-
+        slackMainSettings.refresh();
         model.put("teamName", this.slackMainSettings.getTeamName());
         model.put("token", this.slackMainSettings.getToken());
         model.put("botName", this.slackMainSettings.getBotName());
@@ -64,6 +65,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         model.put("showCommits", this.slackMainSettings.getShowCommits());
         model.put("showCommitters", this.slackMainSettings.getShowCommitters());
         model.put("showElapsedBuildTime", this.slackMainSettings.getShowElapsedBuildTime());
+        model.put("disabled", !this.slackMainSettings.getEnabled());
         model.put("jspHome", this.jspHome);
     }
 

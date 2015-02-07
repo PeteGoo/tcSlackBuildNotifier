@@ -11,7 +11,7 @@
   <form action="${actionUrl}" id="slackNotifierAdminForm" method="post" onsubmit="return SlackNotifierAdmin.save()" >
     <div class="editNotificatorSettingsPage">
           <c:choose>
-            <c:when test="${slackSettings.enabled}">
+            <c:when test="${disabled}">
               <div class="pauseNote" style="margin-bottom: 1em;">
                 The notifier is <strong>disabled</strong>. All slack notifications are suspended&nbsp;&nbsp;<a class="btn btn_mini" href="#" id="enable-btn">Enable</a>
               </div>
@@ -134,4 +134,26 @@
   <bs:linkScript>
     ${jspHome}SlackNotification/js/slackNotifierAdmin.js
   </bs:linkScript>
-</div
+</div>
+
+<script type="text/javascript">
+	(function($) {
+		var sendAction = function(enable) {
+			$.post("${actionUrl}?action=" + (enable ? 'enable' : 'disable'),
+					function() {
+						BS.reload(true);
+					});
+			return false;
+		};
+		$("#enable-btn").click(function() {
+			return sendAction(true);
+		});
+		$("#disable-btn")
+            .click(
+                function() {
+                    if (!confirm("Slack notifications will not be sent until enabled. Disable the notifier?"))
+                        return false;
+                    return sendAction(false);
+                });
+	})(jQuery);
+</script>
