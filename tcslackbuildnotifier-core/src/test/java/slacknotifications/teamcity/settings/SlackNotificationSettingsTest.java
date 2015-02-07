@@ -40,45 +40,6 @@ public class SlackNotificationSettingsTest {
 		outputDir.delete();
 	}
 	
-
-
-	@Test 
-	public void test_Regex(){
-		String expectedConfigDirectory = ".";
-		ServerPaths serverPaths = mock(ServerPaths.class);
-		when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
-
-		SlackNotificationMainConfig mainConfig = new SlackNotificationMainConfig(serverPaths);
-		assertTrue(mainConfig.isUrlShortName("test"));
-		assertTrue(mainConfig.isUrlShortName("test:80"));
-		
-		assertTrue(mainConfig.isUrlShortName("http://test"));
-		assertTrue(mainConfig.isUrlShortName("http://test:80"));
-		assertTrue(mainConfig.isUrlShortName("http://test/"));
-		assertTrue(mainConfig.isUrlShortName("http://test:80/"));
-		assertTrue(mainConfig.isUrlShortName("http://test/testtest"));
-		assertTrue(mainConfig.isUrlShortName("http://test:80/testtest"));
-		
-		assertTrue(mainConfig.isUrlShortName("https://test"));
-		assertTrue(mainConfig.isUrlShortName("https://test:80"));
-		assertTrue(mainConfig.isUrlShortName("https://test/"));
-		assertTrue(mainConfig.isUrlShortName("https://test:80/"));
-		assertTrue(mainConfig.isUrlShortName("https://test/testtest"));
-		assertTrue(mainConfig.isUrlShortName("https://test:80/testtest"));
-		
-		assertFalse(mainConfig.isUrlShortName("test.test"));
-		assertFalse(mainConfig.isUrlShortName("test.test:80"));		
-		assertFalse(mainConfig.isUrlShortName("http://test.test"));
-		assertFalse(mainConfig.isUrlShortName("http://test.test:80"));
-		assertFalse(mainConfig.isUrlShortName("http://test.test/"));
-		assertFalse(mainConfig.isUrlShortName("http://test.test:80/"));
-		assertFalse(mainConfig.isUrlShortName("http://test.test/testteset"));
-		assertFalse(mainConfig.isUrlShortName("http://test.test:80/testteset"));
-		
-		System.out.println(mainConfig.getHostNameFromUrl("http://test.test.test/"));
-		
-	}
-	
     @Ignore
 	@Test
 	public void test_AuthFailWrongCredsUsingProxyFromConfig() throws FileNotFoundException, IOException, InterruptedException {
@@ -92,7 +53,7 @@ public class SlackNotificationSettingsTest {
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);
 		String url = "http://" + test.webserverHost + ":" + test.webserverPort + "/200";
-		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfigForUrl(url));
+		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfig());
 		// w.setProxyUserAndPass("somethingIncorrect", "somethingIncorrect");
 		SlackNotificationTestServer s = test.startWebServer();
 		SlackNotificationTestProxyServer p = test.startProxyServerAuth("somthingCorrect", "somethingCorrect");
@@ -116,7 +77,7 @@ public class SlackNotificationSettingsTest {
 		mainConfig.setProxyPort(test.proxyPort);
 		mainConfig.setProxyShortNames(true);
 		String url = "http://" + test.webserverHost + ":" + test.webserverPort + "/200";
-		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfigForUrl(url));
+		SlackNotification w = new SlackNotificationImpl(url, mainConfig.getProxyConfig());
 		// w.setProxyUserAndPass("somethingIncorrect", "somethingIncorrect");
 		SlackNotificationTestServer s = test.startWebServer();
 		SlackNotificationTestProxyServer p = test.startProxyServerAuth("somethingCorrect", "somethingCorrect");

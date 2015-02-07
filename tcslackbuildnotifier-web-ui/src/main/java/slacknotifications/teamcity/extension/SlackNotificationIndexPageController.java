@@ -92,7 +92,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    	params.put("projectExternalId", TeamCityIdResolver.getExternalProjectId(project));
 			    	params.put("projectName", project.getName());
 			    	
-			    	logger.debug(myMainSettings.getInfoText() + myMainSettings.getInfoUrl() + myMainSettings.getProxyListasString());
+			    	logger.debug(myMainSettings.getInfoText() + myMainSettings.getInfoUrl() + myMainSettings.getProxySettingsAsString());
 			    	
 			    	params.put("slackNotificationCount", projSettings.getSlackNotificationsCount());
 			    	

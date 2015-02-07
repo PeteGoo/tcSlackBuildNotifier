@@ -38,13 +38,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
     private String teamName;
     private String token;
 	private Boolean proxyShortNames = false;
-	private List<String> noProxyUrls;
-	private List<Pattern> noProxyPatterns;
     private boolean enabled = true;
 	
 	public final String SINGLE_HOST_REGEX = "^[^./~`'\"]+(?:/.*)?$";
 	public final String HOSTNAME_ONLY_REGEX = "^([^/]+)(?:/.*)?$";
-	private Pattern singleHostPattern, hostnameOnlyPattern ;
     private String iconUrl = DEFAULT_ICONURL;
     private String botName = DEFAULT_BOTNAME;
     private Boolean showBuildAgent;
@@ -57,10 +54,6 @@ public class SlackNotificationMainConfig implements ChangeListener {
 
 
 	public SlackNotificationMainConfig(ServerPaths serverPaths) {
-		noProxyUrls = new ArrayList<String>();
-		noProxyPatterns = new ArrayList<Pattern>();
-		singleHostPattern = Pattern.compile(SINGLE_HOST_REGEX); 
-		hostnameOnlyPattern = Pattern.compile(HOSTNAME_ONLY_REGEX);
 
 		this.myConfigDir = new File(serverPaths.getConfigDir(), "slack");
 		this.myConfigFile = new File(this.myConfigDir, "slack-config.xml");
@@ -109,36 +102,8 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		return null;
 	}
 
-	public String getProxyListasString(){
+	public String getProxySettingsAsString(){
     	return " host:" + this.proxyHost + " port: " + this.proxyPort;
-	}
-	
-	private Pattern generatePatternFromURL(String noProxyUrl){
-		if(this.stripProtocolFromUrl(noProxyUrl).startsWith(".")){
-			return Pattern.compile("^.+" + Pattern.quote(noProxyUrl), Pattern.UNICODE_CASE);
-		} else if (this.stripProtocolFromUrl(noProxyUrl).endsWith(".")){
-			return Pattern.compile("^" + Pattern.quote(noProxyUrl) + ".+", Pattern.UNICODE_CASE);
-		} else {
-			return Pattern.compile("^" + Pattern.quote(noProxyUrl), Pattern.UNICODE_CASE);
-		}
-	}
-	
-	public void addNoProxyUrl(String noProxyUrl) {
-		noProxyUrls.add(noProxyUrl);
-		noProxyPatterns.add(generatePatternFromURL(noProxyUrl));
-	}
-
-	public SlackNotificationProxyConfig getProxyConfigForUrl(String url) {
-		if(this.matchProxyForURL(url)){
-			if (   this.proxyPassword != null && this.proxyPassword.length() > 0 
-				&& this.proxyUsername != null && this.proxyUsername.length() > 0 ){
-				return new SlackNotificationProxyConfig(this.proxyHost,this.proxyPort, this.proxyUsername, this.proxyPassword);
-			} else {
-				return new SlackNotificationProxyConfig(this.proxyHost,this.proxyPort);
-			}
-		} else {
-			return null;
-		}
 	}
 
 	public String stripProtocolFromUrl(String url){
@@ -154,33 +119,8 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		}
 		return tmpURL;
 	}
-	
-	public String getHostNameFromUrl(String url){
-		Matcher m = hostnameOnlyPattern.matcher(this.stripProtocolFromUrl(url));
-		while (m.find()) {
-		    String s = m.group(1);
-		    return s;
-		}
-		return "";
-	}
-	
-	public boolean isUrlShortName(String url){
-		return singleHostPattern.matcher(stripProtocolFromUrl(url)).find();
-	}
-	
-	public boolean matchProxyForURL(String url) {
-		if ((this.proxyHost == null) 
-				|| (this.proxyHost.length() == 0) 
-				|| (this.proxyPort == null) 
-				|| (!(this.proxyPort > 0))){
-			/* If we don't have all the components of a proxy 
-			 * configured, don't proxy the URL. 
-			 */
-			return false;
-		}
-		
-		return true;
-	}
+
+
 	
 	public Element getInfoUrlAsElement(){
 		/*
@@ -200,12 +140,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		}
 		return null;
 	}
-	
-	private Element getNoProxyAsElement(String noProxyUurl){
-		Element e = new Element("noproxy");
-		e.setAttribute("url", noProxyUurl);
-		return e;
-	}
+
 	
 	public Element getProxyAsElement(){
 		/*
@@ -226,12 +161,6 @@ public class SlackNotificationMainConfig implements ChangeListener {
 			el.setAttribute("username", this.getProxyUsername());
 			el.setAttribute("password", this.getProxyPassword());
 			
-		}
-
-		if (this.noProxyUrls.size() > 0){
-			for (Iterator<String> i = this.noProxyUrls.iterator(); i.hasNext();){
-				el.addContent(this.getNoProxyAsElement(i.next()));
-			}
 		}
 		return el;
 	}
@@ -320,14 +249,6 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		this.proxyShortNames = proxyShortNames;
 	}
 
-	public List<String> getNoProxyUrls() {
-		return noProxyUrls;
-	}
-
-	public void setNoProxyUrls(List<String> noProxyUrls) {
-		this.noProxyUrls = noProxyUrls;
-	}
-
 	public String getSlackNotificationInfoUrl() {
 		return slacknotificationInfoUrl;
 	}
@@ -380,10 +301,6 @@ public class SlackNotificationMainConfig implements ChangeListener {
     public boolean getShowCommits() {
         return showCommits;
     }
-	
-    public boolean isShowCommits() {
-        return showCommits;
-    }
 
     public void setShowCommits(boolean showCommits) {
         this.showCommits = showCommits;
@@ -393,10 +310,6 @@ public class SlackNotificationMainConfig implements ChangeListener {
         return showCommitters;
     }
 	
-    public boolean isShowCommitters() {
-        return showCommitters;
-    }
-
     public void setShowCommitters(boolean showCommitters) {
         this.showCommitters = showCommitters;
     }
@@ -549,18 +462,11 @@ public class SlackNotificationMainConfig implements ChangeListener {
                 if (proxyElement.getAttribute("password") != null){
                     setProxyPassword(proxyElement.getAttributeValue("password"));
                 }
-
-                List<Element> namedChildren = proxyElement.getChildren("noproxy");
-                if(namedChildren.size() > 0) {
-                    for(Iterator<Element> i = namedChildren.iterator(); i.hasNext();)
-                    {
-                        Element e = i.next();
-                        String url = e.getAttributeValue("url");
-                        addNoProxyUrl(url);
-                        Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + ":readFrom :: noProxyUrl " + url);
-                    }
-                }
             }
         }
+    }
+
+    public SlackNotificationProxyConfig getProxyConfig() {
+        return new SlackNotificationProxyConfig(proxyHost, proxyPort, proxyUsername, proxyPassword);
     }
 }

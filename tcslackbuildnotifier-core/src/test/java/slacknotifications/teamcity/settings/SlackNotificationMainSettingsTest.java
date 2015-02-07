@@ -53,8 +53,8 @@ public class SlackNotificationMainSettingsTest {
 		SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server, serverPaths);
 		whms.register();
 		whms.readFrom(getFullConfigElement());
-		String proxy = whms.getProxyForUrl("http://something.somecompany.com");
-		SlackNotificationProxyConfig whpc = whms.getProxyConfigForUrl("http://something.somecompany.com");
+		String proxy = whms.getProxy();
+		SlackNotificationProxyConfig whpc = whms.getProxyConfig();
 		assertTrue(proxy.equals(this.proxyHost));
 		assertTrue(whpc.getProxyHost().equals(this.proxyHost ));
 		assertTrue(whpc.getProxyPort().equals(this.proxyPort));
@@ -83,8 +83,8 @@ public class SlackNotificationMainSettingsTest {
         SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server, serverPaths);
         whms.register();
         whms.readFrom(getEmptyDefaultsConfigElement());
-        String proxy = whms.getProxyForUrl("http://something.somecompany.com");
-        SlackNotificationProxyConfig whpc = whms.getProxyConfigForUrl("http://something.somecompany.com");
+        String proxy = whms.getProxy();
+        SlackNotificationProxyConfig whpc = whms.getProxyConfig();
         assertTrue(proxy.equals(this.proxyHost));
         assertTrue(whpc.getProxyHost().equals(this.proxyHost ));
         assertTrue(whpc.getProxyPort().equals(this.proxyPort));
