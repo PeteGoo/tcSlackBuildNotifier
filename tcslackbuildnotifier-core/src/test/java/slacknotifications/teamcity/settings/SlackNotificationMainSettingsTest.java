@@ -15,6 +15,9 @@ import org.junit.Test;
 
 import slacknotifications.SlackNotificationProxyConfig;
 
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+
 public class SlackNotificationMainSettingsTest {
 	SBuildServer server = mock(SBuildServer.class);
 	Integer proxyPort = 8080;
@@ -44,6 +47,11 @@ public class SlackNotificationMainSettingsTest {
         assertTrue(whms.getShowElapsedBuildTime());
         assertFalse(whms.getShowCommits());
         assertEquals(15, whms.getMaxCommitsToDisplay());
+        
+        Credentials credentials = whpc.getCreds();
+        
+		assertEquals("some-username", credentials.getUserPrincipal().getName());
+		assertEquals("some-password", credentials.getPassword());
 	}
 
     @Test

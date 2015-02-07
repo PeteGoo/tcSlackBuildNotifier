@@ -24,15 +24,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.http.HttpHost;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 
 public class SlackNotificationImpl implements SlackNotification {
 
@@ -95,14 +96,14 @@ public class SlackNotificationImpl implements SlackNotification {
                 ex.printStackTrace();
             }
         }
-        this.setProxy(proxyHost, this.proxyPort);
+        this.setProxy(proxyHost, this.proxyPort, null);
     }
 
     public SlackNotificationImpl(String channel, String proxyHost, Integer proxyPort) {
         this.channel = channel;
         this.client = HttpClients.createDefault();
         this.params = new ArrayList<NameValuePair>();
-        this.setProxy(proxyHost, proxyPort);
+        this.setProxy(proxyHost, proxyPort, null);
     }
 
     public SlackNotificationImpl(String channel, SlackNotificationProxyConfig proxyConfig) {
@@ -119,34 +120,28 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public void setProxy(SlackNotificationProxyConfig proxyConfig) {
         if ((proxyConfig != null) && (proxyConfig.getProxyHost() != null) && (proxyConfig.getProxyPort() != null)) {
-            this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort());
-            if (proxyConfig.getCreds() != null) {
-                setProxyCredentials(proxyConfig.getCreds());
-            }
+            this.setProxy(proxyConfig.getProxyHost(), proxyConfig.getProxyPort(), proxyConfig.getCreds());
         }
     }
 
-    void setProxyCredentials(Credentials credentials) {
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(
-                new AuthScope(proxyHost, proxyPort),
-                credentials);
-        this.client = HttpClients.custom()
-                .setDefaultCredentialsProvider(credsProvider).build();
-    }
-
-    public void setProxy(String proxyHost, Integer proxyPort) {
+    public void setProxy(String proxyHost, Integer proxyPort, Credentials credentials) {
         this.proxyHost = proxyHost;
         this.proxyPort = proxyPort;
-
-    }
-
-    public void setProxyUserAndPass(String username, String password) {
-        this.proxyUsername = username;
-        this.proxyPassword = password;
-        if (this.proxyUsername.length() > 0 && this.proxyPassword.length() > 0) {
-            setProxyCredentials(new UsernamePasswordCredentials(username, password));
-        }
+        
+		if (this.proxyHost.length() > 0 && !this.proxyPort.equals(0)) {
+            HttpClientBuilder clientBuilder = HttpClients.custom()
+                .useSystemProperties()
+                .setProxy(new HttpHost(proxyHost, proxyPort, "http"));
+                
+            if (credentials != null) {
+                CredentialsProvider credsProvider = new BasicCredentialsProvider();
+                credsProvider.setCredentials(new AuthScope(proxyHost, proxyPort), credentials);
+                clientBuilder.setDefaultCredentialsProvider(credsProvider);
+                Loggers.SERVER.debug("SlackNotification ::using proxy credentials " + credentials.getUserPrincipal().getName());
+            }
+            
+            this.client = clientBuilder.build();
+		}
     }
 
     public void post() throws FileNotFoundException, IOException {
@@ -174,7 +169,7 @@ public class SlackNotificationImpl implements SlackNotification {
 
             HttpPost httppost = new HttpPost(url);
 
-            Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
+            Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url + " using proxy " + this.proxyHost + ":" + this.proxyPort);
             if (this.filename.length() > 0) {
                 File file = new File(this.filename);
                 throw new NotImplementedException();
