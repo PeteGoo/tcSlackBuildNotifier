@@ -346,28 +346,19 @@ public class SlackNotificationMainConfig implements ChangeListener {
 						}
 						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.maxCommitsToDisplay));
 
-						Element el = new Element("slackNotification");
-						boolean hasProxyDetails = false;
 						if(	  getProxyHost() != null && getProxyHost().length() > 0
 								&& getProxyPort() != null && getProxyPort() > 0 )
 						{
-							el.addContent(getProxyAsElement());
+							rootElement.addContent(getProxyAsElement());
 							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyHost " + getProxyHost().toString());
 							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyPort " + getProxyPort().toString());
-							hasProxyDetails = true;
 						}
 
-
 						if(getInfoUrlAsElement() != null){
-							el.addContent(getInfoUrlAsElement());
+                            rootElement.addContent(getInfoUrlAsElement());
 							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: infoText " + getSlackNotificationInfoText().toString());
 							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: InfoUrl  " + getSlackNotificationInfoUrl().toString());
 							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: show-reading  " + getSlackNotificationShowFurtherReading().toString());
-							hasProxyDetails = true;
-						}
-
-						if(hasProxyDetails) {
-							rootElement.addContent(el);
 						}
 					}
 				});
