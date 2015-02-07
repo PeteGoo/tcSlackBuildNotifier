@@ -135,7 +135,7 @@ public class SlackNotifierSettingsController extends BaseController {
                 || tryParseInt(maxCommitsToDisplay) == null
                 || (!isNullOrEmpty(proxyHost) && isNullOrEmpty(proxyPort))
                 || (!isNullOrEmpty(proxyUser) && isNullOrEmpty(proxyPassword))
-                || tryParseInt(proxyPort) == null
+                || (!isNullOrEmpty(proxyPort) && tryParseInt(proxyPort) == null)
                 ){
 
             throw new SlackConfigValidationException("Could not validate parameters. Please recheck the request.");
@@ -239,7 +239,7 @@ public class SlackNotifierSettingsController extends BaseController {
 
 
         this.config.setProxyHost(proxyHost);
-        this.config.setProxyPort(Integer.parseInt(proxyPort));
+        this.config.setProxyPort(isNullOrEmpty(proxyPort) ? null : Integer.parseInt(proxyPort));
         this.config.setProxyUsername(proxyUser);
         this.config.setProxyPassword(proxyPassword);
 

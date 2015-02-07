@@ -71,7 +71,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         SlackNotificationProxyConfig proxyConfig = this.slackMainSettings.getProxyConfig();
         model.put("proxyHost", proxyConfig.getProxyHost());
         model.put("proxyPort", proxyConfig.getProxyPort());
-        model.put("proxyUser", proxyConfig.getCreds() == null ? null : proxyConfig.getCreds().getUserPrincipal());
+        model.put("proxyUser", proxyConfig.getCreds() == null ? null : proxyConfig.getCreds().getUserPrincipal().getName());
         model.put("proxyPassword", proxyConfig.getCreds() == null ? null : proxyConfig.getCreds().getPassword());
 
         model.put("disabled", !this.slackMainSettings.getEnabled());

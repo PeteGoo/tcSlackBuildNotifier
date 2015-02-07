@@ -1,6 +1,7 @@
 package slacknotifications.teamcity.settings;
 
 import com.intellij.openapi.util.JDOMUtil;
+import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.configuration.ChangeListener;
 import jetbrains.buildServer.configuration.FileWatcher;
 import jetbrains.buildServer.serverSide.ServerPaths;
@@ -346,7 +347,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
 						}
 						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.maxCommitsToDisplay));
 
-						if(	  getProxyHost() != null && getProxyHost().length() > 0
+                        rootElement.removeChildren("proxy");
+                        rootElement.removeChildren("info");
+
+						if(getProxyHost() != null && getProxyHost().length() > 0
 								&& getProxyPort() != null && getProxyPort() > 0 )
 						{
 							rootElement.addContent(getProxyAsElement());
@@ -448,6 +452,12 @@ public class SlackNotificationMainConfig implements ChangeListener {
                 if (proxyElement.getAttribute("password") != null){
                     setProxyPassword(proxyElement.getAttributeValue("password"));
                 }
+            }
+            else {
+                setProxyHost(null);
+                setProxyPort(null);
+                setProxyUsername(null);
+                setProxyPassword(null);
             }
         }
     }
