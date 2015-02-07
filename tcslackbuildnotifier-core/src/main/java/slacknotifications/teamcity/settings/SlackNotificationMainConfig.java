@@ -40,6 +40,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	private Boolean proxyShortNames = false;
 	private List<String> noProxyUrls;
 	private List<Pattern> noProxyPatterns;
+    private boolean enabled = true;
 	
 	public final String SINGLE_HOST_REGEX = "^[^./~`'\"]+(?:/.*)?$";
 	public final String HOSTNAME_ONLY_REGEX = "^([^/]+)(?:/.*)?$";
@@ -331,6 +332,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		return slacknotificationInfoText;
 	}
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
 	public void setSlackNotificationInfoUrl(String slacknotificationInfoUrl) {
 		this.slacknotificationInfoUrl = slacknotificationInfoUrl;
 	}
@@ -404,6 +413,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 			{
 				FileUtil.processXmlFile(SlackNotificationMainConfig.this.myConfigFile, new FileUtil.Processor() {
 					public void process(Element rootElement) {
+                        rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
                         rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
                         rootElement.setAttribute("teamName", SlackNotificationMainConfig.this.teamName);
@@ -468,6 +478,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
 
 	void readConfigurationFromXmlElement(Element slackNotificationsElement) {
         if(slackNotificationsElement != null){
+            if(slackNotificationsElement.getAttribute("enabled") != null)
+            {
+                setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("enabled")));
+            }
             if(slackNotificationsElement.getAttribute("defaultChannel") != null)
             {
                 setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));

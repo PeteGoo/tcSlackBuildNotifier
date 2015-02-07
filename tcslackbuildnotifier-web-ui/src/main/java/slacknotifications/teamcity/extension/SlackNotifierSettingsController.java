@@ -71,7 +71,7 @@ public class SlackNotifierSettingsController extends BaseController {
         return new ModelAndView(descriptor.getPluginResourcesPath() + "SlackNotification/ajaxEdit.jsp", params);
     }
 
-    private HashMap<String, Object> handleTestNotification(HttpServletRequest request) throws IOException {
+    private HashMap<String, Object> handleTestNotification(HttpServletRequest request) throws IOException, SlackConfigValidationException {
         String teamName = request.getParameter("teamName");
         String token = request.getParameter("token");
         String botName = request.getParameter("botName");
@@ -83,6 +83,28 @@ public class SlackNotifierSettingsController extends BaseController {
         String showCommitters = request.getParameter("showCommitters");
         String showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
 
+        HashMap<String, Object> params = new HashMap<String, Object>();
+
+        Validate(teamName, token, botName, iconUrl, defaultChannel, maxCommitsToDisplay, showBuildAgent);
+
+        SlackNotification notification = createMockNotification(teamName, defaultChannel, botName,
+                token, iconUrl, Integer.parseInt(maxCommitsToDisplay),
+                Boolean.parseBoolean(showElapsedBuildTime), Boolean.parseBoolean(showBuildAgent),
+                Boolean.parseBoolean(showCommits), Boolean.parseBoolean(showCommitters));
+
+
+
+        notification.post();
+
+        this.getOrCreateMessages(request).addMessage("notificationSent", "The notification has been sent");
+
+        params.put("messages", "Sent");
+
+
+        return params;
+    }
+
+    private void Validate(String teamName, String token, String botName, String iconUrl, String defaultChannel, String maxCommitsToDisplay, String showBuildAgent) throws SlackConfigValidationException {
         if(teamName == null || StringUtil.isEmpty(teamName)
                 || token == null || StringUtil.isEmpty(token)
                 || botName == null || StringUtil.isEmpty(botName)
@@ -92,23 +114,10 @@ public class SlackNotifierSettingsController extends BaseController {
                 || tryParse(maxCommitsToDisplay) == null
                 ){
 
-            SlackNotification notification = createMockNotification(teamName, defaultChannel, botName,
-                    token, iconUrl, Integer.parseInt(maxCommitsToDisplay),
-                    Boolean.parseBoolean(showElapsedBuildTime), Boolean.parseBoolean(showBuildAgent),
-                    Boolean.parseBoolean(showCommits), Boolean.parseBoolean(showCommitters));
-
-
-
-            notification.post();
-
-            this.getOrCreateMessages(request).addMessage("notificationSent", "The notification has been sent");
-
-            return null;
+            throw new SlackConfigValidationException("Could not validate parameters. Please recheck the request.");
         }
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("message", "Sent");
-        return params;
     }
+
     public SlackNotification createMockNotification(String teamName, String defaultChannel, String botName,
                                                     String token, String iconUrl, Integer maxCommitsToDisplay,
                                                     Boolean showElapsedBuildTime, Boolean showBuildAgent, Boolean showCommits,
@@ -148,6 +157,7 @@ public class SlackNotifierSettingsController extends BaseController {
         payload.setIsComplete(true);
         payload.setText("My Awesome build");
         notification.setPayload(payload);
+        notification.setEnabled(true);
 
         return notification;
     }
@@ -162,7 +172,7 @@ public class SlackNotifierSettingsController extends BaseController {
         return retVal;
     }
 
-    private HashMap<String, Object> handleConfigurationChange(HttpServletRequest request) throws IOException {
+    private HashMap<String, Object> handleConfigurationChange(HttpServletRequest request) throws IOException, SlackConfigValidationException {
         String teamName = request.getParameter("teamName");
         String token = request.getParameter("token");
         String botName = request.getParameter("botName");
@@ -173,6 +183,8 @@ public class SlackNotifierSettingsController extends BaseController {
         String showCommits = request.getParameter("showCommits");
         String showCommitters = request.getParameter("showCommitters");
         String showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
+
+        Validate(teamName, token, botName, iconUrl, defaultChannel, maxCommitsToDisplay, showBuildAgent);
 
         this.config.setTeamName(teamName);
         this.config.setToken(token);
@@ -190,5 +202,11 @@ public class SlackNotifierSettingsController extends BaseController {
         HashMap<String, Object> params = new HashMap<String, Object>();
         params.put("message", "Saved");
         return params;
+    }
+
+    public class SlackConfigValidationException extends Exception {
+        public SlackConfigValidationException(String message) {
+            super(message);
+        }
     }
 }

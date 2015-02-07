@@ -72,10 +72,10 @@ var SlackNotifierAdmin = {
                     botName: $("botName").value,
                     iconUrl: $("iconUrl").value,
                     maxCommitsToDisplay: $("maxCommitsToDisplay").value,
-                    showCommits: $("showCommits").value,
-                    showCommitters: $("showCommitters").value,
-                    showElapsedBuildTime: $("showElapsedBuildTime").value,
-                    showBuildAgent: $("showBuildAgent").value
+                    showCommits: $("showCommits").checked,
+                    showCommitters: $("showCommitters").checked,
+                    showElapsedBuildTime: $("showElapsedBuildTime").checked,
+                    showBuildAgent: $("showBuildAgent").checked
                 },
                 type: "GET"
             }).done(function() {
@@ -110,7 +110,7 @@ var SlackNotifierAdmin = {
                 },
                 type: "POST"
             }).done(function() {
-
+                BS.reload();
             }).fail(function() {
                 alert("Failed to save configuration!")
             });

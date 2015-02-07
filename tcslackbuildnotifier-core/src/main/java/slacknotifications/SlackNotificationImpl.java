@@ -206,9 +206,16 @@ public class SlackNotificationImpl implements SlackNotification {
             if (this.teamName == null) {
                 this.teamName = "";
             }
-            String url = String.format("https://%s.slack.com/services/hooks/incoming-webhook?token=%s",
-                    this.teamName.toLowerCase(),
-                    this.token);
+
+            String url = "";
+            if(this.token != null && this.token.startsWith("http")){
+                url = this.token;
+            }
+             else {
+                url = String.format("https://%s.slack.com/services/hooks/incoming-webhook?token=%s",
+                        this.teamName.toLowerCase(),
+                        this.token);
+            }
 
             Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url);
 
@@ -618,6 +625,10 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public boolean getIsApiToken() {
+        if(this.token != null && this.token.startsWith("http")){
+            // We now accept a webhook url.
+            return false;
+        }
         return this.token == null || this.token.split("-").length > 1;
     }
 
