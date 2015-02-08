@@ -128,7 +128,7 @@
 		    			</copy>
 		    			
 		    			<echo message=" - Creating ZIP file" />
-		    			<zip destfile="${project.build.directory}/tcSlackNotificationsPlugin-${version}.zip"
+		    			<zip destfile="${project.build.directory}/tcSlackNotificationsPlugin.zip"
 		    				 basedir="${project.build.directory}/dist"
 		    			 />
 		
