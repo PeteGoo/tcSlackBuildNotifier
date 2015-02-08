@@ -4,6 +4,7 @@ import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.controllers.admin.AdminPage;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.auth.Permission;
+import jetbrains.buildServer.serverSide.crypt.RSACipher;
 import jetbrains.buildServer.web.openapi.PagePlaces;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.PositionConstraint;
@@ -73,6 +74,8 @@ public class SlackNotifierAdminPage extends AdminPage {
         model.put("proxyPort", proxyConfig.getProxyPort());
         model.put("proxyUser", proxyConfig.getCreds() == null ? null : proxyConfig.getCreds().getUserPrincipal().getName());
         model.put("proxyPassword", proxyConfig.getCreds() == null ? null : proxyConfig.getCreds().getPassword());
+        model.put("encryptedProxyPassword", proxyConfig.getCreds() == null || proxyConfig.getCreds().getPassword() == null ? null : RSACipher.encryptDataForWeb(proxyConfig.getCreds().getPassword()));
+        model.put("hexEncodedPublicKey", RSACipher.getHexEncodedPublicKey());
 
         model.put("disabled", !this.slackMainSettings.getEnabled());
         model.put("jspHome", this.jspHome);

@@ -4,6 +4,7 @@ package slacknotifications.teamcity.extension;
 import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.serverSide.*;
+import jetbrains.buildServer.serverSide.crypt.RSACipher;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
 import org.apache.http.auth.Credentials;
@@ -223,6 +224,10 @@ public class SlackNotifierSettingsController extends BaseController {
         String proxyPort = request.getParameter("proxyPort");
         String proxyUser = request.getParameter("proxyUser");
         String proxyPassword = request.getParameter("proxyPassword");
+
+        if(!isNullOrEmpty(proxyPassword)){
+            proxyPassword = RSACipher.decryptWebRequestData(proxyPassword);
+        }
 
         Validate(teamName, token, botName, iconUrl, defaultChannel, maxCommitsToDisplay, showBuildAgent, proxyHost, proxyPort, proxyUser, proxyPassword);
 

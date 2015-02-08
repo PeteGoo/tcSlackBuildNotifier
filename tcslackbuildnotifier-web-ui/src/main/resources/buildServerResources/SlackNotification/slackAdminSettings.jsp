@@ -160,12 +160,13 @@
                         <label for="proxyPassword">Proxy password:</label>
                     </th>
                     <td>
-                        <forms:textField name="proxyPassword" value="${proxyPassword}" style="width: 300px;" />
+                        <forms:passwordField name="proxyPassword" encryptedPassword="${encryptedProxyPassword}" style="width: 300px;" />
                         <span class="smallNote">An optional password to use for proxy authentication.</span>
                     </td>
                 </tr>
            </table>
             <div class="saveButtonsBlock">
+                <input type="hidden" id="publicKey" name="publicKey" value="<c:out value='${hexEncodedPublicKey}'/>"/>
                 <forms:submit label="Save" />
                 <forms:submit id="testConnection" type="button" label="Send test notification" onclick="return SlackNotifierAdmin.sendTestNotification()"/>
                 <forms:saving />

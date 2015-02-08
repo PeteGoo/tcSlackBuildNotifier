@@ -89,7 +89,7 @@ var SlackNotifierAdmin = {
                     proxyHost: $("proxyHost").value,
                     proxyPort: $("proxyPort").value,
                     proxyUser: $("proxyUser").value,
-                    proxyPassword: $("proxyPassword").value
+                    proxyPassword: $("proxyPassword").getEncryptedPassword($("publicKey").value)
                 },
                 type: "GET"
             }).done(function() {
@@ -124,7 +124,7 @@ var SlackNotifierAdmin = {
                     proxyHost: $("proxyHost").value,
                     proxyPort: $("proxyPort").value,
                     proxyUser: $("proxyUser").value,
-                    proxyPassword: $("proxyPassword").value
+                    proxyPassword: $("proxyPassword").getEncryptedPassword($("publicKey").value)
                 },
                 type: "POST"
             }).done(function() {

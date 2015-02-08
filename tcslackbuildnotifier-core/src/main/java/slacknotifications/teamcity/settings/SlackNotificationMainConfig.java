@@ -53,6 +53,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 
 		this.myConfigDir = new File(serverPaths.getConfigDir(), "slack");
 		this.myConfigFile = new File(this.myConfigDir, "slack-config.xml");
+        configFileExists = this.myConfigFile.exists();
 		reloadConfiguration();
 
 		this.myChangeObserver = new FileWatcher(this.myConfigFile);
