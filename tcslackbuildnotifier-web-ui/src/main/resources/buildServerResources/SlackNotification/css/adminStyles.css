@@ -1,3 +1,9 @@
 #slackNotificationErrors ul li {
     color: red;
 }
+
+.slackNotifierVersionInfo {
+    color: #888;
+    font-size: 90%;
+    float:right;
+}

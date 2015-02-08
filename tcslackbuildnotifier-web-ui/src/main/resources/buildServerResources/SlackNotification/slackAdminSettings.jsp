@@ -10,6 +10,9 @@
 <div id="settingsContainer">
   <form action="${actionUrl}" id="slackNotifierAdminForm" method="post" onsubmit="return SlackNotifierAdmin.save()" >
     <div class="editNotificatorSettingsPage">
+          <div>
+             <span class="slackNotifierVersionInfo">Version: <c:out value='${pluginVersion}'/>&nbsp;<a href="https://github.com/petegoo/tcSlackBuildNotifier" class="helpIcon" style="vertical-align: middle;" target="_blank"><bs:helpIcon/></a></span>
+          </div>
           <c:choose>
             <c:when test="${disabled}">
               <div class="pauseNote" style="margin-bottom: 1em;">
@@ -22,6 +25,7 @@
               </div>
             </c:otherwise>
           </c:choose>
+
           <bs:messages key="message" />
           <br/>
           <div style="slack-config-errors" id="slackNotificationErrors">

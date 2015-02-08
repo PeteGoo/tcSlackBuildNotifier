@@ -1,6 +1,5 @@
 package slacknotifications.teamcity.extension;
 
-import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.controllers.admin.AdminPage;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.auth.Permission;
@@ -14,8 +13,10 @@ import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by Peter on 24/01/2015.
@@ -76,6 +77,12 @@ public class SlackNotifierAdminPage extends AdminPage {
         model.put("proxyPassword", proxyConfig.getCreds() == null ? null : proxyConfig.getCreds().getPassword());
         model.put("encryptedProxyPassword", proxyConfig.getCreds() == null || proxyConfig.getCreds().getPassword() == null ? null : RSACipher.encryptDataForWeb(proxyConfig.getCreds().getPassword()));
         model.put("hexEncodedPublicKey", RSACipher.getHexEncodedPublicKey());
+
+        try {
+            model.put("pluginVersion", this.slackMainSettings.getPluginVersion());
+        } catch (IOException e) {
+            Loggers.ACTIVITIES.error("Could not retrieve slack plugin version", e);
+        }
 
         model.put("disabled", !this.slackMainSettings.getEnabled());
         model.put("jspHome", this.jspHome);

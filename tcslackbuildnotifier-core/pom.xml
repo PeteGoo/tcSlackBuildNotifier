@@ -35,6 +35,13 @@
 			</plugin>
 		</plugins>
 
+		<resources> 
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering> 
+			</resource>
+		</resources>
+
 		<!-- <resources> <resource> <directory>src/main/resources</directory> <filtering>false</filtering> 
 			</resource> <resource> <directory>src/main/teamcity-plugin-resources</directory> 
 			<filtering>true</filtering> <includes> <include>*.xml</include> <include>*.properties</include> 
