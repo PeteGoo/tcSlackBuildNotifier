@@ -69,7 +69,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setBotName(myMainSettings.getBotName());
 		slackNotification.setEnabled(myMainSettings.getEnabled() && slackNotificationConfig.getEnabled());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
-		slackNotification.setProxy(myMainSettings.getProxyConfigForUrl(slackNotificationConfig.getChannel()));
+		slackNotification.setProxy(myMainSettings.getProxyConfig());
         slackNotification.setShowBuildAgent(myMainSettings.getShowBuildAgent());
         slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
         slackNotification.setShowCommits(myMainSettings.getShowCommits());

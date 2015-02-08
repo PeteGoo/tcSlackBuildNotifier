@@ -26,8 +26,8 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         server.registerExtension(MainConfigProcessor.class, "slacknotifications", this);
     }
     
-	public String getProxyListasString(){
-		return this.slackNotificationMainConfig.getProxyListasString();
+	public String getProxySettingsAsString(){
+		return this.slackNotificationMainConfig.getProxySettingsAsString();
 	}
 	
     @SuppressWarnings("unchecked")
@@ -58,8 +58,8 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
     }
     
-    public String getProxyForUrl(String url){
-    	return this.slackNotificationMainConfig.getProxyConfigForUrl(url).getProxyHost();
+    public String getProxy(){
+    	return this.slackNotificationMainConfig.getProxyConfig().getProxyHost();
     }
 
     public String getInfoText(){
@@ -121,8 +121,8 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 		Loggers.SERVER.debug(NAME + ":dispose() called");
 	}
 
-	public SlackNotificationProxyConfig getProxyConfigForUrl(String url) {
-		return this.slackNotificationMainConfig.getProxyConfigForUrl(url);	}
+	public SlackNotificationProxyConfig getProxyConfig() {
+		return this.slackNotificationMainConfig.getProxyConfig();	}
 
 
     public int getMaxCommitsToDisplay() {

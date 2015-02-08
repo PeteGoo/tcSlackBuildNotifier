@@ -8,26 +8,36 @@ var SlackNotifierAdmin = {
             var botName = document.forms["slackNotifierAdminForm"]["botName"].value;
             var maxCommitsToDisplay = document.forms["slackNotifierAdminForm"]["maxCommitsToDisplay"].value;
             var showCommits = document.forms["slackNotifierAdminForm"]["showCommits"].checked;
+            var proxyHost = document.forms["slackNotifierAdminForm"]["proxyHost"].value;
+            var proxyPort = document.forms["slackNotifierAdminForm"]["proxyPort"].value;
+            var proxyUser = document.forms["slackNotifierAdminForm"]["proxyUser"].value;
+            var proxyPassword = document.forms["slackNotifierAdminForm"]["proxyPassword"].value;
             var errors = [];
 
             if(!teamName){
-                errors.push("Team name is required.")
+                errors.push("Team name is required.");
             }
             if(!token){
-                errors.push("Api token is required.")
+                errors.push("Api token is required.");
             }
             if(!iconUrl){
-                errors.push("Icon url is required.")
+                errors.push("Icon url is required.");
             }
             if(!botName){
-                errors.push("Bot name is required.")
+                errors.push("Bot name is required.");
+            }
+            if(proxyHost && !proxyPort){
+                errors.push("Proxy port is required if a host is specified.");
+            }
+            if(proxyUser && !proxyPassword){
+                errors.push("Proxy password is required if a user is specified.");
             }
             if(!showCommits){
                 if(!maxCommitsToDisplay){
-                    errors.push("Max commits to display is required.")
+                    errors.push("Max commits to display is required.");
                 }
                 else if(parseInt(maxCommitsToDisplay) == Number.NaN){
-                    errors.push("Max commits to display must be a valid integer")
+                    errors.push("Max commits to display must be a valid integer");
                 }
             }
 
@@ -75,11 +85,15 @@ var SlackNotifierAdmin = {
                     showCommits: $("showCommits").checked,
                     showCommitters: $("showCommitters").checked,
                     showElapsedBuildTime: $("showElapsedBuildTime").checked,
-                    showBuildAgent: $("showBuildAgent").checked
+                    showBuildAgent: $("showBuildAgent").checked,
+                    proxyHost: $("proxyHost").value,
+                    proxyPort: $("proxyPort").value,
+                    proxyUser: $("proxyUser").value,
+                    proxyPassword: $("proxyPassword").getEncryptedPassword($("publicKey").value)
                 },
                 type: "GET"
             }).done(function() {
-                alert("Notification sent");
+                alert("Notification sent\r\n\r\nNote: Any changes have not yet been saved.");
             }).fail(function() {
                 alert("Failed to send notification!")
             });
@@ -106,7 +120,11 @@ var SlackNotifierAdmin = {
                     showCommits: $("showCommits").checked,
                     showCommitters: $("showCommitters").checked,
                     showElapsedBuildTime: $("showElapsedBuildTime").checked,
-                    showBuildAgent: $("showBuildAgent").checked
+                    showBuildAgent: $("showBuildAgent").checked,
+                    proxyHost: $("proxyHost").value,
+                    proxyPort: $("proxyPort").value,
+                    proxyUser: $("proxyUser").value,
+                    proxyPassword: $("proxyPassword").getEncryptedPassword($("publicKey").value)
                 },
                 type: "POST"
             }).done(function() {

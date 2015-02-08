@@ -29,7 +29,7 @@
 
           <table class="runnerFormTable">
                 <tr class="groupingTitle">
-                        <td colspan="2">General Configuration</td>
+                        <td colspan="2">General Configuration&nbsp;<a href="https://github.com/petegoo/tcSlackBuildNotifier" class="helpIcon" style="vertical-align: middle;" target="_blank"><bs:helpIcon/></a></td>
                 </tr>
                 <tr>
                     <th>
@@ -77,6 +77,9 @@
                         <span class="smallNote">The default channel. Please include the # if it is a channel. e.g. #general. You can also send directly toa  single user via the slackbot channel using @username</span>
                     </td>
                 </tr>
+                <tr class="groupingTitle">
+                        <td colspan="2">Notification Features</td>
+                </tr>
                 <tr>
                     <th>
                         <label for="showBuildAgent">Show build agent: </label>
@@ -119,11 +122,51 @@
                     </th>
                     <td>
                         <forms:textField name="maxCommitsToDisplay" value="${maxCommitsToDisplay}" style="width: 70px;" />
-                        <span class="smallNote">The default channel. Please include the # if it is a channel. e.g. #general. You can also send directly toa  single user via the slackbot channel using @username</span>
+                        <span class="smallNote">The maximum number of commits to display.</span>
+                    </td>
+                </tr>
+                <tr class="groupingTitle">
+                        <td colspan="2">Proxy Configuration</td>
+                </tr>
+<tr>
+                    <th>
+                        <label for="proxyHost">Proxy host:</label>
+                    </th>
+                    <td>
+                        <forms:textField name="proxyHost" value="${proxyHost}" style="width: 300px;" />
+                        <span class="smallNote">The hostname of the proxy server. e.g. myproxy.mycompany.com</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="proxyPort">Proxy port:</label>
+                    </th>
+                    <td>
+                        <forms:textField name="proxyPort" value="${proxyPort}" style="width: 70px;" />
+                        <span class="smallNote">The port of the proxy server.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="botName">Proxy username:</label>
+                    </th>
+                    <td>
+                        <forms:textField name="proxyUser" value="${proxyUser}" style="width: 300px;" />
+                        <span class="smallNote">An optional username to use for proxy authentication.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="proxyPassword">Proxy password:</label>
+                    </th>
+                    <td>
+                        <forms:passwordField name="proxyPassword" encryptedPassword="${encryptedProxyPassword}" style="width: 300px;" />
+                        <span class="smallNote">An optional password to use for proxy authentication.</span>
                     </td>
                 </tr>
            </table>
             <div class="saveButtonsBlock">
+                <input type="hidden" id="publicKey" name="publicKey" value="<c:out value='${hexEncodedPublicKey}'/>"/>
                 <forms:submit label="Save" />
                 <forms:submit id="testConnection" type="button" label="Send test notification" onclick="return SlackNotifierAdmin.sendTestNotification()"/>
                 <forms:saving />
