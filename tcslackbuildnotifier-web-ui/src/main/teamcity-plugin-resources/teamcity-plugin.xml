@@ -5,7 +5,7 @@
     <name>tcSlackNotifications</name>
     <display-name>Slack Notifications plugin</display-name>
     <version>${version}</version>
-    <description>Trigger slacknotifications POST requests from build events. Adds tabs to the Project and Build pages.</description>
+    <description>Trigger slack notifications POST requests from build events. Adds tabs to the Project and Build pages.</description>
     <vendor>
       <name>PeteGoo</name>
       <url>http://blog.petegoo.com/</url>
