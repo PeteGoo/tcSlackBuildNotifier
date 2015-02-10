@@ -147,7 +147,7 @@
 					    			<div id='buildPane'>
 					    				<p style="border-bottom:solid 1px #cccccc; margin:0; padding:0.5em;"><label><input name="buildTypeAll" onclick="toggleAllBuildTypesSelected();" type=checkbox style="padding-right: 1em;" class="buildType_all"><strong>All Project Builds</strong></label></p>
 					    				<p style="border-bottom:solid 1px #cccccc; margin:0; padding:0.5em;"><label><input id="buildTypeSubProjects" name="buildTypeSubProjects" onclick="updateSelectedBuildTypes();" type=checkbox style="padding-right: 1em;" class="buildType_subprojects"><strong>All Sub-Project Builds</strong></label></p>
-					            		<div id='buildList' style="overflow:auto; padding:0;">
+					            		<div id='buildList' style="padding:0;">
 						            	</div>
 						            </div>
 					    	</div><!-- panel-container  -->
