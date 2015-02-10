@@ -17,7 +17,7 @@ You will need to restart the TeamCity service before you can configure the plugi
 
 ## Configuration
 
-Once you have installed the plugin and restarted head on over to the Admin page and configure your plugin.
+Once you have installed the plugin and restarted head on over to the Admin page and configure your Slack settings.
 
 ![Admin Page Configuration](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/AdminPageBig.png)
 
