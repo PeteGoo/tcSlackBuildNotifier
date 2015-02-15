@@ -8,7 +8,10 @@ input[type=checkbox], input[type=radio] {
 
 div#buildList{
 	padding: 1em;
-	overflow:scroll;
+}
+
+div#buildPane {
+    overflow: scroll;
 }
 
 label {
