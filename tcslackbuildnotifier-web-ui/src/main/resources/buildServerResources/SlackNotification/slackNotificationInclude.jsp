@@ -62,7 +62,8 @@
             
             		<div id="tab-container" class="tab-container">
 								  <ul class='etabs'>
-												   <li class='tab'><a href="#hookPane" class="active">Slack Config</a></li>
+												   <li class='tab'><a href="#hookPane" class="active">General</a></li>
+												   <li class='tab'><a href="#payloadPane" class="active">Content</a></li>
 												   <li class='tab'><a href="#buildPane">Builds (<span id="selectedBuildCount">all</span>)</a></li>
 								  </ul>
 						 <div class='panel-container'>
@@ -143,6 +144,68 @@
 					    					</table>     
 					    					
 					    			</div><!--hookPane -->
+					    			<div id='payloadPane'>
+                                        <table style="border:none;">
+                                            <tr style="border:none;">
+                                                <td><label for="slackNotificationsEnabled">Customize contents:</label></td>
+                                                <td style="padding-left:3px;" colspan=2><input id="customContentEnabled" type=checkbox name="customContentEnabled" onclick="toggleCustomContentEnabled();"/></td>
+                                            </tr>
+                                           <tr class="onCustomContentEnabled">
+                                               <td>
+                                                   <label for="showBuildAgent">Show build agent: </label>
+                                               </td>
+                                               <td>
+                                                   <input type="checkbox" name="showBuildAgent" id="showBuildAgent" />
+                                               </td>
+                                               <td>
+                                                   <span style="color: #888; font-size: 90%;">When checked, the name of the build agent will be shown in the notification.</span>
+                                               </td>
+                                           </tr>
+                                           <tr class="onCustomContentEnabled">
+                                               <td>
+                                                   <label for="showElapsedBuildTime">Show elapsed build time: </label>
+                                               </td>
+                                               <td>
+                                                   <input type="checkbox" name="showElapsedBuildTime" id="showElapsedBuildTime" />
+                                               </td>
+                                               <td>
+                                                   <span style="color: #888; font-size: 90%;">When checked, the elapsed time taken to complete the build is displayed in the notification.</span>
+                                               </td>
+                                           </tr>
+                                           <tr class="onCustomContentEnabled">
+                                               <td>
+                                                   <label for="showCommitters">Show committers: </label>
+                                               </td>
+                                               <td>
+                                                   <input type="checkbox" name="showCommitters" id="showCommitters"/>
+                                               </td>
+                                               <td>
+                                                   <span style="color: #888; font-size: 90%;">When checked, the committers responsible for the changes in the build will be displayed in the notification.</span>
+                                               </td>
+                                           </tr>
+                                           <tr class="onCustomContentEnabled">
+                                               <td>
+                                                   <label for="showCommits">Show commits: </label>
+                                               </td>
+                                               <td>
+                                                   <input type="checkbox" name="showCommits" id="showCommits" />
+                                               </td>
+                                               <td>
+                                                   <span style="color: #888; font-size: 90%;">When checked, the commits, the username and the commit message for each change will be displayed in the notification.</span>
+                                               </td>
+                                           </tr>
+                                           <tr class="onCustomContentEnabled">
+                                               <td>
+                                                   <label for="maxCommitsToDisplay">Max commits to display: <l:star /></label>
+                                               </td>
+                                               <td colspan="2">
+                                                   <input type="text" name="maxCommitsToDisplay" id="maxCommitsToDisplay" />
+                                                   <span class="smallNote">The maximum number of commits to display.</span>
+                                               </td>
+                                           </tr>
+                                        </table>
+
+                                </div>
 					    			
 					    			<div id='buildPane'>
 					    				<p style="border-bottom:solid 1px #cccccc; margin:0; padding:0.5em;"><label><input name="buildTypeAll" onclick="toggleAllBuildTypesSelected();" type=checkbox style="padding-right: 1em;" class="buildType_all"><strong>All Project Builds</strong></label></p>

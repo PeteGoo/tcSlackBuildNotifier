@@ -80,6 +80,16 @@
 				jQuerySlacknotification('tr.onBuildFailed td input').attr('disabled', 'disabled');
 			}
 		}
+
+		function toggleCustomContentEnabled(){
+            if(jQuerySlacknotification('#customContentEnabled').is(':checked')){
+                jQuerySlacknotification('.onCustomContentEnabled').removeClass('onCompletionDisabled');
+                jQuerySlacknotification('tr.onCustomContentEnabled td input').removeAttr('disabled');
+            } else {
+                jQuerySlacknotification('.onCustomContentEnabled').addClass('onCompletionDisabled');
+                jQuerySlacknotification('tr.onCustomContentEnabled td input').attr('disabled', 'disabled');
+            }
+		}
 		
 		function toggleAllBuildTypesSelected(){
 			jQuerySlacknotification.each(jQuerySlacknotification('.buildType_single'), function(){
@@ -163,6 +173,7 @@
 			    
 			    populateSlackNotificationDialog(id);
 			    doExtraCompleted();
+			    toggleCustomContentEnabled();
 			    
 			    var title = id == "new" ? "Add New" : "Edit";
 			    title += " SlackNotification";
