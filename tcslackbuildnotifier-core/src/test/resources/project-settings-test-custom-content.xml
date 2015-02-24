@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <slackNotifications enabled="true">
+    <slackNotification channel="http://localhost/test" enabled="true" format="nvpairs">
+      <states>
+        <state type="buildStarted" enabled="true" />
+      </states>
+        <content iconUrl="http://my.url.com/my-icon.png"
+                 botName="TeamCity2"
+                 showBuildAgent="true"
+                 showElapsedBuildTime="true"
+                 showCommits="true"
+                 showCommitters="true"
+                 maxCommitsToDisplay="20" />
+    </slackNotification>
+  </slackNotifications>
+</settings>
+

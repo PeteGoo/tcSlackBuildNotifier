@@ -1,5 +1,6 @@
 package slacknotifications.teamcity.settings;
 
+import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +9,7 @@ import slacknotifications.testframework.util.ConfigLoaderUtil;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class SlackNotificationConfigTest {
 	
@@ -19,15 +19,17 @@ public class SlackNotificationConfigTest {
 	SlackNotificationConfig slacknotificationAllDisabled;
 	SlackNotificationConfig slacknotificationDisabled;
 	SlackNotificationConfig slacknotificationMostEnabled;
-	
-	
-	@Before
+    SlackNotificationConfig slacknotificationCustomContent;
+
+
+    @Before
 	public void setup() throws JDOMException, IOException{
 		
 		slacknotificationAllEnabled  = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-all-states-enabled.xml"));
 		slacknotificationAllDisabled = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-all-states-disabled.xml"));
 		slacknotificationDisabled    = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-slacknotifications-disabled.xml"));
 		slacknotificationMostEnabled = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-all-but-respchange-states-enabled.xml"));
+        slacknotificationCustomContent = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-custom-content.xml"));
 	}
 	
 //	private SlackNotificationConfig getFirstSlackNotificationInConfig(File f) throws JDOMException, IOException{
@@ -157,5 +159,39 @@ public class SlackNotificationConfigTest {
 		assertFalse(slacknotificationAllDisabled.getStateBuildBrokenAsChecked().equals(CHECKED));
 	}
 
+    @Test
+    public void loading_config_when_custom_content_section_is_present_sets_customContentEnabled(){
+        assertTrue(slacknotificationCustomContent.hasCustomContent());
+    }
+
+    @Test
+    public void loading_config_when_custom_content_section_is_not_present_does_not_set_customContentEnabled(){
+        assertFalse(slacknotificationMostEnabled.hasCustomContent());
+    }
+
+    @Test
+    public void loading_config_when_custom_content_section_is_present_sets_customContent(){
+        assertNotSame(SlackNotificationMainConfig.DEFAULT_BOTNAME, slacknotificationCustomContent.getContent().getBotName());
+        assertNotSame(SlackNotificationMainConfig.DEFAULT_ICONURL, slacknotificationCustomContent.getContent().getIconUrl());
+        assertTrue(slacknotificationCustomContent.getContent().getShowBuildAgent());
+        assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
+        assertTrue(slacknotificationCustomContent.getContent().getShowCommits());
+        assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
+        assertEquals(20, slacknotificationCustomContent.getContent().getMaxCommitsToDisplay());
+    }
+
+    @Test
+    public void getAsElement_when_custom_content_sets_customContent(){
+        Element e = slacknotificationCustomContent.getAsElement();
+        SlackNotificationConfig config = new SlackNotificationConfig(e);
+        assertTrue(config.hasCustomContent());
+        assertNotSame(SlackNotificationMainConfig.DEFAULT_BOTNAME, slacknotificationCustomContent.getContent().getBotName());
+        assertNotSame(SlackNotificationMainConfig.DEFAULT_ICONURL, slacknotificationCustomContent.getContent().getIconUrl());
+        assertTrue(slacknotificationCustomContent.getContent().getShowBuildAgent());
+        assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
+        assertTrue(slacknotificationCustomContent.getContent().getShowCommits());
+        assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
+        assertEquals(20, slacknotificationCustomContent.getContent().getMaxCommitsToDisplay());
+    }
 
 }

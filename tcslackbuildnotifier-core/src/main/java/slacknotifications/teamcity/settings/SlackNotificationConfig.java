@@ -26,10 +26,12 @@ public class SlackNotificationConfig {
 	private Set<String> enabledBuildTypesSet = new HashSet<String>();
     private boolean mentionChannelEnabled;
 	private boolean mentionSlackUserEnabled;
+    private boolean customContent;
+    private SlackNotificationContentConfig content;
 
     @SuppressWarnings("unchecked")
 	public SlackNotificationConfig(Element e) {
-		
+		this.content = new SlackNotificationContentConfig();
 		int Min = 1000000, Max = 1000000000;
 		Integer Rand = Min + (int)(Math.random() * ((Max - Min) + 1));
 		this.uniqueKey = Rand.toString();
@@ -121,6 +123,34 @@ public class SlackNotificationConfig {
 				}
 			}
 		}
+
+        if(e.getChild("content") != null) {
+            setHasCustomContent(true);
+            Element eContent = e.getChild("content");
+
+            if (eContent.getAttribute("iconUrl") != null){
+                this.content.setIconUrl(eContent.getAttributeValue("iconUrl"));
+            }
+            if (eContent.getAttribute("botName") != null){
+                this.content.setBotName(eContent.getAttributeValue("botName"));
+            }
+            if (eContent.getAttribute("showBuildAgent") != null){
+                this.content.setShowBuildAgent(Boolean.parseBoolean(eContent.getAttributeValue("showBuildAgent")));
+            }
+            if (eContent.getAttribute("showElapsedBuildTime") != null){
+                this.content.setShowElapsedBuildTime(Boolean.parseBoolean(eContent.getAttributeValue("showElapsedBuildTime")));
+            }
+            if (eContent.getAttribute("showCommits") != null){
+                this.content.setShowCommits(Boolean.parseBoolean(eContent.getAttributeValue("showCommits")));
+            }
+            if (eContent.getAttribute("showCommitters") != null){
+                this.content.setShowCommitters(Boolean.parseBoolean(eContent.getAttributeValue("showCommitters")));
+            }
+            if (eContent.getAttribute("maxCommitsToDisplay") != null){
+                this.content.setMaxCommitsToDisplay(Integer.parseInt(eContent.getAttributeValue("maxCommitsToDisplay")));
+            }
+        }
+
 		
 	}
 
@@ -201,6 +231,18 @@ public class SlackNotificationConfig {
 			}
 			el.addContent(templatesEl);
 		}
+
+        if(this.hasCustomContent()){
+            Element customContentEl = new Element("content");
+            customContentEl.setAttribute("iconUrl", this.content.getIconUrl());
+            customContentEl.setAttribute("botName", this.content.getBotName());
+            customContentEl.setAttribute("maxCommitsToDisplay", Integer.toString(this.content.getMaxCommitsToDisplay()));
+            customContentEl.setAttribute("showBuildAgent", this.content.getShowBuildAgent().toString());
+            customContentEl.setAttribute("showElapsedBuildTime", this.content.getShowElapsedBuildTime().toString());
+            customContentEl.setAttribute("showCommits", this.content.getShowCommits().toString());
+            customContentEl.setAttribute("showCommitters", this.content.getShowCommitters().toString());
+            el.addContent(customContentEl);
+        }
 		
 		return el;
 	}
@@ -441,4 +483,19 @@ public class SlackNotificationConfig {
 		return mentionSlackUserEnabled;
 	}
 
+    public boolean hasCustomContent() {
+        return customContent;
+    }
+
+    public void setHasCustomContent(boolean customContent) {
+        this.customContent = customContent;
+    }
+
+    public SlackNotificationContentConfig getContent() {
+        return content;
+    }
+
+    public void setContent(SlackNotificationContentConfig content) {
+        this.content = content;
+    }
 }

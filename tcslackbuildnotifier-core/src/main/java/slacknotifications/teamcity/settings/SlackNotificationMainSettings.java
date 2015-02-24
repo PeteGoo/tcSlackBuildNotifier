@@ -91,12 +91,12 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
     public String getIconUrl()
     {
-        return this.slackNotificationMainConfig.getIconUrl();
+        return this.slackNotificationMainConfig.getContent().getIconUrl();
     }
 
     public String getBotName()
     {
-        return this.slackNotificationMainConfig.getBotName();
+        return this.slackNotificationMainConfig.getContent().getBotName();
     }
 
     public boolean getEnabled(){
@@ -105,19 +105,19 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
 
     public Boolean getShowBuildAgent() {
-        return this.slackNotificationMainConfig.getShowBuildAgent();
+        return this.slackNotificationMainConfig.getContent().getShowBuildAgent();
     }
 
     public Boolean getShowElapsedBuildTime() {
-        return this.slackNotificationMainConfig.getShowElapsedBuildTime();
+        return this.slackNotificationMainConfig.getContent().getShowElapsedBuildTime();
     }
 
     public boolean getShowCommits(){
-        return this.slackNotificationMainConfig.getShowCommits();
+        return this.slackNotificationMainConfig.getContent().getShowCommits();
     }
 	
     public boolean getShowCommitters(){
-        return this.slackNotificationMainConfig.getShowCommitters();
+        return this.slackNotificationMainConfig.getContent().getShowCommitters();
     }
 
     public Boolean getSlackNotificationShowFurtherReading(){
@@ -133,7 +133,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 
 
     public int getMaxCommitsToDisplay() {
-        return this.slackNotificationMainConfig.getMaxCommitsToDisplay();
+        return this.slackNotificationMainConfig.getContent().getMaxCommitsToDisplay();
     }
 
     public void refresh() {
