@@ -144,6 +144,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
                 	whc.setBuildStates(buildState);
                 	whc.enableForSubProjects(buildSubProjects);
                 	whc.enableForAllBuildsInProject(buildTypeAll);
+                    whc.setHasCustomContent(content.isEnabled());
                     whc.setContent(content);
                 	if (!buildTypeAll){
                 		whc.clearAllEnabledBuildsInProject();

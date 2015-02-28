@@ -210,8 +210,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						} else {
 			    							projSettings.updateSlackNotification(myProject.getProjectId(),request.getParameter("slackNotificationId"),
 			    														request.getParameter("channel"), enabled,
-			    														states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled,
-                                                                        content);
+			    														states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled,
+                                                                        mentionSlackUserEnabled, content);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
 			    	    						params.put("messages", "<errors />");
