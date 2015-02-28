@@ -5,6 +5,7 @@ import jetbrains.buildServer.serverSide.SProject;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
+import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
 import java.util.*;
@@ -14,7 +15,7 @@ public class ProjectSlackNotificationsBean {
 	Map<String, SlacknotificationConfigAndBuildTypeListHolder> slackNotificationList;
 	
 	
-	public static ProjectSlackNotificationsBean build(SlackNotificationProjectSettings projSettings, SProject project){
+	public static ProjectSlackNotificationsBean build(SlackNotificationProjectSettings projSettings, SProject project, SlackNotificationMainSettings mainSettings){
 		ProjectSlackNotificationsBean bean = new ProjectSlackNotificationsBean();
 		List<SBuildType> projectBuildTypes = TeamCityIdResolver.getOwnBuildTypes(project);
 		
@@ -25,18 +26,18 @@ public class ProjectSlackNotificationsBean {
 		SlackNotificationConfig newBlankConfig = new SlackNotificationConfig("", "", true, new BuildState().setAllEnabled(), true, true, null, true, true);
 		newBlankConfig.setUniqueKey("new");
 		/* And add it to the list */
-		addSlackNotificationConfigHolder(bean, projectBuildTypes, newBlankConfig);
+		addSlackNotificationConfigHolder(bean, projectBuildTypes, newBlankConfig, mainSettings);
 		
 		/* Iterate over the rest of the slacknotifications in this project and add them to the json config */
 		for (SlackNotificationConfig config : projSettings.getSlackNotificationsAsList()){
-			addSlackNotificationConfigHolder(bean, projectBuildTypes, config);
+			addSlackNotificationConfigHolder(bean, projectBuildTypes, config, mainSettings);
 		}
 		
 		return bean;
 		
 	}
 	
-	public static ProjectSlackNotificationsBean build(SlackNotificationProjectSettings projSettings, SBuildType sBuildType, SProject project){
+	public static ProjectSlackNotificationsBean build(SlackNotificationProjectSettings projSettings, SBuildType sBuildType, SProject project, SlackNotificationMainSettings mainSettings){
 		ProjectSlackNotificationsBean bean = new ProjectSlackNotificationsBean();
 		List<SBuildType> projectBuildTypes = TeamCityIdResolver.getOwnBuildTypes(project);
 		Set<String> enabledBuildTypes = new HashSet<String>();
@@ -49,11 +50,11 @@ public class ProjectSlackNotificationsBean {
 		SlackNotificationConfig newBlankConfig = new SlackNotificationConfig("", "", true, new BuildState().setAllEnabled(), false, false, enabledBuildTypes, true, true);
 		newBlankConfig.setUniqueKey("new");
 		/* And add it to the list */
-		addSlackNotificationConfigHolder(bean, projectBuildTypes, newBlankConfig);
+		addSlackNotificationConfigHolder(bean, projectBuildTypes, newBlankConfig, mainSettings);
 		
 		/* Iterate over the rest of the slacknotifications in this project and add them to the json config */
 		for (SlackNotificationConfig config : projSettings.getBuildSlackNotificationsAsList(sBuildType)){
-			addSlackNotificationConfigHolder(bean, projectBuildTypes, config);
+			addSlackNotificationConfigHolder(bean, projectBuildTypes, config, mainSettings);
 		}
 		
 		return bean;
@@ -62,8 +63,8 @@ public class ProjectSlackNotificationsBean {
 
 
 	private static void addSlackNotificationConfigHolder(ProjectSlackNotificationsBean bean,
-			List<SBuildType> projectBuildTypes, SlackNotificationConfig config) {
-		SlacknotificationConfigAndBuildTypeListHolder holder = new SlacknotificationConfigAndBuildTypeListHolder(config);
+			List<SBuildType> projectBuildTypes, SlackNotificationConfig config, SlackNotificationMainSettings mainSettings) {
+		SlacknotificationConfigAndBuildTypeListHolder holder = new SlacknotificationConfigAndBuildTypeListHolder(config, mainSettings);
 		for (SBuildType sBuildType : projectBuildTypes){
 			holder.addSlackNotificationBuildType(new SlacknotificationBuildTypeEnabledStatusBean(
 													sBuildType.getBuildTypeId(), 

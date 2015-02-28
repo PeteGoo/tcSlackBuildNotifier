@@ -321,6 +321,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 
 	void readConfigurationFromXmlElement(Element slackNotificationsElement) {
         if(slackNotificationsElement != null){
+            content.setEnabled(true);
             if(slackNotificationsElement.getAttribute("enabled") != null)
             {
                 setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("enabled")));

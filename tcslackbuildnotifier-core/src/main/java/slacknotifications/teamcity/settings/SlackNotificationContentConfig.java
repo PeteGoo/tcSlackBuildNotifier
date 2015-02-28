@@ -4,6 +4,11 @@ package slacknotifications.teamcity.settings;
  * Created by petegoo on 24/02/15.
  */
 public class SlackNotificationContentConfig {
+    public static final int DEFAULT_MAX_COMMITS = 5;
+    public static final boolean DEFAULT_SHOW_BUILD_AGENT = true;
+    public static final boolean DEFAULT_SHOW_ELAPSED_BUILD_TIME = true;
+    public static final boolean DEFAULT_SHOW_COMMITS = true;
+    public static final boolean DEFAULT_SHOW_COMMITTERS = true;
     private String iconUrl = SlackNotificationMainConfig.DEFAULT_ICONURL;
     private String botName = SlackNotificationMainConfig.DEFAULT_BOTNAME;
     private Boolean showBuildAgent;
@@ -11,6 +16,7 @@ public class SlackNotificationContentConfig {
     private Boolean showCommits = true;
     private Boolean showCommitters = true;
     private int maxCommitsToDisplay = 5;
+    private boolean enabled;
 
     public String getIconUrl() {
         return iconUrl;
@@ -66,5 +72,13 @@ public class SlackNotificationContentConfig {
 
     public void setMaxCommitsToDisplay(int maxCommitsToDisplay) {
         this.maxCommitsToDisplay = maxCommitsToDisplay;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

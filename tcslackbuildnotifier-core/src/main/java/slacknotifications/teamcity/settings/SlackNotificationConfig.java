@@ -128,6 +128,8 @@ public class SlackNotificationConfig {
             setHasCustomContent(true);
             Element eContent = e.getChild("content");
 
+            this.content.setEnabled(true);
+
             if (eContent.getAttribute("iconUrl") != null){
                 this.content.setIconUrl(eContent.getAttributeValue("iconUrl"));
             }
@@ -173,6 +175,7 @@ public class SlackNotificationConfig {
 								   Set<String> enabledBuildTypes,
 								   boolean mentionChannelEnabled,
 								   boolean mentionSlackUserEnabled) {
+        this.content = new SlackNotificationContentConfig();
         int Min = 1000000, Max = 1000000000;
         Integer Rand = Min + (int) (Math.random() * ((Max - Min) + 1));
         this.uniqueKey = Rand.toString();

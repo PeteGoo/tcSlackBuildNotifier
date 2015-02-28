@@ -200,9 +200,24 @@
                                                </td>
                                                <td colspan="2">
                                                    <input type="text" name="maxCommitsToDisplay" id="maxCommitsToDisplay" />
-                                                   <span class="smallNote">The maximum number of commits to display.</span>
                                                </td>
                                            </tr>
+                                           <tr class="onCustomContentEnabled">
+                                              <td>
+                                                  <label for="botName">Bot name: <l:star /></label>
+                                              </td>
+                                              <td colspan="2">
+                                                  <input type="text" name="botName" id="botName" />
+                                              </td>
+                                          </tr>
+                                          <tr class="onCustomContentEnabled">
+                                                <td>
+                                                    <label for="iconUrl">Icon Url: <l:star /></label>
+                                                </td>
+                                                <td colspan="2">
+                                                    <input type="text" name="iconUrl" id="iconUrl" />
+                                                </td>
+                                            </tr>
                                         </table>
 
                                 </div>

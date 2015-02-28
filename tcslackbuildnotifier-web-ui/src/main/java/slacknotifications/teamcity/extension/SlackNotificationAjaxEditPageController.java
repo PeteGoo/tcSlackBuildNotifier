@@ -11,12 +11,15 @@ import jetbrains.buildServer.web.openapi.WebControllerManager;
 import jetbrains.buildServer.web.util.SessionUser;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.web.servlet.ModelAndView;
+import slacknotifications.SlackNotification;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBean;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBeanJsonSerialiser;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
+import slacknotifications.teamcity.settings.SlackNotificationContentConfig;
+import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,20 +40,22 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 		protected static final String BUILD_SUCCESSFUL = "BuildSuccessful";
 		
 		private final WebControllerManager myWebManager;
-	    private SBuildServer myServer;
+    private final SlackNotificationMainSettings myMainSettings;
+    private SBuildServer myServer;
 	    private ProjectSettingsManager mySettings;
 	    private final String myPluginPath;
 	    private final SlackNotificationPayloadManager myManager;
 	    
 	    public SlackNotificationAjaxEditPageController(SBuildServer server, WebControllerManager webManager,
                                                        ProjectSettingsManager settings, SlackNotificationProjectSettings whSettings, SlackNotificationPayloadManager manager,
-                                                       PluginDescriptor pluginDescriptor) {
+                                                       PluginDescriptor pluginDescriptor, SlackNotificationMainSettings mainSettings) {
 	        super(server);
 	        myWebManager = webManager;
 	        myServer = server;
 	        mySettings = settings;
 	        myPluginPath = pluginDescriptor.getPluginResourcesPath();
 	        myManager = manager;
+            myMainSettings = mainSettings;
 	    }
 
 	    public void register(){
@@ -117,6 +122,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 										Boolean mentionSlackUserEnabled = false;
 			    						Boolean buildTypeAll = false;
 			    						Boolean buildTypeSubProjects = false;
+                                        SlackNotificationContentConfig content = new SlackNotificationContentConfig();
 			    						Set<String> buildTypes = new HashSet<String>();
 			    						if ((request.getParameter("slackNotificationsEnabled") != null )
 			    								&& (request.getParameter("slackNotificationsEnabled").equalsIgnoreCase("on"))){
@@ -124,12 +130,48 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						}
                                         if ((request.getParameter("mentionChannelEnabled") != null )
                                                 && (request.getParameter("mentionChannelEnabled").equalsIgnoreCase("on"))){
+
                                             mentionChannelEnabled = true;
                                         }
 										if ((request.getParameter("mentionSlackUserEnabled") != null )
 												&& (request.getParameter("mentionSlackUserEnabled").equalsIgnoreCase("on"))){
 											mentionSlackUserEnabled = true;
 										}
+
+                                        content.setEnabled((request.getParameter("customContentEnabled") != null )
+                                                && (request.getParameter("customContentEnabled").equalsIgnoreCase("on")));
+
+                                        if (content.isEnabled()){
+
+                                            if ((request.getParameter("maxCommitsToDisplay") != null )
+                                                    && (request.getParameter("maxCommitsToDisplay").length() > 0)){
+                                                content.setMaxCommitsToDisplay(convertToInt(request.getParameter("maxCommitsToDisplay"), SlackNotificationContentConfig.DEFAULT_MAX_COMMITS));
+                                            }
+
+                                            content.setShowBuildAgent((request.getParameter("showBuildAgent") != null )
+                                                    && (request.getParameter("showBuildAgent").equalsIgnoreCase("on")));
+
+                                            content.setShowCommits((request.getParameter("showCommits") != null )
+                                                    && (request.getParameter("showCommits").equalsIgnoreCase("on")));
+
+                                            content.setShowCommitters((request.getParameter("showCommitters") != null)
+                                                    && (request.getParameter("showCommitters").equalsIgnoreCase("on")));
+
+                                            content.setShowElapsedBuildTime((request.getParameter("showElapsedBuildTime") != null)
+                                                    && (request.getParameter("showElapsedBuildTime").equalsIgnoreCase("on")));
+
+
+                                            if ((request.getParameter("botName") != null )
+                                                    && (request.getParameter("botName").length() > 0)){
+                                                content.setBotName(request.getParameter("botName"));
+                                            }
+
+                                            if ((request.getParameter("iconUrl") != null )
+                                                    && (request.getParameter("iconUrl").length() > 0)){
+                                                content.setIconUrl(request.getParameter("iconUrl"));
+                                            }
+                                        }
+
 			    						BuildState states = new BuildState();
 			    						
 			    						checkAndAddBuildState(request, states, BuildStateEnum.BUILD_SUCCESSFUL, BUILD_SUCCESSFUL);
@@ -168,7 +210,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						} else {
 			    							projSettings.updateSlackNotification(myProject.getProjectId(),request.getParameter("slackNotificationId"),
 			    														request.getParameter("channel"), enabled,
-			    														states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
+			    														states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled,
+                                                                        content);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
 			    	    						params.put("messages", "<errors />");
@@ -217,7 +260,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 		    		params.put("slackNotificationList", projSettings.getSlackNotificationsAsList());
 		    		params.put("slackNotificationsDisabled", !projSettings.isEnabled());
 		    		params.put("slackNotificationsEnabledAsChecked", projSettings.isEnabledAsChecked());
-		    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project)));
+		    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 		    	}
 	        } else {
 	        	params.put("haveProject", "false");
@@ -225,4 +268,14 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	        
 	        return new ModelAndView(myPluginPath + "SlackNotification/ajaxEdit.jsp", params);
 	    }
+
+
+    private int convertToInt(String s, int defaultValue){
+        try{
+            int myInt = Integer.parseInt(s);
+            return myInt;
+        } catch (NumberFormatException e){
+            return defaultValue;
+        }
+    }
 }
