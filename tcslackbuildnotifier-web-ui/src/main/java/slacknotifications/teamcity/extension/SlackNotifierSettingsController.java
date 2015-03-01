@@ -233,14 +233,14 @@ public class SlackNotifierSettingsController extends BaseController {
 
         this.config.setTeamName(teamName);
         this.config.setToken(token);
-        this.config.setBotName(botName);
-        this.config.setIconUrl(iconUrl);
+        this.config.getContent().setBotName(botName);
+        this.config.getContent().setIconUrl(iconUrl);
         this.config.setDefaultChannel(defaultChannel);
-        this.config.setMaxCommitsToDisplay(Integer.parseInt(maxCommitsToDisplay));
-        this.config.setShowBuildAgent(Boolean.parseBoolean(showBuildAgent));
-        this.config.setShowCommits(Boolean.parseBoolean(showCommits));
-        this.config.setShowCommitters(Boolean.parseBoolean(showCommitters));
-        this.config.setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
+        this.config.getContent().setMaxCommitsToDisplay(Integer.parseInt(maxCommitsToDisplay));
+        this.config.getContent().setShowBuildAgent(Boolean.parseBoolean(showBuildAgent));
+        this.config.getContent().setShowCommits(Boolean.parseBoolean(showCommits));
+        this.config.getContent().setShowCommitters(Boolean.parseBoolean(showCommitters));
+        this.config.getContent().setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
 
 
         this.config.setProxyHost(proxyHost);

@@ -72,7 +72,6 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
 				Loggers.SERVER.debug(NAME + ":writeTo :: channel " + whc.getChannel());
 				Loggers.SERVER.debug(NAME + ":writeTo :: enabled " + String.valueOf(whc.getEnabled()));
             }
-
         }
     }
     
@@ -130,7 +129,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
         }    	
     }
 
-	public void updateSlackNotification(String ProjectId, String slackNotificationId, String channel, Boolean enabled, BuildState buildState, boolean buildTypeAll, boolean buildSubProjects, Set<String> buildTypesEnabled, boolean mentionChannelEnabled, boolean mentionSlackUserEnabled) {
+	public void updateSlackNotification(String ProjectId, String slackNotificationId, String channel, Boolean enabled, BuildState buildState, boolean buildTypeAll, boolean buildSubProjects, Set<String> buildTypesEnabled, boolean mentionChannelEnabled, boolean mentionSlackUserEnabled, SlackNotificationContentConfig content) {
         if(this.slackNotificationsConfigs != null)
         {
         	updateSuccess = false;
@@ -145,6 +144,8 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
                 	whc.setBuildStates(buildState);
                 	whc.enableForSubProjects(buildSubProjects);
                 	whc.enableForAllBuildsInProject(buildTypeAll);
+                    whc.setHasCustomContent(content.isEnabled());
+                    whc.setContent(content);
                 	if (!buildTypeAll){
                 		whc.clearAllEnabledBuildsInProject();
                 		for (String bt : buildTypesEnabled){

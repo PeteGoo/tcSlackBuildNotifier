@@ -99,14 +99,14 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    	if (projSettings.getSlackNotificationsCount() == 0){
 			    		params.put("noSlackNotifications", "true");
 			    		params.put("slackNotifications", "false");
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project)));
+			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 			    	} else {
 			    		params.put("noSlackNotifications", "false");
 			    		params.put("slackNotifications", "true");
 			    		params.put("slackNotificationList", projSettings.getSlackNotificationsAsList());
 			    		params.put("slackNotificationsDisabled", !projSettings.isEnabled());
 			    		params.put("slackNotificationsEnabledAsChecked", projSettings.isEnabledAsChecked());
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project)));
+			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 
 			    	}
 		    	} else {
@@ -139,7 +139,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    		params.put("noSlackNotifications", configs.size() == 0);
 			    		params.put("slackNotifications", configs.size() != 0);
 				    	
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project)));
+			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project, myMainSettings)));
 		        	}
         		} else {
 		    		params.put("haveProject", "false");

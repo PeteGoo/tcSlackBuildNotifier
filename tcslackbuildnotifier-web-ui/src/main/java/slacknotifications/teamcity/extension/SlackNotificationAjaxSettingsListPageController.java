@@ -13,6 +13,7 @@ import slacknotifications.teamcity.TeamCityIdResolver;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBean;
 import slacknotifications.teamcity.extension.bean.ProjectSlackNotificationsBeanJsonSerialiser;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
+import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,20 +23,24 @@ import java.util.HashMap;
 
 public class SlackNotificationAjaxSettingsListPageController extends BaseController {
 
-	    private final WebControllerManager myWebManager;
-	    private SBuildServer myServer;
-	    private ProjectSettingsManager mySettings;
-	    private PluginDescriptor myPluginDescriptor;
-	    private final SlackNotificationPayloadManager myManager;
+	private final WebControllerManager myWebManager;
+    private final SlackNotificationMainSettings myMainSettings;
+
+    private SBuildServer myServer;
+	private ProjectSettingsManager mySettings;
+	private PluginDescriptor myPluginDescriptor;
+	private final SlackNotificationPayloadManager myManager;
 
 	    public SlackNotificationAjaxSettingsListPageController(SBuildServer server, WebControllerManager webManager,
-                                                               ProjectSettingsManager settings, SlackNotificationPayloadManager manager, PluginDescriptor pluginDescriptor) {
+                                                               ProjectSettingsManager settings, SlackNotificationPayloadManager manager, PluginDescriptor pluginDescriptor,
+                                                               SlackNotificationMainSettings mainSettings) {
 	        super(server);
 	        myWebManager = webManager;
 	        myServer = server;
 	        mySettings = settings;
 	        myPluginDescriptor = pluginDescriptor;
 	        myManager = manager;
+            myMainSettings = mainSettings;
 	    }
 
 	    public void register(){
@@ -55,7 +60,7 @@ public class SlackNotificationAjaxSettingsListPageController extends BaseControl
 		    	SlackNotificationProjectSettings projSettings = (SlackNotificationProjectSettings)
 		    			mySettings.getSettings(request.getParameter("projectId"), "slackNotifications");
 		    	
-		    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project)));
+		    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 	        } else if (request.getParameter("buildTypeId") != null){
         		SBuildType sBuildType = TeamCityIdResolver.findBuildTypeById(this.myServer.getProjectManager(), request.getParameter("buildTypeId"));
         		if (sBuildType != null){
@@ -63,7 +68,7 @@ public class SlackNotificationAjaxSettingsListPageController extends BaseControl
 		        	if (project != null){
 				    	SlackNotificationProjectSettings projSettings = (SlackNotificationProjectSettings)
 				    			mySettings.getSettings(project.getProjectId(), "slackNotifications");
-		        		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project)));
+		        		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project, myMainSettings)));
 		        	}
         		}
 	        

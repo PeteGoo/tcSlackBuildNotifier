@@ -80,6 +80,16 @@
 				jQuerySlacknotification('tr.onBuildFailed td input').attr('disabled', 'disabled');
 			}
 		}
+
+		function toggleCustomContentEnabled(){
+            if(jQuerySlacknotification('#customContentEnabled').is(':checked')){
+                jQuerySlacknotification('.onCustomContentEnabled').removeClass('onCompletionDisabled');
+                jQuerySlacknotification('tr.onCustomContentEnabled td input').removeAttr('disabled');
+            } else {
+                jQuerySlacknotification('.onCustomContentEnabled').addClass('onCompletionDisabled');
+                jQuerySlacknotification('tr.onCustomContentEnabled td input').attr('disabled', 'disabled');
+            }
+		}
 		
 		function toggleAllBuildTypesSelected(){
 			jQuerySlacknotification.each(jQuerySlacknotification('.buildType_single'), function(){
@@ -127,6 +137,14 @@
 					});
 					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', slacknotification.mentionChannelEnabled);
 					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', slacknotification.mentionSlackUserEnabled);
+					jQuerySlacknotification('#maxCommitsToDisplay').val(slacknotification.maxCommitsToDisplay);
+					jQuerySlacknotification('#customContentEnabled').attr('checked', slacknotification.customContentEnabled);
+					jQuerySlacknotification('#showBuildAgent').attr('checked', slacknotification.showBuildAgent);
+					jQuerySlacknotification('#showCommits').attr('checked', slacknotification.showCommits);
+					jQuerySlacknotification('#showCommitters').attr('checked', slacknotification.showCommitters);
+					jQuerySlacknotification('#showElapsedBuildTime').attr('checked', slacknotification.showElapsedBuildTime);
+					jQuerySlacknotification('#botName').val(slacknotification.botName);
+					jQuerySlacknotification('#iconUrl').val(slacknotification.iconUrl)
 				}
 			});
 			updateSelectedBuildTypes();
@@ -163,6 +181,7 @@
 			    
 			    populateSlackNotificationDialog(id);
 			    doExtraCompleted();
+			    toggleCustomContentEnabled();
 			    
 			    var title = id == "new" ? "Add New" : "Edit";
 			    title += " SlackNotification";
