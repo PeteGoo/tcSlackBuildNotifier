@@ -69,6 +69,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         model.put("showCommits", this.slackMainSettings.getShowCommits());
         model.put("showCommitters", this.slackMainSettings.getShowCommitters());
         model.put("showElapsedBuildTime", this.slackMainSettings.getShowElapsedBuildTime());
+        model.put("showFailureReason", this.slackMainSettings.getShowFailureReason());
 
         SlackNotificationProxyConfig proxyConfig = this.slackMainSettings.getProxyConfig();
         model.put("proxyHost", proxyConfig.getProxyHost());

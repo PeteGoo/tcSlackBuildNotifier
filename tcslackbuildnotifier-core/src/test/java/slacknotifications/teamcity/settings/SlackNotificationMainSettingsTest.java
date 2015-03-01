@@ -67,7 +67,8 @@ public class SlackNotificationMainSettingsTest {
         assertTrue(whms.getShowElapsedBuildTime());
         assertFalse(whms.getShowCommits());
         assertEquals(15, whms.getMaxCommitsToDisplay());
-        
+        assertTrue(whms.getShowFailureReason());
+
         Credentials credentials = whpc.getCreds();
         
 		assertEquals("some-username", credentials.getUserPrincipal().getName());
@@ -97,6 +98,8 @@ public class SlackNotificationMainSettingsTest {
         assertNull(whms.getShowElapsedBuildTime());
         assertTrue(whms.getShowCommits());
         assertEquals(5, whms.getMaxCommitsToDisplay());
+        assertNull(whms.getShowFailureReason());
+
     }
 
     private Element getFullConfigElement(){

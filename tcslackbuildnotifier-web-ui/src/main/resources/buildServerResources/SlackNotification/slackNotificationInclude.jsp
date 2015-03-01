@@ -204,6 +204,17 @@
                                            </tr>
                                            <tr class="onCustomContentEnabled">
                                               <td>
+                                                  <label for="showFailureReason">Show failure reason: </label>
+                                              </td>
+                                              <td>
+                                                  <input type="checkbox" name="showFailureReason" id="showFailureReason" />
+                                              </td>
+                                              <td>
+                                                  <span style="color: #888; font-size: 90%;">When checked, the reason for the build failure including failed tests is displayed.</span>
+                                              </td>
+                                          </tr>
+                                           <tr class="onCustomContentEnabled">
+                                              <td>
                                                   <label for="botName">Bot name: <l:star /></label>
                                               </td>
                                               <td colspan="2">

@@ -1,6 +1,8 @@
 package slacknotifications.teamcity.payload.content;
 
+import jetbrains.buildServer.BuildProblemData;
 import jetbrains.buildServer.serverSide.*;
+import jetbrains.buildServer.tests.TestInfo;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
@@ -10,6 +12,7 @@ import slacknotifications.teamcity.TeamCityIdResolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class SlackNotificationPayloadContent {
@@ -70,6 +73,8 @@ public class SlackNotificationPayloadContent {
     private String color;
     private long elapsedTime;
     private boolean isComplete;
+    private ArrayList<String> failedBuildMessages;
+    private ArrayList<String> failedTestNames;
 
     public SlackNotificationPayloadContent(){
 
@@ -100,8 +105,35 @@ public class SlackNotificationPayloadContent {
     		populateMessageAndText(sRunningBuild, buildState);
             populateCommits(sRunningBuild);
     		populateArtifacts(sRunningBuild);
-
+            populateResults(sRunningBuild);
 		}
+
+    private void populateResults(SRunningBuild sRunningBuild) {
+        List<BuildProblemData> failureReasons = sRunningBuild.getFailureReasons();
+        if(failureReasons == null){
+            return;
+        }
+        HashSet<String> failureTestNames = new HashSet<String>();
+        HashSet<String> failureMessages = new HashSet<String>();
+        for(BuildProblemData reason : failureReasons){
+            if(reason.getType() == BuildProblemData.TC_FAILED_TESTS_TYPE){
+                List<TestInfo> failedTestMessages = sRunningBuild.getTestMessages(0, 2000);
+                if(failedTestMessages.size() > 0) {
+                    for (TestInfo failedTest : failedTestMessages) {
+                        failureTestNames.add(failedTest.getName());
+                    }
+                }
+                else {
+                    failureMessages.add(reason.getDescription());
+                }
+            }
+            else {
+                failureMessages.add(reason.getDescription());
+            }
+        }
+        failedBuildMessages = new ArrayList<String>(failureMessages);
+        failedTestNames = new ArrayList<String>(failureTestNames);
+    }
 
     private void populateCommits(SRunningBuild sRunningBuild) {
         List<SVcsModification> changes = sRunningBuild.getContainingChanges();
@@ -394,5 +426,13 @@ public class SlackNotificationPayloadContent {
 
     public void setFirstFailedBuild(boolean isFirstFailedBuild) {
         this.isFirstFailedBuild = isFirstFailedBuild;
+    }
+
+    public ArrayList<String> getFailedBuildMessages() {
+        return failedBuildMessages;
+    }
+
+    public ArrayList<String> getFailedTestNames() {
+        return failedTestNames;
     }
 }

@@ -73,9 +73,12 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setShowBuildAgent(myMainSettings.getShowBuildAgent());
         slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
         slackNotification.setShowCommits(myMainSettings.getShowCommits());
+        slackNotification.setShowCommitters(myMainSettings.getShowCommitters());
+        slackNotification.setShowFailureReason(myMainSettings.getShowFailureReason());
         slackNotification.setMaxCommitsToDisplay(myMainSettings.getMaxCommitsToDisplay());
         slackNotification.setMentionChannelEnabled(slackNotificationConfig.getMentionChannelEnabled());
 		slackNotification.setMentionSlackUserEnabled(slackNotificationConfig.getMentionSlackUserEnabled());
+        slackNotification.setShowElapsedBuildTime(myMainSettings.getShowFailureReason());
         if(slackNotificationConfig.getContent().isEnabled()) {
             slackNotification.setBotName(slackNotificationConfig.getContent().getBotName());
             slackNotification.setIconUrl(slackNotificationConfig.getContent().getIconUrl());
@@ -84,6 +87,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
             slackNotification.setShowElapsedBuildTime(slackNotificationConfig.getContent().getShowElapsedBuildTime());
             slackNotification.setShowCommits(slackNotificationConfig.getContent().getShowCommits());
             slackNotification.setShowCommitters(slackNotificationConfig.getContent().getShowCommitters());
+            slackNotification.setShowFailureReason(slackNotificationConfig.getContent().getShowFailureReason());
         }
 		Loggers.ACTIVITIES.debug("SlackNotificationListener :: SlackNotification proxy set to "
 				+ slackNotification.getProxyHost() + " for " + slackNotificationConfig.getChannel());
