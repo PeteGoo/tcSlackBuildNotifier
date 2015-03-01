@@ -177,6 +177,7 @@ public class SlackNotificationConfigTest {
         assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
         assertTrue(slacknotificationCustomContent.getContent().getShowCommits());
         assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
+        assertTrue(slacknotificationCustomContent.getContent().getShowFailureReason());
         assertEquals(20, slacknotificationCustomContent.getContent().getMaxCommitsToDisplay());
     }
 
@@ -191,6 +192,7 @@ public class SlackNotificationConfigTest {
         assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
         assertTrue(slacknotificationCustomContent.getContent().getShowCommits());
         assertTrue(slacknotificationCustomContent.getContent().getShowElapsedBuildTime());
+        assertTrue(slacknotificationCustomContent.getContent().getShowFailureReason());
         assertEquals(20, slacknotificationCustomContent.getContent().getMaxCommitsToDisplay());
     }
 

@@ -151,6 +151,9 @@ public class SlackNotificationConfig {
             if (eContent.getAttribute("maxCommitsToDisplay") != null){
                 this.content.setMaxCommitsToDisplay(Integer.parseInt(eContent.getAttributeValue("maxCommitsToDisplay")));
             }
+            if (eContent.getAttribute("showFailureReason") != null){
+                this.content.setShowFailureReason(Boolean.parseBoolean(eContent.getAttributeValue("showFailureReason")));
+            }
         }
 
 		
@@ -244,6 +247,7 @@ public class SlackNotificationConfig {
             customContentEl.setAttribute("showElapsedBuildTime", this.content.getShowElapsedBuildTime().toString());
             customContentEl.setAttribute("showCommits", this.content.getShowCommits().toString());
             customContentEl.setAttribute("showCommitters", this.content.getShowCommitters().toString());
+            customContentEl.setAttribute("showFailureReason", this.content.getShowFailureReason().toString());
             el.addContent(customContentEl);
         }
 		

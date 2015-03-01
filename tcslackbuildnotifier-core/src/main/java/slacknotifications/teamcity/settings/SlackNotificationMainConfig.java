@@ -281,6 +281,9 @@ public class SlackNotificationMainConfig implements ChangeListener {
 						if(SlackNotificationMainConfig.this.content.getShowCommitters() != null) {
 							rootElement.setAttribute("showCommitters", Boolean.toString(SlackNotificationMainConfig.this.content.getShowCommitters()));
 						}
+                        if(SlackNotificationMainConfig.this.content.getShowFailureReason() != null) {
+                            rootElement.setAttribute("showFailureReason", Boolean.toString(SlackNotificationMainConfig.this.content.getShowFailureReason()));
+                        }
 						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.content.getMaxCommitsToDisplay()));
 
                         rootElement.removeChildren("proxy");
@@ -365,6 +368,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
             if(slackNotificationsElement.getAttribute("maxCommitsToDisplay") != null)
             {
                 content.setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue("maxCommitsToDisplay")));
+            }
+            if(slackNotificationsElement.getAttribute("showFailureReason") != null)
+            {
+                content.setShowFailureReason(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showFailureReason")));
             }
 
             Element proxyElement = slackNotificationsElement.getChild("proxy");

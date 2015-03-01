@@ -11,7 +11,8 @@
                  showElapsedBuildTime="true"
                  showCommits="true"
                  showCommitters="true"
-                 maxCommitsToDisplay="20" />
+                 maxCommitsToDisplay="20"
+                showFailureReason="true"/>
     </slackNotification>
   </slackNotifications>
 </settings>

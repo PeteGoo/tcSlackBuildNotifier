@@ -145,6 +145,7 @@
 					jQuerySlacknotification('#showElapsedBuildTime').attr('checked', slacknotification.showElapsedBuildTime);
 					jQuerySlacknotification('#botName').val(slacknotification.botName);
 					jQuerySlacknotification('#iconUrl').val(slacknotification.iconUrl)
+					jQuerySlacknotification('#showFailureReason').attr('checked', slacknotification.showFailureReason);
 				}
 			});
 			updateSelectedBuildTypes();

@@ -160,6 +160,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
                                             content.setShowElapsedBuildTime((request.getParameter("showElapsedBuildTime") != null)
                                                     && (request.getParameter("showElapsedBuildTime").equalsIgnoreCase("on")));
 
+                                            content.setShowFailureReason((request.getParameter("showFailureReason") != null)
+                                                    && (request.getParameter("showFailureReason").equalsIgnoreCase("on")));
 
                                             if ((request.getParameter("botName") != null )
                                                     && (request.getParameter("botName").length() > 0)){

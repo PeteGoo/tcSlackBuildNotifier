@@ -17,6 +17,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpHost;
+import org.springframework.util.StringUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
@@ -66,7 +67,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
-
+    private boolean showFailureReason;
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
@@ -275,6 +276,22 @@ public class SlackNotificationImpl implements SlackNotification {
         }
 
         attachment.addField(this.payload.getBuildName(), StringUtil.join(firstDetailLines, "\n"), false);
+
+        if(showFailureReason && this.payload.getBuildResult() == SlackNotificationPayloadContent.BUILD_STATUS_FAILURE){
+            if(this.payload.getFailedBuildMessages().size() > 0) {
+                attachment.addField("Reason", StringUtil.join(", ", payload.getFailedBuildMessages()), false);
+            }
+            if(this.payload.getFailedTestNames().size() > 0){
+                ArrayList<String> failedTestNames = payload.getFailedTestNames();
+                String truncated = "";
+                if(failedTestNames.size() > 10){
+                    failedTestNames = new ArrayList<String>( failedTestNames.subList(0, 9));
+                    truncated = " (+ " + Integer.toString(payload.getFailedBuildMessages().size() - 10) + " more)";
+                }
+                payload.getFailedTestNames().size();
+                attachment.addField("Failed Tests", StringUtil.join(", ", failedTestNames) + truncated, false);
+            }
+        }
 
         StringBuilder sbCommits = new StringBuilder();
 
@@ -622,6 +639,12 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setMentionSlackUserEnabled(boolean mentionSlackUserEnabled) {
         this.mentionSlackUserEnabled = mentionSlackUserEnabled;
+    }
+
+
+    @Override
+    public void setShowFailureReason(boolean showFailureReason) {
+        this.showFailureReason = showFailureReason;
     }
 
     public boolean getIsApiToken() {
