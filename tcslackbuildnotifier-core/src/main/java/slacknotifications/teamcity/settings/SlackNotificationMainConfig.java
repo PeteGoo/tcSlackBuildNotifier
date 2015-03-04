@@ -411,6 +411,9 @@ public class SlackNotificationMainConfig implements ChangeListener {
     }
 
     public SlackNotificationContentConfig getContent() {
+        if(content == null){
+            this.content = new SlackNotificationContentConfig();
+        }
         return content;
     }
 }

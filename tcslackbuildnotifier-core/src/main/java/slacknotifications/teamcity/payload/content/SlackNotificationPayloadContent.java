@@ -73,8 +73,8 @@ public class SlackNotificationPayloadContent {
     private String color;
     private long elapsedTime;
     private boolean isComplete;
-    private ArrayList<String> failedBuildMessages;
-    private ArrayList<String> failedTestNames;
+    private ArrayList<String> failedBuildMessages = new ArrayList<String>();
+    private ArrayList<String> failedTestNames = new ArrayList<String>();
 
     public SlackNotificationPayloadContent(){
 
