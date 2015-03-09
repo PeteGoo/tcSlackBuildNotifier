@@ -78,7 +78,7 @@
                     </th>
                     <td>
                         <forms:textField name="defaultChannel" value="${defaultChannel}" style="width: 300px;" />
-                        <span class="smallNote">The default channel. Please include the # if it is a channel. e.g. #general. You can also send directly toa  single user via the slackbot channel using @username</span>
+                        <span class="smallNote">The default channel. Please include the # if it is a channel. e.g. #general. You can also send directly to a single user via the slackbot channel using @username</span>
                     </td>
                 </tr>
                 <tr class="groupingTitle">
