@@ -124,7 +124,7 @@
 																	 Trigger when build Fails</label>
 																	</td></tr>
 																<tr class="onBuildFailed" style="padding:0; margin:0; left: 0px;"><td style="padding:0; margin:0; padding-left: 2em; left: 0px;"><label style='white-space:nowrap;'>
-																	<input class="buildStateBroken" id="BuildBroken" name="buildBroken" type=checkbox />
+																	<input class="buildStateBroken" id="buildBroken" name="BuildBroken" type=checkbox />
 																	 Only trigger when build changes from Success to Failure</label>
 																	</td></tr>
 														</tbody></table>
