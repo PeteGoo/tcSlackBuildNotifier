@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -334,7 +335,7 @@ public class SlackNotificationImpl implements SlackNotification {
         slackUsers = new ArrayList<String>(tempHash);
 
         if(showCommitters) {
-            List<String> committers = new ArrayList<String>();
+            Set<String> committers = new HashSet<String>();
             for (Commit commit : commits) {
                 committers.add(commit.getUserName());
             }
