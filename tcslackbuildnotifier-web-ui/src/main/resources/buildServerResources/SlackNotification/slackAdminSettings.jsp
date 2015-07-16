@@ -68,8 +68,8 @@
                     </th>
                     <td>
                         <forms:textField name="iconUrl" value="${iconUrl}" style="width: 300px;" />
-                        <span class="smallNote">The url of the icon to appear beside your bot. You can leave this as the default or customize it to a 32*32 png file.</span>
-                        <span class="smallNote">The default is <b>https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity32.png</b>
+                        <span class="smallNote">The url of the icon to appear beside your bot. You can leave this as the default or customize it to a png file.</span>
+                        <span class="smallNote">The default is <b>https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity.png</b>
                     </td>
                 </tr>
                 <tr>
