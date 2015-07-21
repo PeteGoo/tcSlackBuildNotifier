@@ -168,9 +168,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
+			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>7.1.0</version>
+			<version>132.940</version>
 			<scope>provided</scope>
 		</dependency>
 
