@@ -138,12 +138,12 @@
 		</dependency>
 
 		<!-- TeamCity/webapps/WEB-INF/lib/runtime-util.jar -->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.jetbrains.teamcity</groupId>
 			<artifactId>runtime-util</artifactId>
 			<version>7.1.0</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>-->
 
 		<!-- TeamCity/webapps/WEB-INF/lib/server-model.jar -->
 		<!-- <dependency> <groupId>com.jetbrains.teamcity</groupId> <artifactId>model</artifactId> 
