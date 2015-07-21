@@ -94,12 +94,14 @@
 
 
 	<repositories>
-		<repository>
+		<!--<repository>
 			<id>tcslacknotifications.sourceforge</id>
 			<url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
-		</repository>
-		<!-- <repository> <id>jetbrains-all</id> <url>http://repository.jetbrains.com/all</url> 
-			</repository> -->
+		</repository>-->
+		 <repository>
+             <id>jetbrains-all</id>
+             <url>http://repository.jetbrains.com/all</url>
+         </repository>
 	</repositories>
 	<dependencies>
 		<dependency>
