@@ -139,7 +139,7 @@
 
 		<!-- TeamCity/webapps/WEB-INF/lib/runtime-util.jar -->
 		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
+			<groupId>org.jetbrains.teamcity</groupId>
 			<artifactId>runtime-util</artifactId>
 			<version>7.1.0</version>
 			<scope>provided</scope>
@@ -151,9 +151,9 @@
 
 		<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
 		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
+			<groupId>org.jetbrains.teamcity</groupId>
 			<artifactId>common-api</artifactId>
-			<version>8.0.0</version>
+			<version>8.0.2</version>
 			<scope>provided</scope>
 		</dependency>
 
