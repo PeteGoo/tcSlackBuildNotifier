@@ -94,10 +94,10 @@
 
 
 	<repositories>
-		<!--<repository>
+		<!-- <repository>
 			<id>tcslacknotifications.sourceforge</id>
 			<url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
-		</repository>-->
+		</repository> -->
 		 <repository>
              <id>jetbrains-all</id>
              <url>http://repository.jetbrains.com/all</url>
@@ -131,9 +131,9 @@
 
 		<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
 		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
+			<groupId>org.jetbrains.teamcity</groupId>
 			<artifactId>server-api</artifactId>
-			<version>8.0.0</version>
+			<version>8.0.2</version>
 			<scope>provided</scope>
 		</dependency>
 
