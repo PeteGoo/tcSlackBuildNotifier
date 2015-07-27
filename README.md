@@ -10,7 +10,7 @@ Posts Build Status to [Slack](http://www.slack.com)
 ![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-status_pass.png)
 ![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-status_fail.png)
 
-_Tested on TeamCity 8.1.2 (build 29993)_
+_Tested on TeamCity 8.1.2 (build 29993), 9.1 (build 36973)_
 
 ## Installation
 Head over to the releases section and drop the zip into your [team city plugins directory](https://confluence.jetbrains.com/display/TCD9/Installing+Additional+Plugins)
