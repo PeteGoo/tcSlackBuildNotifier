@@ -2,9 +2,7 @@ package slacknotifications;
 
 import com.google.gson.Gson;
 import jetbrains.buildServer.util.StringUtil;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.Credentials;
 import org.apache.http.client.CredentialsProvider;
@@ -16,7 +14,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.apache.http.HttpHost;
 import org.springframework.util.StringUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
@@ -154,7 +151,6 @@ public class SlackNotificationImpl implements SlackNotification {
         else{
             postViaWebHook();
         }
-
     }
 
     private void postViaApi() throws IOException {
@@ -191,11 +187,13 @@ public class SlackNotificationImpl implements SlackNotification {
             try {
                 HttpResponse response = client.execute(httppost);
                 this.resultCode = response.getStatusLine().getStatusCode();
+                HttpEntity entity = response.getEntity();
+                String entityContent = EntityUtils.toString(entity);
                 if (this.resultCode == HttpStatus.SC_OK) {
-                    this.response = PostMessageResponse.fromJson(EntityUtils.toString(response.getEntity()));
+                    this.response = PostMessageResponse.fromJson(entityContent);
                 }
-                if (response.getEntity().getContentLength() > 0) {
-                    this.content = EntityUtils.toString(response.getEntity());
+                if (entity.getContentLength() > 0) {
+                    this.content = entityContent;
                 }
             } finally {
                 httppost.releaseConnection();
