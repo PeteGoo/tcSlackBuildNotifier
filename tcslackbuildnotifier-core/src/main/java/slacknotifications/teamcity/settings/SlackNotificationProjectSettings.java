@@ -1,5 +1,6 @@
 package slacknotifications.teamcity.settings;
 
+import com.intellij.openapi.util.text.StringUtil;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.settings.ProjectSettings;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
@@ -18,6 +19,9 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
 	ProjectSettingsManager psm;
 	ProjectSettings ps;
 	private Boolean slackNotificationsEnabled = true;
+	private String defaultChannel = null;
+	private String teamName;
+	private String token;
 	private Boolean updateSuccess = false;
 	private String updateMessage = "";
 	private CopyOnWriteArrayList<SlackNotificationConfig> slackNotificationsConfigs;
@@ -38,6 +42,18 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     	if (rootElement.getAttribute("enabled") != null){
     		this.slackNotificationsEnabled = Boolean.parseBoolean(rootElement.getAttributeValue("enabled"));
     	}
+
+        if (rootElement.getAttribute("defaultChannel") != null){
+            this.defaultChannel = rootElement.getAttributeValue("defaultChannel");
+        }
+
+        if (rootElement.getAttribute("teamName") != null){
+            this.teamName = rootElement.getAttributeValue("teamName");
+        }
+
+        if (rootElement.getAttribute("token") != null){
+            this.token = rootElement.getAttributeValue("token");
+        }
     	
 		List<Element> namedChildren = rootElement.getChildren("slackNotification");
         if(namedChildren.size() == 0)
@@ -63,6 +79,20 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     {
     	Loggers.SERVER.debug(NAME + ":writeTo :: " + parentElement.toString());
     	parentElement.setAttribute("enabled", String.valueOf(this.slackNotificationsEnabled));
+
+        if(!StringUtil.isEmptyOrSpaces(defaultChannel)) {
+            parentElement.setAttribute("defaultChannel", String.valueOf(this.defaultChannel));
+        }
+
+        if(!StringUtil.isEmptyOrSpaces(teamName)) {
+            parentElement.setAttribute("teamName", String.valueOf(this.teamName));
+        }
+
+        if(!StringUtil.isEmptyOrSpaces(token)) {
+            parentElement.setAttribute("token", String.valueOf(this.token));
+        }
+
+        parentElement.setAttribute("enabled", String.valueOf(this.slackNotificationsEnabled));
         if(slackNotificationsConfigs != null)
         {
             for(SlackNotificationConfig whc : slackNotificationsConfigs){
@@ -168,6 +198,31 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     public Boolean updateSuccessful(){
     	return this.updateSuccess;
     }
+
+    public String getDefaultChannel() {
+        return defaultChannel;
+    }
+
+    public void setDefaultChannel(String defaultChannel) {
+        this.defaultChannel = defaultChannel;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     
 	public void dispose() {
 		Loggers.SERVER.debug(NAME + ":dispose() called");

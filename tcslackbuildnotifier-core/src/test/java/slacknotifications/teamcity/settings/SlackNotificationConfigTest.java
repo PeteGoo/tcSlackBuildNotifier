@@ -20,16 +20,17 @@ public class SlackNotificationConfigTest {
 	SlackNotificationConfig slacknotificationDisabled;
 	SlackNotificationConfig slacknotificationMostEnabled;
     SlackNotificationConfig slacknotificationCustomContent;
+	SlackNotificationProjectSettings slacknotificationCustomTeam;
 
 
     @Before
-	public void setup() throws JDOMException, IOException{
-		
+	public void setup() throws JDOMException, IOException {
 		slacknotificationAllEnabled  = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-all-states-enabled.xml"));
 		slacknotificationAllDisabled = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-all-states-disabled.xml"));
 		slacknotificationDisabled    = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-slacknotifications-disabled.xml"));
 		slacknotificationMostEnabled = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-all-but-respchange-states-enabled.xml"));
         slacknotificationCustomContent = ConfigLoaderUtil.getFirstSlackNotificationInConfig(new File("src/test/resources/project-settings-test-custom-content.xml"));
+		slacknotificationCustomTeam = ConfigLoaderUtil.getProjectSettingsInConfig(new File("src/test/resources/project-settings-test-custom-team-info.xml"));
 	}
 	
 //	private SlackNotificationConfig getFirstSlackNotificationInConfig(File f) throws JDOMException, IOException{
@@ -157,6 +158,13 @@ public class SlackNotificationConfigTest {
 	public void testGetStateBuildBrokenAsChecked() {
 		assertFalse(slacknotificationAllEnabled.getStateBuildBrokenAsChecked().equals(CHECKED));
 		assertFalse(slacknotificationAllDisabled.getStateBuildBrokenAsChecked().equals(CHECKED));
+	}
+
+	@Test
+	public void testGetCustomTeamInfo() {
+		assertTrue(slacknotificationCustomTeam.getDefaultChannel().equals("#my-customized-channel"));
+        assertTrue(slacknotificationCustomTeam.getTeamName().equals("my-customized-team"));
+        assertTrue(slacknotificationCustomTeam.getToken().equals("thisismycustomizedtoken"));
 	}
 
     @Test

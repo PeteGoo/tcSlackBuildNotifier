@@ -5,6 +5,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import slacknotifications.teamcity.settings.SlackNotificationConfig;
+import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,14 @@ public class ConfigLoaderUtil {
 		Element fileAsElement = ConfigLoaderUtil.getFullConfigElement(f);
 		assertTrue("One and only one slackNotifications expected when loading test config from file : " + f.getName(), fileAsElement.getChild("slackNotifications").getChildren("slackNotification").size() == 1);
 		return new SlackNotificationConfig((Element) fileAsElement.getChild("slackNotifications").getChildren("slackNotification").get(0));
+	}
+
+	public static SlackNotificationProjectSettings getProjectSettingsInConfig(File f) throws JDOMException, IOException{
+		Element fileAsElement = ConfigLoaderUtil.getFullConfigElement(f);
+		assertTrue("One and only one slackNotifications expected when loading test config from file : " + f.getName(), fileAsElement.getChild("slackNotifications").getChildren("slackNotification").size() == 1);
+		SlackNotificationProjectSettings settings = new SlackNotificationProjectSettings();
+        settings.readFrom(fileAsElement.getChild("slackNotifications"));
+        return settings;
 	}
 	
 }
