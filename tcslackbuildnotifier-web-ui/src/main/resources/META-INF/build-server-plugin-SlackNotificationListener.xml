@@ -71,6 +71,11 @@
 		class="slacknotifications.teamcity.payload.SlackNotificationPayloadManager"
 		/>
 
+	<bean id="slackNotificationProjectTab"
+		  class="slacknotifications.teamcity.extension.SlackNotificationsProjectSettingsPage"
+		  init-method="register">
+	</bean>
+
 	<!--<bean id="slackNotificationPayloadNameValuePairs"
 		class="slacknotifications.teamcity.payload.format.SlackNotificationPayloadSummary"
 		init-method="register">

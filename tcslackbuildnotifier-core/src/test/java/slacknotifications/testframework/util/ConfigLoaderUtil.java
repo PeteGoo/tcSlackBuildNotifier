@@ -13,8 +13,8 @@ import java.io.IOException;
 import static org.junit.Assert.assertTrue;
 
 public class ConfigLoaderUtil {
-	
-	public static Element getFullConfigElement(File file) throws JDOMException, IOException{
+
+    public static Element getFullConfigElement(File file) throws JDOMException, IOException{
 		SAXBuilder builder = new SAXBuilder();
 		builder.setIgnoringElementContentWhitespace(true);
 		Document doc = builder.build(file);
