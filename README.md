@@ -13,7 +13,7 @@ Posts Build Status to [Slack](http://www.slack.com)
 _Tested on TeamCity 8.1.2 (build 29993), 9.1 (build 36973)_
 
 ## Installation
-Head over to the releases section and drop the zip into your [team city plugins directory](https://confluence.jetbrains.com/display/TCD9/Installing+Additional+Plugins)
+Head over to the releases section and get the zip labelled `tcSlackNotifierPlugin.zip` from there (do not download the one on this page). Copy the zip file into your [team city plugins directory](https://confluence.jetbrains.com/display/TCD9/Installing+Additional+Plugins)
 
 You will need to restart the TeamCity service before you can configure the plugin.
 
