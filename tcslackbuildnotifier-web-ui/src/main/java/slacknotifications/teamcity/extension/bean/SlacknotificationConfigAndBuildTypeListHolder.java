@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlacknotificationConfigAndBuildTypeListHolder {
-    public String channel;
+    public String token;
+	public String channel;
 	public String uniqueKey; 
 	public boolean enabled;
 	public String payloadFormatForWeb = "Unknown";
@@ -33,6 +34,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
     private String iconUrl;
 
 	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config, SlackNotificationMainSettings mainSettings) {
+		token = config.getToken();
 		channel = config.getChannel();
 		uniqueKey = config.getUniqueKey();
 		enabled = config.getEnabled();

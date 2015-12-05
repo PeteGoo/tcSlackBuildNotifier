@@ -71,6 +71,18 @@
 											<table style="border:none;">
 												
 												<tr style="border:none;">
+													<td>API Token:</td>
+													<td colspan=2><input id="slackNotificationToken" name="token" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;"/></td>
+												</tr>
+												<tr>
+													<td></td>
+													<td colspan=2><span class="error" id="error_slackNotificationToken" style="margin-left: 0.5em;"></span></td>
+												</tr>
+												<tr style="border:none">
+                                                  <td></td>
+                                                  <td colspan="2"><span class="smallNote" style="margin-left:0px;">A user OAuth token for your team. You can get this from the <a href="https://api.slack.com/web" target="_blank">api page</a> when you are signed in to your team. If you are using the "Incoming WebHooks" integration you can simply enter the webhook URL in here instead.</span></td>
+                                                </tr>
+												<tr style="border:none;">
 													<td>Channel:</td>
 													<td colspan=2><input id="slackNotificationChannel" name="channel" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;" watermark=" #my-channel"/></td>
 												</tr>

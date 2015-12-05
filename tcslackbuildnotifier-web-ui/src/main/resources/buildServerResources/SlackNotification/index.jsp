@@ -121,6 +121,7 @@
 					var slacknotification = config[1];
 				
 					jQuerySlacknotification('#slackNotificationId').val(slacknotification.uniqueKey);
+					jQuerySlacknotification('#slackNotificationToken').val(slacknotification.token);
 					jQuerySlacknotification('#slackNotificationChannel').val(slacknotification.channel);
 				    jQuerySlacknotification('#slackNotificationsEnabled').attr('checked', slacknotification.enabled);
 				    jQuerySlacknotification.each(slacknotification.states, function(name, value){

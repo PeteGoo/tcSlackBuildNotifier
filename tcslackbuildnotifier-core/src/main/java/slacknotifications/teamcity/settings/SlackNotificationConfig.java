@@ -17,6 +17,7 @@ import static slacknotifications.teamcity.BuildStateEnum.*;
 public class SlackNotificationConfig {
 	private Boolean enabled = true;
 	private String uniqueKey = "";
+	private String apiToken;
 	private String channel;
     private String teamName;
 	private BuildState states = new BuildState();
@@ -37,6 +38,9 @@ public class SlackNotificationConfig {
 		this.uniqueKey = Rand.toString();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
 		
+		if (e.getAttribute("token") != null){
+			this.setChannel(e.getAttributeValue("token"));
+		}
 		if (e.getAttribute("channel") != null){
 			this.setChannel(e.getAttributeValue("channel"));
 		}
@@ -169,7 +173,8 @@ public class SlackNotificationConfig {
      * @param enabled
      * @param states
      */
-    public SlackNotificationConfig(String channel,
+    public SlackNotificationConfig(String token,
+								   String channel,
 								   String teamName,
 								   Boolean enabled,
 								   BuildState states,
@@ -183,6 +188,7 @@ public class SlackNotificationConfig {
         Integer Rand = Min + (int) (Math.random() * ((Max - Min) + 1));
         this.uniqueKey = Rand.toString();
         this.templates = new TreeMap<String, CustomMessageTemplate>();
+        this.setToken(token);
         this.setChannel(channel);
         this.setTeamName(teamName);
         this.setEnabled(enabled);
@@ -298,6 +304,14 @@ public class SlackNotificationConfig {
 
 	public void setBuildStates(BuildState states) {
 		this.states = states;
+	}
+
+	public String getToken() {
+		return apiToken;
+	}
+
+	public void setToken(String apiToken) {
+		this.apiToken = apiToken;
 	}
 
 	public String getChannel() {
