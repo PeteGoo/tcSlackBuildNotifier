@@ -65,7 +65,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 	public void getFromConfig(SlackNotification slackNotification, SlackNotificationConfig slackNotificationConfig){
         slackNotification.setChannel(StringUtil.isEmpty(slackNotificationConfig.getChannel()) ? myMainSettings.getDefaultChannel() : slackNotificationConfig.getChannel());
         slackNotification.setTeamName(myMainSettings.getTeamName());
-        slackNotification.setToken(myMainSettings.getToken());
+        slackNotification.setToken(StringUtil.isEmpty(slackNotificationConfig.getToken()) ? myMainSettings.getToken() : slackNotificationConfig.getToken());
         slackNotification.setIconUrl(myMainSettings.getIconUrl());
         slackNotification.setBotName(myMainSettings.getBotName());
 		slackNotification.setEnabled(myMainSettings.getEnabled() && slackNotificationConfig.getEnabled());
