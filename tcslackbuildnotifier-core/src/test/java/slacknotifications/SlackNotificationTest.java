@@ -156,6 +156,7 @@ public class SlackNotificationTest {
     }
 
     @Test
+	@Ignore
     public void actualTest() throws IOException {
         SlackNotificationImpl impl = new SlackNotificationImpl("#sdfdfgdfg");
         impl.setToken("xoxp-sdfgdfg-2602518dfghdgfh312-dfghd-f93dc2");

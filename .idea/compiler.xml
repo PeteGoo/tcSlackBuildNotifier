@@ -22,12 +22,30 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="tcslackbuildnotifier-core" />
-        <module name="tcslackbuildnotifier-rest-api" />
-        <module name="tcslackbuildnotifier-web-ui" />
         <module name="tcslacknotifications-core" />
         <module name="tcslacknotifications-rest-api" />
         <module name="tcslacknotifications-web-ui" />
+      </profile>
+      <profile default="false" name="Annotation profile for tcslackbuildnotifier-rest-api" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="tcslackbuildnotifier-rest-api" />
+      </profile>
+      <profile default="false" name="Annotation profile for tcslackbuildnotifier-core" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="tcslackbuildnotifier-core" />
+      </profile>
+      <profile default="false" name="Annotation profile for tcslackbuildnotifier-web-ui" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="tcslackbuildnotifier-web-ui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -42,4 +60,3 @@
     </bytecodeTargetLevel>
   </component>
 </project>
-
