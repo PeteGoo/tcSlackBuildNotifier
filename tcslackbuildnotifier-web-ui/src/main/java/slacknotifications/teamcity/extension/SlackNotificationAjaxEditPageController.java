@@ -45,8 +45,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	    private ProjectSettingsManager mySettings;
 	    private final String myPluginPath;
 	    private final SlackNotificationPayloadManager myManager;
-	    
-	    public SlackNotificationAjaxEditPageController(SBuildServer server, WebControllerManager webManager,
+
+	public SlackNotificationAjaxEditPageController(SBuildServer server, WebControllerManager webManager,
                                                        ProjectSettingsManager settings, SlackNotificationProjectSettings whSettings, SlackNotificationPayloadManager manager,
                                                        PluginDescriptor pluginDescriptor, SlackNotificationMainSettings mainSettings) {
 	        super(server);
@@ -91,7 +91,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	        SUser myUser = SessionUser.getUser(request);
 	        SProject myProject = null;
 	        SlackNotificationProjectSettings projSettings = null;
-	    	
+
 	    	if (request.getMethod().equalsIgnoreCase("post")){
 	    		if ((request.getParameter("projectId") != null)
 	    			&& request.getParameter("projectId").startsWith("project")){
@@ -201,8 +201,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						}
 		    						
 			    						if (request.getParameter("slackNotificationId").equals("new")){
-			    							projSettings.addNewSlackNotification(myProject.getProjectId(),request.getParameter("token"),request.getParameter("channel"), request.getParameter("team"), enabled,
-			    														states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
+			    							projSettings.addNewSlackNotification(myProject.getProjectId(), request.getParameter("token"), request.getParameter("channel"), request.getParameter("team"), enabled,
+													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
 			    	    						params.put("messages", "<errors />");
@@ -210,10 +210,10 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    								params.put("message", "<errors><error id=\"\">" + projSettings.getUpdateMessage() + "</error>");
 			    							}
 			    						} else {
-			    							projSettings.updateSlackNotification(myProject.getProjectId(),request.getParameter("slackNotificationId"),
-																		request.getParameter("token"),request.getParameter("channel"), enabled,
-			    														states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled,
-                                                                        mentionSlackUserEnabled, content);
+			    							projSettings.updateSlackNotification(myProject.getProjectId(), request.getParameter("token"),
+                                                    request.getParameter("slackNotificationId"), request.getParameter("channel"), enabled,
+													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled,
+													mentionSlackUserEnabled, content);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
 			    	    						params.put("messages", "<errors />");
