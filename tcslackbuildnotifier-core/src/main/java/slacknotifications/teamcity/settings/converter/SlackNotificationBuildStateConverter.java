@@ -5,6 +5,8 @@ import slacknotifications.teamcity.BuildStateEnum;
 
 public class SlackNotificationBuildStateConverter {
 
+	private SlackNotificationBuildStateConverter(){}
+	
 	public static BuildState convert(Integer oldState){
 		BuildState newStates = new BuildState();
 		
