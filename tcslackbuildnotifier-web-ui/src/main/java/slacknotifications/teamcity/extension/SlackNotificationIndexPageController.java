@@ -136,8 +136,8 @@ public class SlackNotificationIndexPageController extends BaseController {
 				    	params.put("buildName", sBuildType.getName());
 				    	params.put("buildExternalId", TeamCityIdResolver.getExternalBuildId(sBuildType));
 				    	params.put("buildTypeList", project.getBuildTypes());
-			    		params.put("noSlackNotifications", configs.size() == 0);
-			    		params.put("slackNotifications", configs.size() != 0);
+			    		params.put("noSlackNotifications", configs.isEmpty());
+			    		params.put("slackNotifications", !configs.isEmpty());
 				    	
 			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project, myMainSettings)));
 		        	}

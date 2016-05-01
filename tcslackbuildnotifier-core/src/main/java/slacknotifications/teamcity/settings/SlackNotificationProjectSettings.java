@@ -40,7 +40,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     	}
     	
 		List<Element> namedChildren = rootElement.getChildren("slackNotification");
-        if(namedChildren.size() == 0)
+        if(namedChildren.isEmpty())
         {
             this.slackNotificationsConfigs = null;
         } else {
@@ -122,7 +122,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
                 	tempSlackNotificationList.add(whc);
                 }
             }
-            if (tempSlackNotificationList.size() > 0){
+            if (!tempSlackNotificationList.isEmpty()){
             	this.updateSuccess = true;
             	this.slackNotificationsConfigs.removeAll(tempSlackNotificationList);
             }
