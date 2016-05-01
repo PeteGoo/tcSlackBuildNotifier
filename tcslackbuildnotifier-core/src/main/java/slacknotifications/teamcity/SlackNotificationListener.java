@@ -150,7 +150,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 
                         configs.add(new SlackNotificationConfigWrapper(wh, whc));
 
-						wh = null;
+						 
 		    		} else {
 		    			Loggers.ACTIVITIES.debug(this.getClass().getSimpleName() 
 		    					+ ":processBuildEvent() :: SlackNotification disabled. Will not process " + whc.getChannel());

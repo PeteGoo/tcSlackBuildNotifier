@@ -89,7 +89,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	        HashMap<String,Object> params = new HashMap<String,Object>();
 	        
 	        SUser myUser = SessionUser.getUser(request);
-	        SProject myProject = null;
+	        SProject myProject;
 	        SlackNotificationProjectSettings projSettings = null;
 
 	    	if (request.getMethod().equalsIgnoreCase("post")){
