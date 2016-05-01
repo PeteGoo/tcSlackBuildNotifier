@@ -2,6 +2,9 @@ package slacknotifications;
 
 public class Field {
 
+	private String title;
+	private String value;
+	private Boolean isShort;
     public Field(String title, String value, Boolean isShort) {
         this.title = title;
         this.value = value;
@@ -32,7 +35,5 @@ public class Field {
         this.isShort = isShort;
     }
 
-    private String title;
-    private String value;
-    private Boolean isShort;
+   
 }

@@ -6,6 +6,12 @@ import jetbrains.buildServer.util.StringUtil;
  * Created by Peter on 4/06/2014.
  */
 public class Commit {
+	
+	
+	private String description;
+    private String userName;
+    private String revision;
+    private String slackUserName;
 
     public Commit(String revision, String description, String userName, String slackUserName) {
         this.description = description;
@@ -18,10 +24,7 @@ public class Commit {
         this.slackUserName = slackUserName;
     }
 
-    private String description;
-    private String userName;
-    private String revision;
-    private String slackUserName;
+    
 
     public String getRevision() {
         return revision;
