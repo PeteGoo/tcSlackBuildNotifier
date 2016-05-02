@@ -10,14 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlacknotificationConfigAndBuildTypeListHolder {
-    public String token;
-	public String channel;
-	public String uniqueKey; 
-	public boolean enabled;
-	public String payloadFormatForWeb = "Unknown";
-	public List<StateBean> states = new ArrayList<StateBean>();
-	public boolean allBuildTypesEnabled;
-	public boolean subProjectsEnabled;
+   
+
+	private String token;
+	private String channel;
+	private String uniqueKey; 
+	private boolean enabled;
+	private String payloadFormatForWeb = "Unknown";
+	private List<StateBean> states = new ArrayList<StateBean>();
+	private boolean allBuildTypesEnabled;
+	private boolean subProjectsEnabled;
+	
+	
+	
+	
 	private List<SlacknotificationBuildTypeEnabledStatusBean> builds = new ArrayList<SlacknotificationBuildTypeEnabledStatusBean>();
 	private String enabledEventsListForWeb;
 	private String enabledBuildsListForWeb;
@@ -58,6 +64,71 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
         iconUrl = valueOrFallback(config.getContent().getIconUrl(), SlackNotificationMainConfig.DEFAULT_ICONURL);
 	}
 
+	
+	 public String getToken() {
+			return token;
+		}
+
+		public void setToken(String token) {
+			this.token = token;
+		}
+
+		public String getChannel() {
+			return channel;
+		}
+
+		public void setChannel(String channel) {
+			this.channel = channel;
+		}
+
+		public String getUniqueKey() {
+			return uniqueKey;
+		}
+
+		public void setUniqueKey(String uniqueKey) {
+			this.uniqueKey = uniqueKey;
+		}
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+
+		public String getPayloadFormatForWeb() {
+			return payloadFormatForWeb;
+		}
+
+		public void setPayloadFormatForWeb(String payloadFormatForWeb) {
+			this.payloadFormatForWeb = payloadFormatForWeb;
+		}
+
+		public List<StateBean> getStates() {
+			return states;
+		}
+
+		public void setStates(List<StateBean> states) {
+			this.states = states;
+		}
+
+		public boolean isAllBuildTypesEnabled() {
+			return allBuildTypesEnabled;
+		}
+
+		public void setAllBuildTypesEnabled(boolean allBuildTypesEnabled) {
+			this.allBuildTypesEnabled = allBuildTypesEnabled;
+		}
+
+		public boolean isSubProjectsEnabled() {
+			return subProjectsEnabled;
+		}
+
+		public void setSubProjectsEnabled(boolean subProjectsEnabled) {
+			this.subProjectsEnabled = subProjectsEnabled;
+		}
+	
 	public List<SlacknotificationBuildTypeEnabledStatusBean> getBuilds() {
 		return builds;
 	}

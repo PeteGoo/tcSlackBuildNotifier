@@ -346,13 +346,28 @@ public class SlackNotificationListener extends BuildServerAdapter {
 	 */
 	
 	private class SlackNotificationConfigWrapper {
-		public SlackNotification slackNotification;
-		public SlackNotificationConfig whc;
+		 
+		private SlackNotification slackNotification;
+		
+		private SlackNotificationConfig whc;
 		
 		public SlackNotificationConfigWrapper(SlackNotification slackNotification, SlackNotificationConfig slackNotificationConfig) {
 			this.slackNotification = slackNotification;
 			this.whc = slackNotificationConfig;
 		}
+		 public void setSlackNotification(SlackNotification slackNotification){
+			 this.slackNotification=slackNotification;
+		 }
+		 public SlackNotification getSlackNotification(){
+			 return slackNotification;
+		 }
+		 
+		 public void setSlackNotificationConfig(SlackNotificationConfig whc){
+			 this.whc=whc;
+		 }
+		 public SlackNotificationConfig getSlackNotificationConfig(){
+			 return whc;
+		 }
 	}
 
 }
