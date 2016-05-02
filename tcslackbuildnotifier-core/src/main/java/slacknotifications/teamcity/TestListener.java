@@ -64,7 +64,7 @@ public class TestListener extends BuildServerAdapter {
 		try {
 			newUser = newValue.getResponsibleUser().getDescriptiveName();
 		} catch (Exception e) {}
-		logit("Build " + bt.getFullName().toString()
+		logit("Build " + bt.getFullName() 
 				+ " has changed responsibility from " 
 				+ oldUser + " to " + newUser);
 	}

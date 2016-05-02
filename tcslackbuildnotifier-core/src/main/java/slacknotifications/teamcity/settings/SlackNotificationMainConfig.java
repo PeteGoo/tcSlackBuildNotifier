@@ -293,14 +293,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 								&& getProxyPort() != null && getProxyPort() > 0 )
 						{
 							rootElement.addContent(getProxyAsElement());
-							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyHost " + getProxyHost().toString());
-							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyPort " + getProxyPort().toString());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyHost " + getProxyHost());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: proxyPort " + getProxyPort());
 						}
 
 						if(getInfoUrlAsElement() != null){
                             rootElement.addContent(getInfoUrlAsElement());
-							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: infoText " + getSlackNotificationInfoText().toString());
-							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: InfoUrl  " + getSlackNotificationInfoUrl().toString());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: infoText " + getSlackNotificationInfoText());
+							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: InfoUrl  " + getSlackNotificationInfoUrl());
 							Loggers.SERVER.debug(SlackNotificationMainConfig.class.getName() + "writeTo :: show-reading  " + getSlackNotificationShowFurtherReading().toString());
 						}
 					}

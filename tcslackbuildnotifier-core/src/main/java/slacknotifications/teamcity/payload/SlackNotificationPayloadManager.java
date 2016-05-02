@@ -59,13 +59,13 @@ public class SlackNotificationPayloadManager {
             newUser = responsibilityInfoNew.getResponsibleUser().getDescriptiveName();
         } catch (Exception e) {}
 
-        content.setText(buildType.getFullName().toString()
+        content.setText(buildType.getFullName() 
                         + " changed responsibility from "
                         + oldUser
                         + " to "
                         + newUser
                         + " with comment '"
-                        + responsibilityInfoNew.getComment().toString().trim()
+                        + responsibilityInfoNew.getComment().trim()
                         + "'"
         );
 
@@ -89,13 +89,13 @@ public class SlackNotificationPayloadManager {
         }
 
 
-        content.setText(buildType.getFullName().toString().toString().trim()
+        content.setText(buildType.getFullName().trim()
                         + " changed responsibility from "
                         + oldUser
                         + " to "
                         + newUser
                         + " with comment '"
-                        + responsibilityEntryNew.getComment().toString().trim()
+                        + responsibilityEntryNew.getComment().trim()
                         + "'"
         );
 
