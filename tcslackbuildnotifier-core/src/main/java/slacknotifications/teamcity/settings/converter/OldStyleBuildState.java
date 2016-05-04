@@ -10,6 +10,8 @@ public final class OldStyleBuildState {
     
     public static final Integer ALL_ENABLED				= Integer.parseInt("11111111",2);
     
+    
+    private OldStyleBuildState(){}
     /**
      * Takes the currentBuildState, for which the SlackNotification is being triggered
      * and compares it against the build states for which this SlackNotification is configured

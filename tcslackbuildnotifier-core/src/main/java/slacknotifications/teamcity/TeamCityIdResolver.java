@@ -9,6 +9,8 @@ import java.util.List;
 
 public final class TeamCityIdResolver {
 	
+	private TeamCityIdResolver(){}
+	
 	public static String getBuildTypeId(SBuildType buildType){
 		try {
 			return buildType.getExternalId();
