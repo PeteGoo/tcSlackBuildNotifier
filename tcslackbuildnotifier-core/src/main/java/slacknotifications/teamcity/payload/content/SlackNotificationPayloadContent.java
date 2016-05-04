@@ -167,7 +167,7 @@ public class SlackNotificationPayloadContent {
 		 * @param state
 		 */
 		private void populateCommonContent(SBuildServer server, SBuildType buildType, BuildStateEnum state) {
-			setBuildFullName(buildType.getFullName().toString());
+			setBuildFullName(buildType.getFullName());
 			setBuildName(buildType.getName());
 			setBuildTypeId(TeamCityIdResolver.getBuildTypeId(buildType));
 			setBuildStatusUrl(server.getRootUrl() + "/viewLog.html?buildTypeId=" + buildType.getBuildTypeId() + "&buildId=lastFinished");
@@ -196,7 +196,7 @@ public class SlackNotificationPayloadContent {
     private void populateCommonContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
                                        BuildStateEnum buildState) {
         setBuildResult(sRunningBuild, previousBuild, buildState);
-        setBuildFullName(sRunningBuild.getBuildType().getFullName().toString());
+        setBuildFullName(sRunningBuild.getBuildType().getFullName());
         setBuildName(sRunningBuild.getBuildType().getName());
         setBuildId(Long.toString(sRunningBuild.getBuildId()));
         setBuildTypeId(TeamCityIdResolver.getBuildTypeId(sRunningBuild.getBuildType()));
@@ -217,7 +217,7 @@ public class SlackNotificationPayloadContent {
         }
         setBuildStatusUrl(server.getRootUrl() + "/viewLog.html?buildTypeId=" + getBuildTypeId() + "&buildId=" + getBuildId());
         String branchSuffix = (getBranchIsDefault() != null && getBranchIsDefault()) || getBranchDisplayName() == null ? "" : (" [" + getBranchDisplayName() + "]");
-        setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName().toString() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
+        setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
     }
 		
 		
