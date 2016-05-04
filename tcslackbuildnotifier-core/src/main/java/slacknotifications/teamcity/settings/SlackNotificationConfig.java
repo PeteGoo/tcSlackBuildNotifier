@@ -72,7 +72,7 @@ public class SlackNotificationConfig {
 		if(e.getChild("states") != null){
 			Element eStates = e.getChild("states");
 			List<Element> statesList = eStates.getChildren("state");
-			if (statesList.size() > 0){
+			if (!statesList.isEmpty()){
 				for(Element eState : statesList)
 				{
 					try {
@@ -97,7 +97,7 @@ public class SlackNotificationConfig {
 			}
 			if (!isEnabledForAllBuildsInProject()){
 				List<Element> typesList = eTypes.getChildren("build-type");
-				if (typesList.size() > 0){
+				if (!typesList.isEmpty()){
 					for(Element eType : typesList)
 					{
 						if (eType.getAttributeValue("id")!= null){
@@ -113,7 +113,7 @@ public class SlackNotificationConfig {
 		if(e.getChild("custom-templates") != null){
 			Element eParams = e.getChild("custom-templates");
 			List<Element> templateList = eParams.getChildren("custom-template");
-			if (templateList.size() > 0){
+			if (!templateList.isEmpty()){
 				for(Element eParam : templateList)
 				{
 					this.templates.put(
@@ -227,7 +227,7 @@ public class SlackNotificationConfig {
 		buildsEl.setAttribute("enabled-for-all", Boolean.toString(isEnabledForAllBuildsInProject()));
 		buildsEl.setAttribute("enabled-for-subprojects", Boolean.toString(isEnabledForSubProjects()));
 		
-		if (this.enabledBuildTypesSet.size() > 0){
+		if (!this.enabledBuildTypesSet.isEmpty()){
 			for (String i : enabledBuildTypesSet){
 				Element e = new Element("build-type");
 				e.setAttribute("id", i);

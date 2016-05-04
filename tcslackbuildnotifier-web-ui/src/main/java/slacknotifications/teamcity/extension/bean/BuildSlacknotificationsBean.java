@@ -33,15 +33,15 @@ public class BuildSlacknotificationsBean{
 	}
 	
 	public boolean hasBuilds(){
-		return this.buildConfigs.size() > 0;
+		return !this.buildConfigs.isEmpty();
 	}
 	
 	public boolean hasNoBuildSlackNotifications(){
-		return this.buildConfigs.size() == 0;
+		return this.buildConfigs.isEmpty();
 	}
 	
 	public boolean hasBuildSlackNotifications(){
-		return this.buildConfigs.size() > 0;
+		return !this.buildConfigs.isEmpty();
 	}
 	
 	public int getBuildCount(){
