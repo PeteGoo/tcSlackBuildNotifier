@@ -39,6 +39,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class SlackNotificationImpl implements SlackNotification {
+	
+	private static final String UTF8 = "UTF-8";
 
     private String proxyHost;
     private Integer proxyPort = 0;
@@ -164,10 +166,10 @@ public class SlackNotificationImpl implements SlackNotification {
             }
             String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
-                    this.botName == null ? "" : URLEncoder.encode(this.botName, "UTF-8"),
-                    this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, "UTF-8"),
-                    this.channel == null ? "" : URLEncoder.encode(this.channel, "UTF-8"),
-                    this.payload == null ? "" : URLEncoder.encode(payload.getBuildDescriptionWithLinkSyntax(), "UTF-8"),
+                    this.botName == null ? "" : URLEncoder.encode(this.botName, UTF8),
+                    this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, UTF8),
+                    this.channel == null ? "" : URLEncoder.encode(this.channel, UTF8),
+                    this.payload == null ? "" : URLEncoder.encode(payload.getBuildDescriptionWithLinkSyntax(), UTF8),
                     "");
 
             HttpPost httppost = new HttpPost(url);
@@ -181,7 +183,7 @@ public class SlackNotificationImpl implements SlackNotification {
 
                 List<Attachment> attachments = getAttachments();
 
-                String attachmentsParam = String.format("attachments=%s", URLEncoder.encode(convertAttachmentsToJson(attachments), "UTF-8"));
+                String attachmentsParam = String.format("attachments=%s", URLEncoder.encode(convertAttachmentsToJson(attachments), UTF8));
 
                 Loggers.SERVER.info("SlackNotificationListener :: Body message will be " + attachmentsParam);
 
@@ -233,7 +235,7 @@ public class SlackNotificationImpl implements SlackNotification {
                 requestBody.setAttachments(getAttachments());
             }
 
-            String bodyParam = String.format("payload=%s", URLEncoder.encode(requestBody.toJson(), "UTF-8"));
+            String bodyParam = String.format("payload=%s", URLEncoder.encode(requestBody.toJson(), UTF8));
 
             Loggers.SERVER.info("SlackNotificationListener :: Body message will be " + bodyParam);
 
