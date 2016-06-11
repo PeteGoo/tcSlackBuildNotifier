@@ -356,9 +356,9 @@ public class SlackNotificationMainConfig implements ChangeListener {
             {
                 setToken(slackNotificationsElement.getAttributeValue(TOKEN));
             }
-            if(slackNotificationsElement.getAttribute(ICON_URL) != null)
+            if(slackNotificationsElement.getAttribute("iconUrl") != null)
             {
-                content.setIconUrl(slackNotificationsElement.getAttributeValue(ICON_URL));
+                content.setIconUrl(slackNotificationsElement.getAttributeValue("iconUrl"));
             }
             if(slackNotificationsElement.getAttribute(BOT_NAME) != null)
             {
