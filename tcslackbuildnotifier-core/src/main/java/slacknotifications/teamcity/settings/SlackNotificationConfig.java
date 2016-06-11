@@ -34,7 +34,7 @@ public class SlackNotificationConfig {
 	private static final String SHOW_COMMITTERS = "showCommitters";
 	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
 	private static final String SHOW_FAILURE_REASON = "showFailureReason";
-	private static final String CHECKED = "checked";
+	
 	
 	private Boolean enabled = true;
 	private String uniqueKey = "";
@@ -410,77 +410,77 @@ public class SlackNotificationConfig {
 	
 	public String getSlackNotificationEnabledAsChecked() {
 		if (this.enabled){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 	
 	public String getStateAllAsChecked() {
 		if (states.allEnabled()){
-			return CHECKED;
+			return "checked ";
 		}		
 		return ""; 
 	}
 	
 	public String getStateBuildStartedAsChecked() {
 		if (states.enabled(BUILD_STARTED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 	
 	public String getStateBuildFinishedAsChecked() {
 		if (states.enabled(BUILD_FINISHED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 
 	public String getStateBeforeFinishedAsChecked() {
 		if (states.enabled(BEFORE_BUILD_FINISHED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 
 	public String getStateResponsibilityChangedAsChecked() {
 		if (states.enabled(RESPONSIBILITY_CHANGED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 
 	public String getStateBuildInterruptedAsChecked() {
 		if (states.enabled(BUILD_INTERRUPTED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 	
 	public String getStateBuildSuccessfulAsChecked() {
 		if (states.enabled(BUILD_SUCCESSFUL)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 	
 	public String getStateBuildFixedAsChecked() {
 		if (states.enabled(BUILD_FIXED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 	
 	public String getStateBuildFailedAsChecked() {
 		if (states.enabled(BUILD_FAILED)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
 
 	public String getStateBuildBrokenAsChecked() {
 		if (states.enabled(BUILD_BROKEN)){
-			return CHECKED;
+			return "checked ";
 		}
 		return ""; 
 	}
