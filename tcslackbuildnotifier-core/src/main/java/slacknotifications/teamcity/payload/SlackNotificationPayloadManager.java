@@ -14,7 +14,8 @@ import java.util.Collection;
 
 public class SlackNotificationPayloadManager {
 
-    SBuildServer server;
+    private static final String NOBODY = "nobody";
+	SBuildServer server;
 
     public SlackNotificationPayloadManager(SBuildServer server){
         this.server = server;
@@ -50,8 +51,8 @@ public class SlackNotificationPayloadManager {
                                      ResponsibilityInfo responsibilityInfoNew, boolean isUserAction) {
 
         SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED);
-        String oldUser = "Nobody";
-        String newUser = "Nobody";
+        String oldUser = NOBODY;
+        String newUser = NOBODY;
         try {
             oldUser = responsibilityInfoOld.getResponsibleUser().getDescriptiveName();
         } catch (Exception e) {}
@@ -79,8 +80,8 @@ public class SlackNotificationPayloadManager {
                                      ResponsibilityEntry responsibilityEntryNew) {
 
         SlackNotificationPayloadContent content = new SlackNotificationPayloadContent(server, buildType, BuildStateEnum.RESPONSIBILITY_CHANGED);
-        String oldUser = "Nobody";
-        String newUser = "Nobody";
+        String oldUser = NOBODY;
+        String newUser = NOBODY;
         if (responsibilityEntryOld.getState() != ResponsibilityEntry.State.NONE) {
             oldUser = responsibilityEntryOld.getResponsibleUser().getDescriptiveName();
         }

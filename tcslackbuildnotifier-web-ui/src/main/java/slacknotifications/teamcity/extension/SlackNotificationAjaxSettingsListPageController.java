@@ -22,6 +22,8 @@ import java.util.HashMap;
 
 
 public class SlackNotificationAjaxSettingsListPageController extends BaseController {
+	
+	private static final String PROJECT_ID = "projectId";
 
 	private final WebControllerManager myWebManager;
     private final SlackNotificationMainSettings myMainSettings;
@@ -53,12 +55,12 @@ public class SlackNotificationAjaxSettingsListPageController extends BaseControl
 	        HashMap<String,Object> params = new HashMap<String,Object>();
 	        params.put("jspHome",this.myPluginDescriptor.getPluginResourcesPath());
 	        
-	        if(request.getParameter("projectId") != null 
-	        		&& request.getParameter("projectId").startsWith("project")){
+	        if(request.getParameter(PROJECT_ID) != null 
+	        		&& request.getParameter(PROJECT_ID).startsWith("project")){
 	        	
-	        	SProject project = this.myServer.getProjectManager().findProjectById(request.getParameter("projectId"));
+	        	SProject project = this.myServer.getProjectManager().findProjectById(request.getParameter(PROJECT_ID));
 		    	SlackNotificationProjectSettings projSettings = (SlackNotificationProjectSettings)
-		    			mySettings.getSettings(request.getParameter("projectId"), "slackNotifications");
+		    			mySettings.getSettings(request.getParameter(PROJECT_ID), "slackNotifications");
 		    	
 		    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 	        } else if (request.getParameter("buildTypeId") != null){

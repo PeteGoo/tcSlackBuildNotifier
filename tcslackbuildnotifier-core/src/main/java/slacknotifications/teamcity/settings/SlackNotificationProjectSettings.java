@@ -14,6 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class SlackNotificationProjectSettings implements ProjectSettings {
+	private static final String ENABLED = "enabled";
 	private static final String NAME = SlackNotificationProjectSettings.class.getName();
 	ProjectSettingsManager psm;
 	ProjectSettings ps;
@@ -35,8 +36,8 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     	Loggers.SERVER.debug("readFrom :: " + rootElement.toString());
     	CopyOnWriteArrayList<SlackNotificationConfig> configs = new CopyOnWriteArrayList<SlackNotificationConfig>();
     	
-    	if (rootElement.getAttribute("enabled") != null){
-    		this.slackNotificationsEnabled = Boolean.parseBoolean(rootElement.getAttributeValue("enabled"));
+    	if (rootElement.getAttribute(ENABLED) != null){
+    		this.slackNotificationsEnabled = Boolean.parseBoolean(rootElement.getAttributeValue(ENABLED));
     	}
     	
 		List<Element> namedChildren = rootElement.getChildren("slackNotification");
@@ -62,7 +63,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
      */
     {
     	Loggers.SERVER.debug(NAME + ":writeTo :: " + parentElement.toString());
-    	parentElement.setAttribute("enabled", String.valueOf(this.slackNotificationsEnabled));
+    	parentElement.setAttribute(ENABLED, String.valueOf(this.slackNotificationsEnabled));
         if(slackNotificationsConfigs != null)
         {
             for(SlackNotificationConfig whc : slackNotificationsConfigs){
