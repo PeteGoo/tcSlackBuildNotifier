@@ -73,6 +73,6 @@ public class ProjectSlackNotificationsBean {
 													)
 										);
 		}
-		bean.slackNotificationList.put(holder.uniqueKey, holder);
+		bean.slackNotificationList.put(holder.getUniqueKey(), holder);
 	}
 }
