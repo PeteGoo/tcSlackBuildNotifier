@@ -101,11 +101,11 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	public String stripProtocolFromUrl(String url){
 		String tmpURL = url;
 		if(tmpURL.length() > "https://".length() 
-			&& tmpURL.substring(0,"https://".length()).equalsIgnoreCase("https://"))
+			&& "https://".equalsIgnoreCase(tmpURL.substring(0,"https://".length())))
 		{
 				tmpURL = tmpURL.substring("https://".length());
 		} else if (tmpURL.length() > "http://".length() 
-			&& tmpURL.substring(0,"http://".length()).equalsIgnoreCase("http://"))
+			&& "http://".equalsIgnoreCase(tmpURL.substring(0,"http://".length())))
 		{
 				tmpURL = tmpURL.substring("http://".length());
 		}
