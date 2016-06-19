@@ -41,19 +41,19 @@ public class SlackNotificationCollection {
             System.out.println(name + " .. " + val);
             String tokens[] = name.toLowerCase().split("\\.");
             // First check if it's one of our tokens.
-            if ((tokens[SYSTEM].equals("system")) && (tokens[SLACKNOTIFICATION].equals("slackNotification"))
-            		&& (this.canConvertToInt(tokens[SLACKNOTIFICATION_ID]))) {
+            if ("system".equals(tokens[SYSTEM]) && "slackNotification".equals(tokens[SLACKNOTIFICATION])
+            		&& this.canConvertToInt(tokens[SLACKNOTIFICATION_ID])) {
             	// Check if we have already created a slacknotifications instance
             	if (slackNotifications.containsKey(this.convertToInt(tokens[SLACKNOTIFICATION_ID]))){
-            		if (tokens[SLACKNOTIFICATION_KEY].equals("channel")){
+            		if ("channel".equals(tokens[SLACKNOTIFICATION_KEY])) {
             			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setChannel(val);
-            		} else if (tokens[SLACKNOTIFICATION_KEY].equals("teamName")){
+            		} else if ("teamName".equals(tokens[SLACKNOTIFICATION_KEY])) {
                 		slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setTeamName(val);
-            		} else if (tokens[SLACKNOTIFICATION_KEY].equals("enabled")){
+            		} else if ("enabled".equals(tokens[SLACKNOTIFICATION_KEY])) {
             			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setEnabled(val);
-            		} else if (tokens[SLACKNOTIFICATION_KEY].equals("parameter")
+            		} else if ("parameter".equals(tokens[SLACKNOTIFICATION_KEY])
             				&& (this.canConvertToInt(tokens[SLACKNOTIFICATION_PARAMETER_ID]))
-            				&& (tokens[SLACKNOTIFICATION_PARAMETER_KEY].equals("name")))
+            				&& ("name".equals(tokens[SLACKNOTIFICATION_PARAMETER_KEY])))
             		{
             			try {
 							String myVal = this.getValue("system.slacknotifications." + tokens[SLACKNOTIFICATION_ID] + ".parameter."
@@ -69,7 +69,7 @@ public class SlackNotificationCollection {
 
             		}
             	} else {
-	            	if (tokens[SLACKNOTIFICATION_KEY].equals("url")){
+	            	if ("url".equals(tokens[SLACKNOTIFICATION_KEY])) {
 	            		SlackNotification wh = new SlackNotificationImpl(val);
 	            		this.slackNotifications.put(this.convertToInt(tokens[SLACKNOTIFICATION_ID]), wh);
 //            		} else if ((tokens[SLACKNOTIFICATION_KEY].equals("bitmask"))
@@ -77,13 +77,13 @@ public class SlackNotificationCollection {
 //            			SlackNotification slackNotification = new SlackNotificationImpl();
 //                		slackNotification.setTriggerStateBitMask(this.convertToInt(val));
 //                		this.slackNotifications.put(this.convertToInt(tokens[SLACKNOTIFICATION_ID]), slackNotification);
-	            	} else if (tokens[SLACKNOTIFICATION_KEY].equals("enabled")){
+	            	} else if ("enabled".equals(tokens[SLACKNOTIFICATION_KEY])){
 	            		SlackNotification wh = new SlackNotificationImpl();
             			wh.setEnabled(true);
             			this.slackNotifications.put(this.convertToInt(tokens[SLACKNOTIFICATION_ID]), wh);
-            		} else if (tokens[SLACKNOTIFICATION_KEY].equals("parameter")
+            		} else if ("parameter".equals(tokens[SLACKNOTIFICATION_KEY])
             				&& (this.canConvertToInt(tokens[SLACKNOTIFICATION_PARAMETER_ID]))
-            				&& (tokens[SLACKNOTIFICATION_PARAMETER_KEY].equals("name")))
+            				&& ("name".equals(tokens[SLACKNOTIFICATION_PARAMETER_KEY])))
             		{
             			try {
 							String myVal = this.getValue("system.slacknotifications." + tokens[SLACKNOTIFICATION_ID] + ".parameter."
