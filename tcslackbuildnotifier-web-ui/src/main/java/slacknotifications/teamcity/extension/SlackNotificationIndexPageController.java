@@ -28,7 +28,15 @@ import java.util.List;
 
 public class SlackNotificationIndexPageController extends BaseController {
 
-	    private final WebControllerManager myWebManager;
+		private static final String SHOW_FURTHER_READING = "ShowFurtherReading";
+		private static final String SLACK_NOTIFICATIONS = "slackNotifications";
+		private static final String NO_SLACK_NOTIFICATIONS = "noSlackNotifications";
+		private static final String PROJECT_ID = "projectId";
+		private static final String FALSE = "false";
+		private static final String ERROR_REASON = "errorReason";
+		private static final String PROJECT_SLACK_NOTIFICATION_AS_JSON = "projectSlackNotificationsAsJson";
+		
+		private final WebControllerManager myWebManager;
 	    private final SlackNotificationMainSettings myMainSettings;
 	    private SBuildServer myServer;
 	    private ProjectSettingsManager mySettings;
@@ -62,23 +70,23 @@ public class SlackNotificationIndexPageController extends BaseController {
 	    	if (myMainSettings.getInfoUrl() != null && myMainSettings.getInfoUrl().length() > 0){
 	    		params.put("moreInfoText", "<li><a href=\"" + myMainSettings.getInfoUrl() + "\">" + myMainSettings.getInfoText() + "</a></li>");
 	    		if (myMainSettings.getSlackNotificationShowFurtherReading()){
-	    			params.put("ShowFurtherReading", "ALL");
+	    			params.put(SHOW_FURTHER_READING, "ALL");
 	    		} else {
-	    			params.put("ShowFurtherReading", "SINGLE");
+	    			params.put(SHOW_FURTHER_READING, "SINGLE");
 	    		}
 	    	} else if (myMainSettings.getSlackNotificationShowFurtherReading()){
-	    		params.put("ShowFurtherReading", "DEFAULT");
+	    		params.put(SHOW_FURTHER_READING, "DEFAULT");
 	    	} else {
-	    		params.put("ShowFurtherReading", "NONE");
+	    		params.put(SHOW_FURTHER_READING, "NONE");
 	    	}
 	        
-	        if(request.getParameter("projectId") != null){
+	        if(request.getParameter(PROJECT_ID) != null){
 	        	
 	        	SProject project = TeamCityIdResolver.findProjectById(this.myServer.getProjectManager(), request.getParameter("projectId"));
 	        	if (project != null){
 	        		
 			    	SlackNotificationProjectSettings projSettings = (SlackNotificationProjectSettings)
-			    			mySettings.getSettings(project.getProjectId(), "slackNotifications");
+			    			mySettings.getSettings(project.getProjectId(), SLACK_NOTIFICATIONS);
 			    	
 			        SUser myUser = SessionUser.getUser(request);
 			        params.put("hasPermission", myUser.isPermissionGrantedForProject(project.getProjectId(), Permission.EDIT_PROJECT));
@@ -87,7 +95,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    	
 			    	params.put("haveProject", "true");
 			    	params.put("messages", message);
-			    	params.put("projectId", project.getProjectId());
+			    	params.put(PROJECT_ID, project.getProjectId());
 			    	params.put("buildTypeList", project.getBuildTypes());
 			    	params.put("projectExternalId", TeamCityIdResolver.getExternalProjectId(project));
 			    	params.put("projectName", project.getName());
@@ -97,21 +105,21 @@ public class SlackNotificationIndexPageController extends BaseController {
 			    	params.put("slackNotificationCount", projSettings.getSlackNotificationsCount());
 			    	
 			    	if (projSettings.getSlackNotificationsCount() == 0){
-			    		params.put("noSlackNotifications", "true");
-			    		params.put("slackNotifications", "false");
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
+			    		params.put(NO_SLACK_NOTIFICATIONS, "true");
+			    		params.put(SLACK_NOTIFICATIONS, FALSE);
+			    		params.put(PROJECT_SLACK_NOTIFICATION_AS_JSON, ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 			    	} else {
-			    		params.put("noSlackNotifications", "false");
-			    		params.put("slackNotifications", "true");
+			    		params.put(NO_SLACK_NOTIFICATIONS, FALSE);
+			    		params.put(SLACK_NOTIFICATIONS, "true");
 			    		params.put("slackNotificationList", projSettings.getSlackNotificationsAsList());
 			    		params.put("slackNotificationsDisabled", !projSettings.isEnabled());
 			    		params.put("slackNotificationsEnabledAsChecked", projSettings.isEnabledAsChecked());
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
+			    		params.put(PROJECT_SLACK_NOTIFICATION_AS_JSON, ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 
 			    	}
 		    	} else {
-		    		params.put("haveProject", "false");
-		    		params.put("errorReason", "The project requested does not appear to be valid.");
+		    		params.put("haveProject", FALSE);
+		    		params.put(ERROR_REASON, "The project requested does not appear to be valid.");
 		    	}
         	} else if (request.getParameter("buildTypeId") != null){
         		SBuildType sBuildType = TeamCityIdResolver.findBuildTypeById(this.myServer.getProjectManager(), request.getParameter("buildTypeId"));
@@ -120,7 +128,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 		        	if (project != null){
 		        		
 				    	SlackNotificationProjectSettings projSettings = (SlackNotificationProjectSettings)
-				    			mySettings.getSettings(project.getProjectId(), "slackNotifications");
+				    			mySettings.getSettings(project.getProjectId(), SLACK_NOTIFICATIONS);
 				    	
 				    	SUser myUser = SessionUser.getUser(request);
 				        params.put("hasPermission", myUser.isPermissionGrantedForProject(project.getProjectId(), Permission.EDIT_PROJECT));
@@ -128,7 +136,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 				    	List<SlackNotificationConfig> configs = projSettings.getBuildSlackNotificationsAsList(sBuildType);
 				    	params.put("slackNotificationList", configs);
 				    	params.put("slackNotificationsDisabled", !projSettings.isEnabled());
-				    	params.put("projectId", project.getProjectId());
+				    	params.put(PROJECT_ID, project.getProjectId());
 				    	params.put("haveProject", "true");
 				    	params.put("projectName", project.getName());
 				    	params.put("projectExternalId", TeamCityIdResolver.getExternalProjectId(project));
@@ -136,18 +144,18 @@ public class SlackNotificationIndexPageController extends BaseController {
 				    	params.put("buildName", sBuildType.getName());
 				    	params.put("buildExternalId", TeamCityIdResolver.getExternalBuildId(sBuildType));
 				    	params.put("buildTypeList", project.getBuildTypes());
-			    		params.put("noSlackNotifications", configs.isEmpty());
-			    		params.put("slackNotifications", !configs.isEmpty());
+			    		params.put(NO_SLACK_NOTIFICATIONS, configs.isEmpty());
+			    		params.put(SLACK_NOTIFICATIONS, !configs.isEmpty());
 				    	
-			    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project, myMainSettings)));
+			    		params.put(PROJECT_SLACK_NOTIFICATION_AS_JSON, ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, sBuildType, project, myMainSettings)));
 		        	}
         		} else {
-		    		params.put("haveProject", "false");
-		    		params.put("errorReason", "The build requested does not appear to be valid.");
+		    		params.put("haveProject", FALSE);
+		    		params.put(ERROR_REASON, "The build requested does not appear to be valid.");
         		}
 	        } else {
-	        	params.put("haveProject", "false");
-	        	params.put("errorReason", "No project specified.");
+	        	params.put("haveProject", FALSE);
+	        	params.put(ERROR_REASON, "No project specified.");
 	        }
 
 	        return new ModelAndView(myPluginDescriptor.getPluginResourcesPath() + "SlackNotification/index.jsp", params);

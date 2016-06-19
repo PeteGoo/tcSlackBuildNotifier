@@ -18,6 +18,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class SlackNotificationBeanUtilsVariableResolver implements VariableResolver {
 	
+	private static final String EXCEPTION_MESSAGE = " thrown when trying to resolve value for ";
+	
 	Object bean;
 	
 	public SlackNotificationBeanUtilsVariableResolver(Object javaBean) {
@@ -30,13 +32,13 @@ public class SlackNotificationBeanUtilsVariableResolver implements VariableResol
 		try {
 			value = (String) PropertyUtils.getProperty(bean, variableName);
 		} catch (IllegalAccessException e) {
-			Loggers.SERVER.warn(this.getClass().getSimpleName() + " :: " + e.getClass() + " thrown when trying to resolve value for " + variableName); 
+			Loggers.SERVER.warn(this.getClass().getSimpleName() + " :: " + e.getClass() + EXCEPTION_MESSAGE + variableName); 
 			Loggers.SERVER.debug(e);
 		} catch (InvocationTargetException e) {
-			Loggers.SERVER.warn(this.getClass().getSimpleName() + " :: " + e.getClass() + " thrown when trying to resolve value for " + variableName); 
+			Loggers.SERVER.warn(this.getClass().getSimpleName() + " :: " + e.getClass() + EXCEPTION_MESSAGE + variableName); 
 			Loggers.SERVER.debug(e);
 		} catch (NoSuchMethodException e) {
-			Loggers.SERVER.warn(this.getClass().getSimpleName() + " :: " + e.getClass() + " thrown when trying to resolve value for " + variableName); 
+			Loggers.SERVER.warn(this.getClass().getSimpleName() + " :: " + e.getClass() + EXCEPTION_MESSAGE + variableName); 
 			Loggers.SERVER.debug(e);
 		}
 		return value;

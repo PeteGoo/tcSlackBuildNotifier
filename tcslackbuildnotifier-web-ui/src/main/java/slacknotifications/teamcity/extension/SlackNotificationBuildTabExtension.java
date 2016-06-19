@@ -20,7 +20,10 @@ import java.util.List;
 import java.util.Map;
 
 
+
 public class SlackNotificationBuildTabExtension extends BuildTypeTab {
+	
+	private static final String  SLACK_NOTIFICATIONS = "slackNotifications";
 	SlackNotificationProjectSettings settings;
 	ProjectSettingsManager projSettings;
 	String myPluginPath;
@@ -30,7 +33,7 @@ public class SlackNotificationBuildTabExtension extends BuildTypeTab {
             ProjectSettingsManager settings, WebControllerManager manager,
             PluginDescriptor pluginDescriptor) {
 		//super(myTitle, myTitle, null, projectManager);
-		super("slackNotifications", "Slack", manager, projectManager);
+		super(SLACK_NOTIFICATIONS, "Slack", manager, projectManager);
 		this.projSettings = settings;
 		myPluginPath = pluginDescriptor.getPluginResourcesPath();
 	}
@@ -44,7 +47,7 @@ public class SlackNotificationBuildTabExtension extends BuildTypeTab {
 	protected void fillModel(Map model, HttpServletRequest request,
 			 @NotNull SBuildType buildType, SUser user) {
 		this.settings = 
-			(SlackNotificationProjectSettings)this.projSettings.getSettings(buildType.getProject().getProjectId(), "slackNotifications");
+			(SlackNotificationProjectSettings)this.projSettings.getSettings(buildType.getProject().getProjectId(), SLACK_NOTIFICATIONS);
 		
 		List<ProjectAndBuildSlacknotificationsBean> projectAndParents = new ArrayList<ProjectAndBuildSlacknotificationsBean>();
 		List<SProject> parentProjects = buildType.getProject().getProjectPath();
@@ -53,7 +56,7 @@ public class SlackNotificationBuildTabExtension extends BuildTypeTab {
 			projectAndParents.add(
 					ProjectAndBuildSlacknotificationsBean.newInstance(
 							projectParent,
-							(SlackNotificationProjectSettings) this.projSettings.getSettings(projectParent.getProjectId(), "slackNotifications"),
+							(SlackNotificationProjectSettings) this.projSettings.getSettings(projectParent.getProjectId(), SLACK_NOTIFICATIONS),
 							buildType
 							)
 					);
@@ -62,7 +65,7 @@ public class SlackNotificationBuildTabExtension extends BuildTypeTab {
 //		projectAndParents.add(
 //				ProjectAndBuildSlacknotificationsBean.newInstance(
 //						project,
-//						(SlackNotificationProjectSettings) this.projSettings.getSettings(project.getProjectId(), "slackNotifications"),
+//						(SlackNotificationProjectSettings) this.projSettings.getSettings(project.getProjectId(), SLACK_NOTIFICATIONS),
 //						true
 //						)
 //				);
