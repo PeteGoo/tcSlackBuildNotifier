@@ -31,13 +31,25 @@ import java.util.Set;
 
 public class SlackNotificationAjaxEditPageController extends BaseController {
 
-	    protected static final String BEFORE_FINISHED = "BeforeFinished";
+	    private static final String PROJECT_ID = "projectId";
+	    private static final String SLACK_NOTIFICATION = "slackNotifications";
+	    private static final String SUBMIT_ACTION = "submitAction";
+	    private static final String ERRORS_TAG = "<errors />";
+	    private static final String MESSAGES = "messages";
+	    private static final String CHANNEL = "channel";
+	    private static final String SLACK_NOTIFICATION_ID = "slackNotificationId";
+	    private static final String MAX_COMMITS_DISPLAY = "maxCommitsToDisplay";
+	    private static final String BOT_NAME = "botName";
+	    private static final String ICON_URL = "iconUrl";
+	    private static final String FALSE = "false";
+		protected static final String BEFORE_FINISHED = "BeforeFinished";
 		protected static final String BUILD_INTERRUPTED = "BuildInterrupted";
 		protected static final String BUILD_STARTED = "BuildStarted";
 		protected static final String BUILD_BROKEN = "BuildBroken";
 		protected static final String BUILD_FIXED = "BuildFixed";
 		protected static final String BUILD_FAILED = "BuildFailed";
 		protected static final String BUILD_SUCCESSFUL = "BuildSuccessful";
+		
 		
 		private final WebControllerManager myWebManager;
     private final SlackNotificationMainSettings myMainSettings;
@@ -93,30 +105,30 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	        SlackNotificationProjectSettings projSettings = null;
 
 	    	if (request.getMethod().equalsIgnoreCase("post")){
-	    		if ((request.getParameter("projectId") != null)
-	    			&& request.getParameter("projectId").startsWith("project")){
-	    		    	projSettings = (SlackNotificationProjectSettings) mySettings.getSettings(request.getParameter("projectId"), "slackNotifications");
-	    		    	myProject = this.myServer.getProjectManager().findProjectById(request.getParameter("projectId"));
+	    		if ((request.getParameter(PROJECT_ID) != null)
+	    			&& request.getParameter(PROJECT_ID).startsWith("project")){
+	    		    	projSettings = (SlackNotificationProjectSettings) mySettings.getSettings(request.getParameter(PROJECT_ID), SLACK_NOTIFICATION);
+	    		    	myProject = this.myServer.getProjectManager().findProjectById(request.getParameter(PROJECT_ID));
 
 			    		if ((projSettings != null) && (myProject != null)
 			    				&& (myUser.isPermissionGrantedForProject(myProject.getProjectId(), Permission.EDIT_PROJECT))){
-			    			if ((request.getParameter("submitAction") != null ) 
-			    				&& (request.getParameter("submitAction").equals("removeSlackNotification"))
+			    			if ((request.getParameter(SUBMIT_ACTION) != null ) 
+			    				&& (request.getParameter(SUBMIT_ACTION).equals("removeSlackNotification"))
 			    				&& (request.getParameter("removedSlackNotificationId") != null)){
 			    					projSettings.deleteSlackNotification(request.getParameter("removedSlackNotificationId"), myProject.getProjectId());
 			    					if(projSettings.updateSuccessful()){
 			    						myProject.persist();
-			    						params.put("messages", "<errors />");
+			    						params.put(MESSAGES, ERRORS_TAG);
 			    					} else {
-			    						params.put("messages", "<errors><error id=\"messageArea\">The slacknotifications was not found. Have the SlackNotifications been edited on disk or by another user?</error></errors>");
+			    						params.put(MESSAGES, "<errors><error id=\"messageArea\">The slacknotifications was not found. Have the SlackNotifications been edited on disk or by another user?</error></errors>");
 			    					}
 			    					
-			    			} else if ((request.getParameter("submitAction") != null ) 
-				    				&& (request.getParameter("submitAction").equals("updateSlackNotification"))){
-			    				if((request.getParameter("channel") != null )
-				    				&& (request.getParameter("channel").length() > 0 )){
+			    			} else if ((request.getParameter(SUBMIT_ACTION) != null ) 
+				    				&& (request.getParameter(SUBMIT_ACTION).equals("updateSlackNotification"))){
+			    				if((request.getParameter(CHANNEL) != null )
+				    				&& (request.getParameter(CHANNEL).length() > 0 )){
 			    					
-			    					if (request.getParameter("slackNotificationId") != null){
+			    					if (request.getParameter(SLACK_NOTIFICATION_ID) != null){
 			    						Boolean enabled = false;
                                         Boolean mentionChannelEnabled = false;
 										Boolean mentionSlackUserEnabled = false;
@@ -143,9 +155,9 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 
                                         if (content.isEnabled()){
 
-                                            if ((request.getParameter("maxCommitsToDisplay") != null )
-                                                    && (request.getParameter("maxCommitsToDisplay").length() > 0)){
-                                                content.setMaxCommitsToDisplay(convertToInt(request.getParameter("maxCommitsToDisplay"), SlackNotificationContentConfig.DEFAULT_MAX_COMMITS));
+                                            if ((request.getParameter(MAX_COMMITS_DISPLAY) != null )
+                                                    && (request.getParameter(MAX_COMMITS_DISPLAY).length() > 0)){
+                                                content.setMaxCommitsToDisplay(convertToInt(request.getParameter(MAX_COMMITS_DISPLAY), SlackNotificationContentConfig.DEFAULT_MAX_COMMITS));
                                             }
 
                                             content.setShowBuildAgent((request.getParameter("showBuildAgent") != null )
@@ -163,14 +175,14 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
                                             content.setShowFailureReason((request.getParameter("showFailureReason") != null)
                                                     && (request.getParameter("showFailureReason").equalsIgnoreCase("on")));
 
-                                            if ((request.getParameter("botName") != null )
-                                                    && (request.getParameter("botName").length() > 0)){
-                                                content.setBotName(request.getParameter("botName"));
+                                            if ((request.getParameter(BOT_NAME) != null )
+                                                    && (request.getParameter(BOT_NAME).length() > 0)){
+                                                content.setBotName(request.getParameter(BOT_NAME));
                                             }
 
-                                            if ((request.getParameter("iconUrl") != null )
-                                                    && (request.getParameter("iconUrl").length() > 0)){
-                                                content.setIconUrl(request.getParameter("iconUrl"));
+                                            if ((request.getParameter(ICON_URL) != null )
+                                                    && (request.getParameter(ICON_URL).length() > 0)){
+                                                content.setIconUrl(request.getParameter(ICON_URL));
                                             }
                                         }
 
@@ -200,23 +212,23 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    							}
 			    						}
 		    						
-			    						if (request.getParameter("slackNotificationId").equals("new")){
-			    							projSettings.addNewSlackNotification(myProject.getProjectId(), request.getParameter("token"), request.getParameter("channel"), request.getParameter("team"), enabled,
+			    						if (request.getParameter(SLACK_NOTIFICATION_ID).equals("new")){
+			    							projSettings.addNewSlackNotification(myProject.getProjectId(), request.getParameter("token"), request.getParameter(CHANNEL), request.getParameter("team"), enabled,
 													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
-			    	    						params.put("messages", "<errors />");
+			    	    						params.put(MESSAGES, ERRORS_TAG);
 			    							} else {
 			    								params.put("message", "<errors><error id=\"\">" + projSettings.getUpdateMessage() + "</error>");
 			    							}
 			    						} else {
 			    							projSettings.updateSlackNotification(myProject.getProjectId(), request.getParameter("token"),
-                                                    request.getParameter("slackNotificationId"), request.getParameter("channel"), enabled,
+                                                    request.getParameter(SLACK_NOTIFICATION_ID), request.getParameter(CHANNEL), enabled,
 													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled,
 													mentionSlackUserEnabled, content);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
-			    	    						params.put("messages", "<errors />");
+			    	    						params.put(MESSAGES, ERRORS_TAG);
 			    							} else {
 			    								params.put("message", "<errors><error id=\"\">" + projSettings.getUpdateMessage() + "</error>");
 			    							}
@@ -224,48 +236,48 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    					} // TODO Need to handle slackNotificationId being null
 			    						
 			    				} else {
-			    					if ((request.getParameter("channel") == null )
-				    				|| (request.getParameter("channel").length() == 0)){
-			    						params.put("messages", "<errors><error id=\"emptySlackNotificationChannel\">Please enter a channel.</error></errors>");
+			    					if ((request.getParameter(CHANNEL) == null )
+				    				|| (request.getParameter(CHANNEL).length() == 0)){
+			    						params.put(MESSAGES, "<errors><error id=\"emptySlackNotificationChannel\">Please enter a channel.</error></errors>");
 			    					}
 			    				}
 				    			
 			    			}
 			    		} else {
-			    			params.put("messages", "<errors><error id=\"messageArea\">You do not appear to have permission to edit SlackNotifications.</error></errors>");
+			    			params.put(MESSAGES, "<errors><error id=\"messageArea\">You do not appear to have permission to edit SlackNotifications.</error></errors>");
 			    		}
 	    		}
 	    	}
 
 	    	if (request.getMethod().equalsIgnoreCase("get")
-	        		&& request.getParameter("projectId") != null 
-	        		&& request.getParameter("projectId").startsWith("project")){
+	        		&& request.getParameter(PROJECT_ID) != null 
+	        		&& request.getParameter(PROJECT_ID).startsWith("project")){
 	        	
-		    	SlackNotificationProjectSettings projSettings1 = (SlackNotificationProjectSettings) mySettings.getSettings(request.getParameter("projectId"), "slackNotifications");
-		    	SProject project = this.myServer.getProjectManager().findProjectById(request.getParameter("projectId"));
+		    	SlackNotificationProjectSettings projSettings1 = (SlackNotificationProjectSettings) mySettings.getSettings(request.getParameter(PROJECT_ID), SLACK_NOTIFICATION);
+		    	SProject project = this.myServer.getProjectManager().findProjectById(request.getParameter(PROJECT_ID));
 		    	
 		    	String message = projSettings1.getSlackNotificationsAsString();
 		    	
 		    	params.put("haveProject", "true");
-		    	params.put("messages", message);
-		    	params.put("projectId", project.getProjectId());
+		    	params.put(MESSAGES, message);
+		    	params.put(PROJECT_ID, project.getProjectId());
 		    	params.put("projectExternalId", TeamCityIdResolver.getExternalProjectId(project));
 		    	params.put("projectName", project.getName());
 		    	
 		    	params.put("slackNotificationCount", projSettings1.getSlackNotificationsCount());
 		    	if (projSettings1.getSlackNotificationsCount() == 0){
 		    		params.put("noSlackNotifications", "true");
-		    		params.put("slackNotifications", "false");
+		    		params.put(SLACK_NOTIFICATION, FALSE);
 		    	} else {
-		    		params.put("noSlackNotifications", "false");
-		    		params.put("slackNotifications", "true");
+		    		params.put("noSlackNotifications", FALSE);
+		    		params.put(SLACK_NOTIFICATION, "true");
 		    		params.put("slackNotificationList", projSettings.getSlackNotificationsAsList());
 		    		params.put("slackNotificationsDisabled", !projSettings.isEnabled());
 		    		params.put("slackNotificationsEnabledAsChecked", projSettings.isEnabledAsChecked());
 		    		params.put("projectSlackNotificationsAsJson", ProjectSlackNotificationsBeanJsonSerialiser.serialise(ProjectSlackNotificationsBean.build(projSettings, project, myMainSettings)));
 		    	}
 	        } else {
-	        	params.put("haveProject", "false");
+	        	params.put("haveProject", FALSE);
 	        }
 	        
 	        return new ModelAndView(myPluginPath + "SlackNotification/ajaxEdit.jsp", params);

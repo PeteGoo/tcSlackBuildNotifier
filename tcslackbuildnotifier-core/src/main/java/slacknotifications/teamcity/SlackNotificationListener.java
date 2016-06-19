@@ -30,6 +30,8 @@ import java.util.List;
 public class SlackNotificationListener extends BuildServerAdapter {
     
     private static final String SLACKNOTIFICATIONS_SETTINGS_ATTRIBUTE_NAME = "slackNotifications";
+    private static final String BUILD_STATE_MESSAGE_END = " at buildState responsibilityChanged";
+    private static final String BUILD_STATE_MESSAGE_START = "About to process SlackNotifications for ";
 	private final SBuildServer myBuildServer;
     private final ProjectSettingsManager mySettings;
     private final SlackNotificationMainSettings myMainSettings;
@@ -199,7 +201,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
     	if (myBuildServer.getServerMajorVersion() >= 7){
     		return;
     	}
-		Loggers.SERVER.debug("About to process SlackNotifications for " + sBuildType.getProjectId() + " at buildState responsibilityChanged");
+		Loggers.SERVER.debug(BUILD_STATE_MESSAGE_START + sBuildType.getProjectId() + BUILD_STATE_MESSAGE_END);
 		for (SlackNotificationConfigWrapper whcw : getListOfEnabledSlackNotifications(sBuildType.getProjectId())){
 
 						//SlackNotificationPayload payloadFormat = myManager.getFormat(whcw.whc.getPayloadFormat());
@@ -217,7 +219,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 	public void responsibleChanged(SProject project,
 			Collection<TestName> testNames, ResponsibilityEntry entry,
 			boolean isUserAction) {
-		Loggers.SERVER.debug("About to process SlackNotifications for " + project.getProjectId() + " at buildState responsibilityChanged");
+		Loggers.SERVER.debug(BUILD_STATE_MESSAGE_START + project.getProjectId() + BUILD_STATE_MESSAGE_END);
 		for (SlackNotificationConfigWrapper whcw : getListOfEnabledSlackNotifications(project.getProjectId())){
                         whcw.slackNotification.setPayload(myManager.responsibleChanged(project,
                                 testNames,
@@ -232,7 +234,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 
 	@Override
 	public void responsibleChanged(SProject project, TestNameResponsibilityEntry oldTestNameResponsibilityEntry, TestNameResponsibilityEntry newTestNameResponsibilityEntry, boolean isUserAction) {
-		Loggers.SERVER.debug("About to process SlackNotifications for " + project.getProjectId() + " at buildState responsibilityChanged");
+		Loggers.SERVER.debug(BUILD_STATE_MESSAGE_START + project.getProjectId() + BUILD_STATE_MESSAGE_END);
 		for (SlackNotificationConfigWrapper whcw : getListOfEnabledSlackNotifications(project.getProjectId())){
 						//SlackNotificationPayload payloadFormat = myManager.getFormat(whcw.whc.getPayloadFormat());
 						whcw.slackNotification.setPayload(myManager.responsibleChanged(project,
@@ -259,7 +261,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
             @NotNull ResponsibilityEntry responsibilityEntryOld,
             @NotNull ResponsibilityEntry responsibilityEntryNew){
 		
-		Loggers.SERVER.debug("About to process SlackNotifications for " + sBuildType.getProjectId() + " at buildState responsibilityChanged");
+		Loggers.SERVER.debug(BUILD_STATE_MESSAGE_START + sBuildType.getProjectId() + BUILD_STATE_MESSAGE_END);
 		for (SlackNotificationConfigWrapper whcw : getListOfEnabledSlackNotifications(sBuildType.getProjectId())){
 						//SlackNotificationPayload payloadFormat = myManager.getFormat(whcw.whc.getPayloadFormat());
                         whcw.slackNotification.setPayload(myManager.responsibleChanged(sBuildType,
