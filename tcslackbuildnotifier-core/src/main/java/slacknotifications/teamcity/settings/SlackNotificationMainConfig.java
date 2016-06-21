@@ -18,7 +18,13 @@ import java.io.IOException;
 public class SlackNotificationMainConfig implements ChangeListener {
     public static final String DEFAULT_BOTNAME = "TeamCity";
     public static final String DEFAULT_ICONURL = "https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity72x72.png";
-
+	private static final String HTTPS = "https://";
+	private static final String HTTP = "http://";
+	private static final String PROXY = "proxy";
+	private static final String USERNAME = "username";
+	private static final String PASSWORD = "password";
+	private static final String ENABLED = "enabled";
+	private static final String TEAM_NAME = "teamName";
 
     private final FileWatcher myChangeObserver;
 	private final File myConfigDir;
@@ -100,14 +106,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 
 	public String stripProtocolFromUrl(String url){
 		String tmpURL = url;
-		if(tmpURL.length() > "https://".length() 
-			&& "https://".equalsIgnoreCase(tmpURL.substring(0,"https://".length())))
+		if(tmpURL.length() > HTTPS.length()
+			&& HTTPS.equalsIgnoreCase(tmpURL.substring(0,HTTPS.length())))
 		{
-				tmpURL = tmpURL.substring("https://".length());
-		} else if (tmpURL.length() > "http://".length() 
-			&& "http://".equalsIgnoreCase(tmpURL.substring(0,"http://".length())))
+				tmpURL = tmpURL.substring(HTTPS.length());
+		} else if (tmpURL.length() > HTTP.length()
+			&& HTTP.equalsIgnoreCase(tmpURL.substring(0,HTTP.length())))
 		{
-				tmpURL = tmpURL.substring("http://".length());
+				tmpURL = tmpURL.substring(HTTP.length());
 		}
 		return tmpURL;
 	}
@@ -144,14 +150,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		if (this.getProxyHost() == null || this.getProxyPort() == null){
 			return null;
 		}
-		Element el = new Element("proxy");
+		Element el = new Element( PROXY);
 		el.setAttribute("host", this.getProxyHost());
 		el.setAttribute("port", String.valueOf(this.getProxyPort()));
 		if (   this.proxyPassword != null && this.proxyPassword.length() > 0 
 			&& this.proxyUsername != null && this.proxyUsername.length() > 0 )
 		{
-			el.setAttribute("username", this.getProxyUsername());
-			el.setAttribute("password", this.getProxyPassword());
+			el.setAttribute(USERNAME, this.getProxyUsername());
+			el.setAttribute(PASSWORD, this.getProxyPassword());
 			
 		}
 		return el;
@@ -262,10 +268,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
 			{
 				FileUtil.processXmlFile(SlackNotificationMainConfig.this.myConfigFile, new FileUtil.Processor() {
 					public void process(Element rootElement) {
-                        rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
-                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
+                        rootElement.setAttribute(ENABLED, Boolean.toString(SlackNotificationMainConfig.this.enabled));
+                        rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
-                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
+                        rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));
 						rootElement.setAttribute("iconurl", emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
 						rootElement.setAttribute("botname", emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
@@ -286,7 +292,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                         }
 						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.content.getMaxCommitsToDisplay()));
 
-                        rootElement.removeChildren("proxy");
+                        rootElement.removeChildren(PROXY);
                         rootElement.removeChildren("info");
 
 						if(getProxyHost() != null && getProxyHost().length() > 0
@@ -325,17 +331,17 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	void readConfigurationFromXmlElement(Element slackNotificationsElement) {
         if(slackNotificationsElement != null){
             content.setEnabled(true);
-            if(slackNotificationsElement.getAttribute("enabled") != null)
+            if(slackNotificationsElement.getAttribute(ENABLED) != null)
             {
-                setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("enabled")));
+                setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(ENABLED)));
             }
             if(slackNotificationsElement.getAttribute("defaultChannel") != null)
             {
                 setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));
             }
-            if(slackNotificationsElement.getAttribute("teamName") != null)
+            if(slackNotificationsElement.getAttribute(TEAM_NAME) != null)
             {
-                setTeamName(slackNotificationsElement.getAttributeValue("teamName"));
+                setTeamName(slackNotificationsElement.getAttributeValue(TEAM_NAME));
             }
             if(slackNotificationsElement.getAttribute("token") != null)
             {
@@ -374,7 +380,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                 content.setShowFailureReason(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showFailureReason")));
             }
 
-            Element proxyElement = slackNotificationsElement.getChild("proxy");
+            Element proxyElement = slackNotificationsElement.getChild(PROXY);
             if(proxyElement != null)
             {
                 if (proxyElement.getAttribute("proxyShortNames") != null){
@@ -389,12 +395,12 @@ public class SlackNotificationMainConfig implements ChangeListener {
                     setProxyPort(Integer.parseInt(proxyElement.getAttributeValue("port")));
                 }
 
-                if (proxyElement.getAttribute("username") != null){
-                    setProxyUsername(proxyElement.getAttributeValue("username"));
+                if (proxyElement.getAttribute(USERNAME) != null){
+                    setProxyUsername(proxyElement.getAttributeValue(USERNAME));
                 }
 
-                if (proxyElement.getAttribute("password") != null){
-                    setProxyPassword(proxyElement.getAttributeValue("password"));
+                if (proxyElement.getAttribute(PASSWORD) != null){
+                    setProxyPassword(proxyElement.getAttributeValue(PASSWORD));
                 }
             }
             else {
