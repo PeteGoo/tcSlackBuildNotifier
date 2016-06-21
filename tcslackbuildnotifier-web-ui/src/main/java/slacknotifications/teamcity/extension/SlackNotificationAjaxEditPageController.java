@@ -76,7 +76,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	    
 	    protected static void checkAndAddBuildState(HttpServletRequest r, BuildState state, BuildStateEnum myBuildState, String varName){
 	    	if ((r.getParameter(varName) != null)
-	    		&& (r.getParameter(varName).equalsIgnoreCase("on"))){
+	    		&& ("on".equalsIgnoreCase(r.getParameter(varName)))){
 	    		state.enable(myBuildState);
 	    	} else {
 	    		state.disable(myBuildState);;
@@ -85,10 +85,10 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	    
 	    protected static void checkAndAddBuildStateIfEitherSet(HttpServletRequest r, BuildState state, BuildStateEnum myBuildState, String varName, String otherVarName){
 	    	if ((r.getParameter(varName) != null)
-	    			&& (r.getParameter(varName).equalsIgnoreCase("on"))){
+	    			&& ("on".equalsIgnoreCase(r.getParameter(varName)))){
 	    		state.enable(myBuildState);
 	    	} else if ((r.getParameter(otherVarName) != null)
-	    			&& (r.getParameter(otherVarName).equalsIgnoreCase("on"))){
+	    			&& ("on".equalsIgnoreCase(r.getParameter(otherVarName)))){
 		    	state.enable(myBuildState);
 	    	} else {
 	    		state.disable(myBuildState);;
@@ -104,7 +104,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	        SProject myProject;
 	        SlackNotificationProjectSettings projSettings = null;
 
-	    	if (request.getMethod().equalsIgnoreCase("post")){
+	    	if ("post".equalsIgnoreCase(request.getMethod())){
 	    		if ((request.getParameter(PROJECT_ID) != null)
 	    			&& request.getParameter(PROJECT_ID).startsWith("project")){
 	    		    	projSettings = (SlackNotificationProjectSettings) mySettings.getSettings(request.getParameter(PROJECT_ID), SLACK_NOTIFICATION);
@@ -137,7 +137,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
                                         SlackNotificationContentConfig content = new SlackNotificationContentConfig();
 			    						Set<String> buildTypes = new HashSet<String>();
 			    						if ((request.getParameter("slackNotificationsEnabled") != null )
-			    								&& (request.getParameter("slackNotificationsEnabled").equalsIgnoreCase("on"))){
+			    								&& ("on".equalsIgnoreCase(request.getParameter("slackNotificationsEnabled")))){
 			    							enabled = true;
 			    						}
                                         if ((request.getParameter("mentionChannelEnabled") != null )
