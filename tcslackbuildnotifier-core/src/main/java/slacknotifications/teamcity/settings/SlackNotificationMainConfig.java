@@ -277,7 +277,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                         rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute(TOKEN, emptyIfNull(SlackNotificationMainConfig.this.token));
 						rootElement.setAttribute(ICON_URL, emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
-						rootElement.setAttribute(BOT_NAME, emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
+						rootElement.setAttribute("botName", emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
 						if(SlackNotificationMainConfig.this.content.getShowBuildAgent() != null){
 							rootElement.setAttribute(SHOW_BUILD_AGENT, Boolean.toString(SlackNotificationMainConfig.this.content.getShowBuildAgent()));
 						}
@@ -354,9 +354,9 @@ public class SlackNotificationMainConfig implements ChangeListener {
             {
                 content.setIconUrl(slackNotificationsElement.getAttributeValue(ICON_URL));
             }
-            if(slackNotificationsElement.getAttribute(BOT_NAME) != null)
+            if(slackNotificationsElement.getAttribute("botName") != null)
             {
-                content.setBotName(slackNotificationsElement.getAttributeValue(BOT_NAME));
+                content.setBotName(slackNotificationsElement.getAttributeValue("botName"));
             }
             if(slackNotificationsElement.getAttribute(SHOW_BUILD_AGENT) != null)
             {
