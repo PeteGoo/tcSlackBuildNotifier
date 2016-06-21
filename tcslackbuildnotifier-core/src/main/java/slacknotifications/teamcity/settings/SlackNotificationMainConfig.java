@@ -18,7 +18,16 @@ import java.io.IOException;
 public class SlackNotificationMainConfig implements ChangeListener {
     public static final String DEFAULT_BOTNAME = "TeamCity";
     public static final String DEFAULT_ICONURL = "https://raw.githubusercontent.com/PeteGoo/tcSlackBuildNotifier/master/docs/TeamCity72x72.png";
-
+	private static final String TOKEN = "token";
+	private static final String DEFAULT_CHANNEL = "defaultChannel";
+	private static final String ICON_URL = "iconurl";
+	private static final String BOT_NAME = "botName";
+	private static final String SHOW_BUILD_AGENT = "showBuildAgent";
+	private static final String SHOW_COMMITS = "showCommits";
+	private static final String SHOW_COMMITTERS = "showCommitters";
+	private static final String SHOW_FAILURE_REASON = "showFailureReason";
+	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
+	private static final String SHOW_ELAPSED_BUILD_TIME = "showElapsedBuildTime";
 
     private final FileWatcher myChangeObserver;
 	private final File myConfigDir;
@@ -264,27 +273,27 @@ public class SlackNotificationMainConfig implements ChangeListener {
 					public void process(Element rootElement) {
                         rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
                         rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
-						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
+						rootElement.setAttribute(DEFAULT_CHANNEL, emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
                         rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
-						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));
-						rootElement.setAttribute("iconurl", emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
-						rootElement.setAttribute("botname", emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
+						rootElement.setAttribute(TOKEN, emptyIfNull(SlackNotificationMainConfig.this.token));
+						rootElement.setAttribute(ICON_URL, emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
+						rootElement.setAttribute(BOT_NAME, emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
 						if(SlackNotificationMainConfig.this.content.getShowBuildAgent() != null){
-							rootElement.setAttribute("showBuildAgent", Boolean.toString(SlackNotificationMainConfig.this.content.getShowBuildAgent()));
+							rootElement.setAttribute(SHOW_BUILD_AGENT, Boolean.toString(SlackNotificationMainConfig.this.content.getShowBuildAgent()));
 						}
 						if(SlackNotificationMainConfig.this.content.getShowElapsedBuildTime() != null) {
-							rootElement.setAttribute("showElapsedBuildTime", Boolean.toString(SlackNotificationMainConfig.this.content.getShowElapsedBuildTime()));
+							rootElement.setAttribute(SHOW_ELAPSED_BUILD_TIME, Boolean.toString(SlackNotificationMainConfig.this.content.getShowElapsedBuildTime()));
 						}
 						if(SlackNotificationMainConfig.this.content.getShowCommits() != null) {
-							rootElement.setAttribute("showCommits", Boolean.toString(SlackNotificationMainConfig.this.content.getShowCommits()));
+							rootElement.setAttribute(SHOW_COMMITS, Boolean.toString(SlackNotificationMainConfig.this.content.getShowCommits()));
 						}
 						if(SlackNotificationMainConfig.this.content.getShowCommitters() != null) {
-							rootElement.setAttribute("showCommitters", Boolean.toString(SlackNotificationMainConfig.this.content.getShowCommitters()));
+							rootElement.setAttribute(SHOW_COMMITTERS, Boolean.toString(SlackNotificationMainConfig.this.content.getShowCommitters()));
 						}
                         if(SlackNotificationMainConfig.this.content.getShowFailureReason() != null) {
-                            rootElement.setAttribute("showFailureReason", Boolean.toString(SlackNotificationMainConfig.this.content.getShowFailureReason()));
+                            rootElement.setAttribute(SHOW_FAILURE_REASON, Boolean.toString(SlackNotificationMainConfig.this.content.getShowFailureReason()));
                         }
-						rootElement.setAttribute("maxCommitsToDisplay", Integer.toString(SlackNotificationMainConfig.this.content.getMaxCommitsToDisplay()));
+						rootElement.setAttribute(MAX_COMMITS_TO_DISPLAY, Integer.toString(SlackNotificationMainConfig.this.content.getMaxCommitsToDisplay()));
 
                         rootElement.removeChildren("proxy");
                         rootElement.removeChildren("info");
@@ -329,49 +338,49 @@ public class SlackNotificationMainConfig implements ChangeListener {
             {
                 setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("enabled")));
             }
-            if(slackNotificationsElement.getAttribute("defaultChannel") != null)
+            if(slackNotificationsElement.getAttribute(DEFAULT_CHANNEL) != null)
             {
-                setDefaultChannel(slackNotificationsElement.getAttributeValue("defaultChannel"));
+                setDefaultChannel(slackNotificationsElement.getAttributeValue(DEFAULT_CHANNEL));
             }
             if(slackNotificationsElement.getAttribute("teamName") != null)
             {
                 setTeamName(slackNotificationsElement.getAttributeValue("teamName"));
             }
-            if(slackNotificationsElement.getAttribute("token") != null)
+            if(slackNotificationsElement.getAttribute(TOKEN) != null)
             {
-                setToken(slackNotificationsElement.getAttributeValue("token"));
+                setToken(slackNotificationsElement.getAttributeValue(TOKEN));
             }
-            if(slackNotificationsElement.getAttribute("iconurl") != null)
+            if(slackNotificationsElement.getAttribute(ICON_URL) != null)
             {
-                content.setIconUrl(slackNotificationsElement.getAttributeValue("iconurl"));
+                content.setIconUrl(slackNotificationsElement.getAttributeValue(ICON_URL));
             }
-            if(slackNotificationsElement.getAttribute("botname") != null)
+            if(slackNotificationsElement.getAttribute(BOT_NAME) != null)
             {
-                content.setBotName(slackNotificationsElement.getAttributeValue("botname"));
+                content.setBotName(slackNotificationsElement.getAttributeValue(BOT_NAME));
             }
-            if(slackNotificationsElement.getAttribute("showBuildAgent") != null)
+            if(slackNotificationsElement.getAttribute(SHOW_BUILD_AGENT) != null)
             {
-                content.setShowBuildAgent(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showBuildAgent")));
+                content.setShowBuildAgent(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_BUILD_AGENT)));
             }
-            if(slackNotificationsElement.getAttribute("showElapsedBuildTime") != null)
+            if(slackNotificationsElement.getAttribute(SHOW_ELAPSED_BUILD_TIME) != null)
             {
-                content.setShowElapsedBuildTime(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showElapsedBuildTime")));
+                content.setShowElapsedBuildTime(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_ELAPSED_BUILD_TIME)));
             }
-            if(slackNotificationsElement.getAttribute("showCommits") != null)
+            if(slackNotificationsElement.getAttribute(SHOW_COMMITS) != null)
             {
-                content.setShowCommits(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommits")));
+                content.setShowCommits(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_COMMITS)));
             }
-            if(slackNotificationsElement.getAttribute("showCommitters") != null)
+            if(slackNotificationsElement.getAttribute(SHOW_COMMITTERS) != null)
             {
-                content.setShowCommitters(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showCommitters")));
+                content.setShowCommitters(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_COMMITTERS)));
             }
-            if(slackNotificationsElement.getAttribute("maxCommitsToDisplay") != null)
+            if(slackNotificationsElement.getAttribute(MAX_COMMITS_TO_DISPLAY) != null)
             {
-                content.setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue("maxCommitsToDisplay")));
+                content.setMaxCommitsToDisplay(Integer.parseInt(slackNotificationsElement.getAttributeValue(MAX_COMMITS_TO_DISPLAY)));
             }
-            if(slackNotificationsElement.getAttribute("showFailureReason") != null)
+            if(slackNotificationsElement.getAttribute(SHOW_FAILURE_REASON) != null)
             {
-                content.setShowFailureReason(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("showFailureReason")));
+                content.setShowFailureReason(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_FAILURE_REASON)));
             }
 
             Element proxyElement = slackNotificationsElement.getChild("proxy");
