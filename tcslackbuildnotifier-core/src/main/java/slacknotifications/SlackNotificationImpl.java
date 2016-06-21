@@ -540,7 +540,7 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public void setEnabled(String enabled) {
-        if (enabled.toLowerCase().equals("true")) {
+        if ("true".equals(enabled.toLowerCase())) {
             this.enabled = true;
         } else {
             this.enabled = false;
