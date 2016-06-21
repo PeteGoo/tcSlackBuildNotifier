@@ -141,17 +141,17 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    							enabled = true;
 			    						}
                                         if ((request.getParameter("mentionChannelEnabled") != null )
-                                                && (request.getParameter("mentionChannelEnabled").equalsIgnoreCase("on"))){
+                                                && ("on".equalsIgnoreCase(request.getParameter("mentionChannelEnabled")))){
 
                                             mentionChannelEnabled = true;
                                         }
 										if ((request.getParameter("mentionSlackUserEnabled") != null )
-												&& (request.getParameter("mentionSlackUserEnabled").equalsIgnoreCase("on"))){
+												&& ("on".equalsIgnoreCase(request.getParameter("mentionSlackUserEnabled")))){
 											mentionSlackUserEnabled = true;
 										}
 
                                         content.setEnabled((request.getParameter("customContentEnabled") != null )
-                                                && (request.getParameter("customContentEnabled").equalsIgnoreCase("on")));
+                                                && ("on".equalsIgnoreCase(request.getParameter("customContentEnabled"))));
 
                                         if (content.isEnabled()){
 
@@ -161,19 +161,19 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
                                             }
 
                                             content.setShowBuildAgent((request.getParameter("showBuildAgent") != null )
-                                                    && (request.getParameter("showBuildAgent").equalsIgnoreCase("on")));
+                                                    && ("on".equals(request.getParameter("showBuildAgent"))));
 
                                             content.setShowCommits((request.getParameter("showCommits") != null )
-                                                    && (request.getParameter("showCommits").equalsIgnoreCase("on")));
+                                                    && ("on".equalsIgnoreCase(request.getParameter("showCommits"))));
 
                                             content.setShowCommitters((request.getParameter("showCommitters") != null)
-                                                    && (request.getParameter("showCommitters").equalsIgnoreCase("on")));
+                                                    && ("on".equalsIgnoreCase(request.getParameter("showCommitters"))));
 
                                             content.setShowElapsedBuildTime((request.getParameter("showElapsedBuildTime") != null)
-                                                    && (request.getParameter("showElapsedBuildTime").equalsIgnoreCase("on")));
+                                                    && ("on".equalsIgnoreCase(request.getParameter("showElapsedBuildTime"))));
 
                                             content.setShowFailureReason((request.getParameter("showFailureReason") != null)
-                                                    && (request.getParameter("showFailureReason").equalsIgnoreCase("on")));
+                                                    && ("on".equalsIgnoreCase(request.getParameter("showFailureReason"))));
 
                                             if ((request.getParameter(BOT_NAME) != null )
                                                     && (request.getParameter(BOT_NAME).length() > 0)){
@@ -198,10 +198,10 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						checkAndAddBuildStateIfEitherSet(request, states, BuildStateEnum.BUILD_FINISHED, BUILD_SUCCESSFUL, BUILD_FAILED);
 			    						checkAndAddBuildState(request, states, BuildStateEnum.RESPONSIBILITY_CHANGED, "ResponsibilityChanged");
 			    						
-			    						if ((request.getParameter("buildTypeSubProjects") != null ) && (request.getParameter("buildTypeSubProjects").equalsIgnoreCase("on"))){
+			    						if ((request.getParameter("buildTypeSubProjects") != null ) && ("on".equalsIgnoreCase(request.getParameter("buildTypeSubProjects")))){
 			    							buildTypeSubProjects = true;
 			    						}
-			    						if ((request.getParameter("buildTypeAll") != null ) && (request.getParameter("buildTypeAll").equalsIgnoreCase("on"))){
+			    						if ((request.getParameter("buildTypeAll") != null ) && ("on".equalsIgnoreCase(request.getParameter("buildTypeAll")))){
 			    							buildTypeAll = true;
 			    						} else {
 			    							if (request.getParameterValues("buildTypeId") != null){
@@ -212,7 +212,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    							}
 			    						}
 		    						
-			    						if (request.getParameter(SLACK_NOTIFICATION_ID).equals("new")){
+			    						if ("new".equals(request.getParameter(SLACK_NOTIFICATION_ID))){
 			    							projSettings.addNewSlackNotification(myProject.getProjectId(), request.getParameter("token"), request.getParameter(CHANNEL), request.getParameter("team"), enabled,
 													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
 			    							if(projSettings.updateSuccessful()){
