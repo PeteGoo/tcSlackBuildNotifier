@@ -56,7 +56,7 @@ public class SlackNotificator implements Notificator {
         notificationFactory = factory;
         payloadManager = manager;
         buildServer = sBuildServer;
-        notificationUtility=new NotificationUtility();
+        notificationUtility = new NotificationUtility();
     }
 
     public void register(){

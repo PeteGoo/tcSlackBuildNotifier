@@ -45,7 +45,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         myMainSettings = null;
         myManager = null;
         slackNotificationFactory = null;
-		notificationUtility=new NotificationUtility();
+		notificationUtility = new NotificationUtility();
     }
 
     public SlackNotificationListener(SBuildServer sBuildServer, ProjectSettingsManager settings,
@@ -57,7 +57,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         myMainSettings = configSettings;
         myManager = manager;
         slackNotificationFactory = factory;
-		notificationUtility=new NotificationUtility();
+		notificationUtility = new NotificationUtility();
         Loggers.SERVER.info("SlackNotificationListener :: Starting");
     }
     
