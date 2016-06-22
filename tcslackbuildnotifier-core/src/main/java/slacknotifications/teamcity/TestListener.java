@@ -8,9 +8,13 @@ import jetbrains.buildServer.tests.TestName;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestListener extends BuildServerAdapter {
-	
+
+	private static final Logger LOGGER = Logger.getLogger(TestListener.class.getName());
+
 	private SBuildServer myBuildServer;
 
 	public TestListener(SBuildServer sBuildServer, ProjectSettingsManager settings) {
@@ -60,10 +64,14 @@ public class TestListener extends BuildServerAdapter {
 		String newUser = "Nobody";
 		try {
 			oldUser = oldValue.getResponsibleUser().getDescriptiveName();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			LOGGER.log(Level.INFO,e.getMessage(),e);
+		}
 		try {
 			newUser = newValue.getResponsibleUser().getDescriptiveName();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			LOGGER.log(Level.INFO,e.getMessage(),e);
+		}
 		logit("Build " + bt.getFullName() 
 				+ " has changed responsibility from " 
 				+ oldUser + " to " + newUser);
