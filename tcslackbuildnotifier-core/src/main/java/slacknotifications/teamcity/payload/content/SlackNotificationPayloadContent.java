@@ -77,7 +77,6 @@ public class SlackNotificationPayloadContent {
     private ArrayList<String> failedTestNames = new ArrayList<String>();
 
     public SlackNotificationPayloadContent(){
-        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     /**
