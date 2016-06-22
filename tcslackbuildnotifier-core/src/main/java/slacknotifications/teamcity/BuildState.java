@@ -142,27 +142,17 @@ public class BuildState {
 	public boolean noneEnabled() {
 		int enabled = 0;
 		for (BuildStateEnum state : states.keySet()){
-			if (state.equals(BUILD_BROKEN)){
-				continue;
-			}
-			if (state.equals(BUILD_FIXED)){
-				continue;
-			}
-			if (state.equals(BUILD_SUCCESSFUL)){
-				continue;
-			}
-			if (state.equals(BUILD_FAILED)){
-				continue;
-			}
-			
 			if (state.equals(BUILD_FINISHED)){
 				if (finishEnabled()){
 					enabled++;
 				}
+			}
+			if (state.equals(BUILD_FINISHED) || state.equals(BUILD_BROKEN) || state.equals(BUILD_FIXED) || state.equals(BUILD_SUCCESSFUL) || state.equals(BUILD_FAILED)){
 				continue;
 			}
-			if (states.get(state).isEnabled())  
+			if (states.get(state).isEnabled()){
 				enabled++;
+			}
 		}
 		return enabled == 0;
 	}
