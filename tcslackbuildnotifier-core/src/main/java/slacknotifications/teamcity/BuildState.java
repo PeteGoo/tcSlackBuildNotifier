@@ -122,16 +122,10 @@ public class BuildState {
 	public boolean allEnabled() {
 		boolean areAllEnbled = true;
 		for (BuildStateEnum state : states.keySet()){
-			if (state.equals(BUILD_BROKEN)){
-				if (states.get(BUILD_BROKEN).isEnabled()){
-					return false;
-				}
-				continue;
+			if ((state.equals(BUILD_BROKEN) && states.get(BUILD_BROKEN).isEnabled()) || (state.equals(BUILD_FIXED) && states.get(BUILD_FIXED).isEnabled())){
+				return false;
 			}
-			if (state.equals(BUILD_FIXED)){
-				if (states.get(BUILD_FIXED).isEnabled()){
-					return false;
-				}
+			if (state.equals(BUILD_BROKEN) || state.equals(BUILD_FIXED)) {
 				continue;
 			}
 			areAllEnbled = areAllEnbled && states.get(state).isEnabled();  
