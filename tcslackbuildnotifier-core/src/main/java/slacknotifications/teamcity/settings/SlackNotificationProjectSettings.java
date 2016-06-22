@@ -28,6 +28,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
 	}
 
     @SuppressWarnings("unchecked")
+	@Override
 	public void readFrom(Element rootElement)
     /* Is passed an Element by TC, and is expected to load it into the in memory settings object.
      * Old settings should be overwritten.
@@ -57,6 +58,7 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     	}
     }
 
+	@Override
     public void writeTo(Element parentElement)
     /* Is passed an (probably empty) Element by TC, which is expected to be populated from the settings
      * in memory. 
@@ -170,7 +172,8 @@ public class SlackNotificationProjectSettings implements ProjectSettings {
     public Boolean updateSuccessful(){
     	return this.updateSuccess;
     }
-    
+
+	@Override
 	public void dispose() {
 		Loggers.SERVER.debug(NAME + ":dispose() called");
 	}

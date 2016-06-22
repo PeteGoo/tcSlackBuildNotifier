@@ -49,6 +49,7 @@ public class SlackNotificationAjaxSettingsListPageController extends BaseControl
 	      myWebManager.registerController("/slacknotifications/settingsList.html", this);
 	    }
 
+		@Override
 	    @Nullable
 	    protected ModelAndView doHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    	

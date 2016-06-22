@@ -272,7 +272,8 @@ public class SlackNotificationListener extends BuildServerAdapter {
 						//Loggers.ACTIVITIES.debug("SlackNotificationListener :: " + myManager.getFormat(whcw.whc.getPayloadFormat()).getFormatDescription());
      	}
 	}
-	
+
+	@Override
 	public void responsibleRemoved(SProject project, TestNameResponsibilityEntry entry){
 		
 	}

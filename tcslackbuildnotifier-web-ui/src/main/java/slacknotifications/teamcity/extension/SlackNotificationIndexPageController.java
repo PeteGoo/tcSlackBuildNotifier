@@ -59,6 +59,7 @@ public class SlackNotificationIndexPageController extends BaseController {
 	      myWebManager.registerController("/slacknotifications/index.html", this);
 	    }
 
+		@Override
 	    @Nullable
 	    protected ModelAndView doHandle(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    	

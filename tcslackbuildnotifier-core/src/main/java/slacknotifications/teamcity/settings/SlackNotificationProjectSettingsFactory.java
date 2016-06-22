@@ -12,6 +12,7 @@ public class SlackNotificationProjectSettingsFactory implements ProjectSettingsF
 		projectSettingsManager.registerSettingsFactory("slackNotifications", this);
 	}
 
+	@Override
 	public SlackNotificationProjectSettings createProjectSettings(String projectId) {
 		Loggers.SERVER.info("SlackNotificationProjectSettingsFactory: re-reading settings for " + projectId);
 		SlackNotificationProjectSettings whs = new SlackNotificationProjectSettings();
