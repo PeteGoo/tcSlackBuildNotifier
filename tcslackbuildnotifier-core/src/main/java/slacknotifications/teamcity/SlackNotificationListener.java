@@ -37,6 +37,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
     private final SlackNotificationMainSettings myMainSettings;
     private final SlackNotificationPayloadManager myManager;
     private final SlackNotificationFactory slackNotificationFactory;
+	private NotificationUtility notificationUtility;
 
     public SlackNotificationListener(){
         myBuildServer = null;
@@ -44,6 +45,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         myMainSettings = null;
         myManager = null;
         slackNotificationFactory = null;
+		notificationUtility = new NotificationUtility();
     }
 
     public SlackNotificationListener(SBuildServer sBuildServer, ProjectSettingsManager settings,
@@ -55,7 +57,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         myMainSettings = configSettings;
         myManager = manager;
         slackNotificationFactory = factory;
-        
+		notificationUtility = new NotificationUtility();
         Loggers.SERVER.info("SlackNotificationListener :: Starting");
     }
     
@@ -283,41 +285,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 	 * @param notification
 	 */
 	public void doPost(SlackNotification notification) {
-		try {
-			if (notification.isEnabled()){
-				notification.post();
-                if (notification.getResponse() != null && !notification.getResponse().getOk()) {
-                    Loggers.SERVER.error(this.getClass().getSimpleName() + " :: SlackNotification failed : "
-                            + notification.getChannel()
-                            + " returned error " + notification.getResponse().getError()
-                            + " " + notification.getErrorReason());
-                }
-                else {
-                    Loggers.SERVER.info(this.getClass().getSimpleName() + " :: SlackNotification delivered : "
-                            + notification.getChannel()
-                            + " returned " + notification.getStatus()
-                            + " " + notification.getErrorReason());
-                }
-				Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " + notification.getPayload());
-				if (notification.isErrored()){
-					Loggers.SERVER.error(notification.getErrorReason());
-				}
-				if ((notification.getStatus() == null || notification.getStatus() > HttpStatus.SC_OK))
-					Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + notification.getParam("projectId") + " SlackNotification (url: " + notification.getChannel() + " proxy: " + notification.getProxyHost() + ":" + notification.getProxyPort()+") returned HTTP status " + notification.getStatus().toString());
-
-			} else {
-				Loggers.SERVER.debug("SlackNotification NOT triggered: "
-                        + notification.getParam("buildStatus") + " " + notification.getChannel());
-			}
-		} catch (FileNotFoundException e) {
-			Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: " 
-					+ "A FileNotFoundException occurred while attempting to execute SlackNotification (" + notification.getChannel() + "). See the following stacktrace");
-			Loggers.SERVER.warn(e);
-		} catch (IOException e) {
-			Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: " 
-					+ "An IOException occurred while attempting to execute SlackNotification (" + notification.getChannel() + "). See the following stacktrace");
-			Loggers.SERVER.warn(e);
-		}
+		notificationUtility.doPost(notification);
 	}
 
 	@Nullable
