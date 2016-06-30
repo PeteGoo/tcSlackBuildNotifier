@@ -1,5 +1,8 @@
 package slacknotifications.teamcity.settings.converter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class OldStyleBuildState {
     public static final Integer BUILD_STARTED  			= Integer.parseInt("00000001",2);
     public static final Integer BUILD_FINISHED 			= Integer.parseInt("00000010",2);
@@ -9,7 +12,26 @@ public final class OldStyleBuildState {
     public static final Integer BUILD_INTERRUPTED 		= Integer.parseInt("00100000",2);
     
     public static final Integer ALL_ENABLED				= Integer.parseInt("11111111",2);
-    
+	private static final Map<Integer, String>  shortNameMessages;
+	private static final Map<Integer, String>  descriptionMessages;
+
+	static {
+		shortNameMessages = new HashMap<Integer, String>();
+		shortNameMessages.put(BUILD_STARTED, "buildStarted");
+		shortNameMessages.put(BUILD_FINISHED, "buildFinished");
+		shortNameMessages.put(BUILD_CHANGED_STATUS, "statusChanged");
+		shortNameMessages.put(BEFORE_BUILD_FINISHED, "beforeBuildFinish");
+		shortNameMessages.put(RESPONSIBILITY_CHANGED, "responsibilityChanged");
+		shortNameMessages.put(BUILD_INTERRUPTED, "buildInterrupted");
+
+		descriptionMessages = new HashMap<Integer, String>();
+		descriptionMessages.put(BUILD_STARTED, "started");
+		descriptionMessages.put(BUILD_FINISHED, "finished");
+		descriptionMessages.put(BUILD_CHANGED_STATUS, "changed status");
+		descriptionMessages.put(BEFORE_BUILD_FINISHED, "nearly finished");
+		descriptionMessages.put(RESPONSIBILITY_CHANGED, "changed responsibility");
+		descriptionMessages.put(BUILD_INTERRUPTED, "been interrupted");
+	}
     
     private OldStyleBuildState(){}
     /**
@@ -33,14 +55,7 @@ public final class OldStyleBuildState {
      * @return A string representing the shortname of the state. Is used in messages.
      */
 	public static String getShortName(Integer stateInt) {
-		
-		if (stateInt.equals(BUILD_STARTED)) 		{	return "buildStarted"; }
-		if (stateInt.equals(BUILD_FINISHED))		{	return "buildFinished"; }
-		if (stateInt.equals(BUILD_CHANGED_STATUS)) 	{ 	return "statusChanged"; }
-		if (stateInt.equals(BEFORE_BUILD_FINISHED)) {	return "beforeBuildFinish"; }
-		if (stateInt.equals(RESPONSIBILITY_CHANGED)){ 	return "responsibilityChanged"; }
-		if (stateInt.equals(BUILD_INTERRUPTED))		{ 	return "buildInterrupted"; }
-		return null;
+		return shortNameMessages.get(stateInt);
 	}
 	
 	/**
@@ -50,14 +65,7 @@ public final class OldStyleBuildState {
 	 * @return A string that fits into the sentence "The build has...<state>"
 	 */
 	public static String getDescriptionSuffix(Integer stateInt) {
-
-		if (stateInt.equals(BUILD_STARTED)) 		{	 return "started"; }
-		if (stateInt.equals(BUILD_FINISHED)) 		{	 return "finished"; }
-		if (stateInt.equals(BUILD_CHANGED_STATUS)) 	{	 return "changed status"; }
-		if (stateInt.equals(BEFORE_BUILD_FINISHED)) {	 return "nearly finished"; }
-		if (stateInt.equals(RESPONSIBILITY_CHANGED)){	 return "changed responsibility"; }
-		if (stateInt.equals(BUILD_INTERRUPTED)) 	{	 return "been interrupted"; }
-		return null;
+		return  descriptionMessages.get(stateInt);
 	}
     
 }
