@@ -113,7 +113,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    		if ((projSettings != null) && (myProject != null)
 			    				&& (myUser.isPermissionGrantedForProject(myProject.getProjectId(), Permission.EDIT_PROJECT))){
 			    			if ((request.getParameter(SUBMIT_ACTION) != null ) 
-			    				&& (request.getParameter(SUBMIT_ACTION).equals("removeSlackNotification"))
+			    				&& ("removeSlackNotification".equals(request.getParameter(SUBMIT_ACTION)))
 			    				&& (request.getParameter("removedSlackNotificationId") != null)){
 			    					projSettings.deleteSlackNotification(request.getParameter("removedSlackNotificationId"), myProject.getProjectId());
 			    					if(projSettings.updateSuccessful()){
@@ -124,7 +124,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    					}
 			    					
 			    			} else if ((request.getParameter(SUBMIT_ACTION) != null ) 
-				    				&& (request.getParameter(SUBMIT_ACTION).equals("updateSlackNotification"))){
+				    				&& ("updateSlackNotification".equals(request.getParameter(SUBMIT_ACTION)))){
 			    				if((request.getParameter(CHANNEL) != null )
 				    				&& (request.getParameter(CHANNEL).length() > 0 )){
 			    					
@@ -249,7 +249,7 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 	    		}
 	    	}
 
-	    	if (request.getMethod().equalsIgnoreCase("get")
+	    	if ("get".equalsIgnoreCase(request.getMethod())
 	        		&& request.getParameter(PROJECT_ID) != null 
 	        		&& request.getParameter(PROJECT_ID).startsWith("project")){
 	        	
