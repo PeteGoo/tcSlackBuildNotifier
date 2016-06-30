@@ -34,7 +34,21 @@ public class SlackNotifierSettingsController extends BaseController {
     public static final String TEST_PARAMETER = "test";
     private static final Object ACTION_ENABLE = "enable";
     private static final String ACTION_PARAMETER = "action";
-
+    private String teamName;
+    private String token;
+    private String botName;
+    private String iconUrl;
+    private String defaultChannel;
+    private String maxCommitsToDisplay;
+    private String showBuildAgent;
+    private String showCommits;
+    private String showCommitters;
+    private String showElapsedBuildTime;
+    private String showFailureReason;
+    private String proxyHost;
+    private String proxyPort;
+    private String proxyUser;
+    private String proxyPassword;
 
     private SBuildServer server;
     private ServerPaths serverPaths;
@@ -87,23 +101,26 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.save();
     }
 
-    private HashMap<String, Object> handleTestNotification(HttpServletRequest request) throws IOException, SlackConfigValidationException {
-        String teamName = request.getParameter("teamName");
-        String token = request.getParameter("token");
-        String botName = request.getParameter("botName");
-        String iconUrl = request.getParameter("iconUrl");
-        String defaultChannel = request.getParameter("defaultChannel");
-        String maxCommitsToDisplay = request.getParameter("maxCommitsToDisplay");
-        String showBuildAgent = request.getParameter("showBuildAgent");
-        String showCommits = request.getParameter("showCommits");
-        String showCommitters = request.getParameter("showCommitters");
-        String showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
-        String showFailureReason = request.getParameter("showFailureReason");
-        String proxyHost = request.getParameter("proxyHost");
-        String proxyPort = request.getParameter("proxyPort");
-        String proxyUser = request.getParameter("proxyUser");
-        String proxyPassword = request.getParameter("proxyPassword");
+    private void setRequestParams(HttpServletRequest request) {
+        teamName = request.getParameter("teamName");
+        token = request.getParameter("token");
+        botName = request.getParameter("botName");
+        iconUrl = request.getParameter("iconUrl");
+        defaultChannel = request.getParameter("defaultChannel");
+        maxCommitsToDisplay = request.getParameter("maxCommitsToDisplay");
+        showBuildAgent = request.getParameter("showBuildAgent");
+        showCommits = request.getParameter("showCommits");
+        showCommitters = request.getParameter("showCommitters");
+        showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
+        showFailureReason = request.getParameter("showFailureReason");
+        proxyHost = request.getParameter("proxyHost");
+        proxyPort = request.getParameter("proxyPort");
+        proxyUser = request.getParameter("proxyUser");
+        proxyPassword = request.getParameter("proxyPassword");
+    }
 
+    private HashMap<String, Object> handleTestNotification(HttpServletRequest request) throws IOException, SlackConfigValidationException {
+        setRequestParams(request);
         HashMap<String, Object> params = new HashMap<String, Object>();
 
         Validate(teamName, token, botName, iconUrl, defaultChannel, maxCommitsToDisplay, showBuildAgent, proxyHost, proxyPort, proxyUser, proxyPassword);
@@ -212,22 +229,7 @@ public class SlackNotifierSettingsController extends BaseController {
     }
 
     private HashMap<String, Object> handleConfigurationChange(HttpServletRequest request) throws IOException, SlackConfigValidationException {
-        String teamName = request.getParameter("teamName");
-        String token = request.getParameter("token");
-        String botName = request.getParameter("botName");
-        String iconUrl = request.getParameter("iconUrl");
-        String defaultChannel = request.getParameter("defaultChannel");
-        String maxCommitsToDisplay = request.getParameter("maxCommitsToDisplay");
-        String showBuildAgent = request.getParameter("showBuildAgent");
-        String showCommits = request.getParameter("showCommits");
-        String showCommitters = request.getParameter("showCommitters");
-        String showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
-        String showFailureReason = request.getParameter("showFailureReason");
-        String proxyHost = request.getParameter("proxyHost");
-        String proxyPort = request.getParameter("proxyPort");
-        String proxyUser = request.getParameter("proxyUser");
-        String proxyPassword = request.getParameter("proxyPassword");
-
+        setRequestParams(request);
         if(!isNullOrEmpty(proxyPassword)){
             proxyPassword = RSACipher.decryptWebRequestData(proxyPassword);
         }
