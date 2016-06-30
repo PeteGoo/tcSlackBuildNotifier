@@ -28,6 +28,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	private static final String SHOW_FAILURE_REASON = "showFailureReason";
 	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
 	private static final String SHOW_ELAPSED_BUILD_TIME = "showElapsedBuildTime";
+	private static final String HTTPS = "https://";
+	private static final String HTTP = "http://";
+	private static final String PROXY = "proxy";
+	private static final String USERNAME = "username";
+	private static final String PASSWORD = "password";
+	private static final String ENABLED = "enabled";
+	private static final String TEAM_NAME = "teamName";
+
 
     private final FileWatcher myChangeObserver;
 	private final File myConfigDir;
@@ -59,7 +67,6 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		this.myConfigFile = new File(this.myConfigDir, "slack-config.xml");
         configFileExists = this.myConfigFile.exists();
 		reloadConfiguration();
-
 		this.myChangeObserver = new FileWatcher(this.myConfigFile);
 		this.myChangeObserver.setSleepingPeriod(10000L);
 		this.myChangeObserver.registerListener(this);
@@ -109,14 +116,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 
 	public String stripProtocolFromUrl(String url){
 		String tmpURL = url;
-		if(tmpURL.length() > "https://".length() 
-			&& "https://".equalsIgnoreCase(tmpURL.substring(0,"https://".length())))
+		if(tmpURL.length() > HTTPS.length()
+			&& HTTPS.equalsIgnoreCase(tmpURL.substring(0,HTTPS.length())))
 		{
-				tmpURL = tmpURL.substring("https://".length());
-		} else if (tmpURL.length() > "http://".length() 
-			&& "http://".equalsIgnoreCase(tmpURL.substring(0,"http://".length())))
+				tmpURL = tmpURL.substring(HTTPS.length());
+		} else if (tmpURL.length() > HTTP.length()
+			&& HTTP.equalsIgnoreCase(tmpURL.substring(0,HTTP.length())))
 		{
-				tmpURL = tmpURL.substring("http://".length());
+				tmpURL = tmpURL.substring(HTTP.length());
 		}
 		return tmpURL;
 	}
@@ -153,14 +160,14 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		if (this.getProxyHost() == null || this.getProxyPort() == null){
 			return null;
 		}
-		Element el = new Element("proxy");
+		Element el = new Element(PROXY);
 		el.setAttribute("host", this.getProxyHost());
 		el.setAttribute("port", String.valueOf(this.getProxyPort()));
 		if (   this.proxyPassword != null && this.proxyPassword.length() > 0 
 			&& this.proxyUsername != null && this.proxyUsername.length() > 0 )
 		{
-			el.setAttribute("username", this.getProxyUsername());
-			el.setAttribute("password", this.getProxyPassword());
+			el.setAttribute(USERNAME, this.getProxyUsername());
+			el.setAttribute(PASSWORD, this.getProxyPassword());
 			
 		}
 		return el;
@@ -272,12 +279,20 @@ public class SlackNotificationMainConfig implements ChangeListener {
 				FileUtil.processXmlFile(SlackNotificationMainConfig.this.myConfigFile, new FileUtil.Processor() {
 					public void process(Element rootElement) {
                         rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
-                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
+                        rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute(DEFAULT_CHANNEL, emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
-                        rootElement.setAttribute("teamName", emptyIfNull(SlackNotificationMainConfig.this.teamName));
+                        rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute(TOKEN, emptyIfNull(SlackNotificationMainConfig.this.token));
 						rootElement.setAttribute(ICON_URL, emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
 						rootElement.setAttribute(BOT_NAME, emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
+                        rootElement.setAttribute(ENABLED, Boolean.toString(SlackNotificationMainConfig.this.enabled));
+                        rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
+						rootElement.setAttribute("defaultChannel", emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
+                        rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
+						rootElement.setAttribute("token", emptyIfNull(SlackNotificationMainConfig.this.token));
+						rootElement.setAttribute("iconurl", emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
+						rootElement.setAttribute("botname", emptyIfNull(SlackNotificationMainConfig.this.content.getBotName()));
+
 						if(SlackNotificationMainConfig.this.content.getShowBuildAgent() != null){
 							rootElement.setAttribute(SHOW_BUILD_AGENT, Boolean.toString(SlackNotificationMainConfig.this.content.getShowBuildAgent()));
 						}
@@ -295,7 +310,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                         }
 						rootElement.setAttribute(MAX_COMMITS_TO_DISPLAY, Integer.toString(SlackNotificationMainConfig.this.content.getMaxCommitsToDisplay()));
 
-                        rootElement.removeChildren("proxy");
+                        rootElement.removeChildren(PROXY);
                         rootElement.removeChildren("info");
 
 						if(getProxyHost() != null && getProxyHost().length() > 0
@@ -334,17 +349,17 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	void readConfigurationFromXmlElement(Element slackNotificationsElement) {
         if(slackNotificationsElement != null){
             content.setEnabled(true);
-            if(slackNotificationsElement.getAttribute("enabled") != null)
+            if(slackNotificationsElement.getAttribute(ENABLED) != null)
             {
-                setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue("enabled")));
+                setEnabled(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(ENABLED)));
             }
             if(slackNotificationsElement.getAttribute(DEFAULT_CHANNEL) != null)
             {
                 setDefaultChannel(slackNotificationsElement.getAttributeValue(DEFAULT_CHANNEL));
             }
-            if(slackNotificationsElement.getAttribute("teamName") != null)
+            if(slackNotificationsElement.getAttribute(TEAM_NAME) != null)
             {
-                setTeamName(slackNotificationsElement.getAttributeValue("teamName"));
+                setTeamName(slackNotificationsElement.getAttributeValue(TEAM_NAME));
             }
             if(slackNotificationsElement.getAttribute(TOKEN) != null)
             {
@@ -383,7 +398,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                 content.setShowFailureReason(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_FAILURE_REASON)));
             }
 
-            Element proxyElement = slackNotificationsElement.getChild("proxy");
+            Element proxyElement = slackNotificationsElement.getChild(PROXY);
             if(proxyElement != null)
             {
                 if (proxyElement.getAttribute("proxyShortNames") != null){
@@ -398,12 +413,12 @@ public class SlackNotificationMainConfig implements ChangeListener {
                     setProxyPort(Integer.parseInt(proxyElement.getAttributeValue("port")));
                 }
 
-                if (proxyElement.getAttribute("username") != null){
-                    setProxyUsername(proxyElement.getAttributeValue("username"));
+                if (proxyElement.getAttribute(USERNAME) != null){
+                    setProxyUsername(proxyElement.getAttributeValue(USERNAME));
                 }
 
-                if (proxyElement.getAttribute("password") != null){
-                    setProxyPassword(proxyElement.getAttributeValue("password"));
+                if (proxyElement.getAttribute(PASSWORD) != null){
+                    setProxyPassword(proxyElement.getAttributeValue(PASSWORD));
                 }
             }
             else {
