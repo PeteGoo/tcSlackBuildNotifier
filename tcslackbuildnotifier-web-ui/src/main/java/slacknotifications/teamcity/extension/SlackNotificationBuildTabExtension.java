@@ -38,6 +38,7 @@ public class SlackNotificationBuildTabExtension extends BuildTypeTab {
 		myPluginPath = pluginDescriptor.getPluginResourcesPath();
 	}
 
+	@Override
 	public boolean isAvailable(@NotNull HttpServletRequest request) {
 		return true;
 	}

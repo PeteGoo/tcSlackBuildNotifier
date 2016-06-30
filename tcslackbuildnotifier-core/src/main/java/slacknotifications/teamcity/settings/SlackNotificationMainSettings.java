@@ -38,6 +38,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 	}
 	
     @SuppressWarnings("unchecked")
+    @Override
     public void readFrom(Element rootElement)
     /* Is passed an Element by TC, and is expected to persist it to the settings object.
      * Old settings should be overwritten.
@@ -57,6 +58,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         tempConfig.save();
     }
 
+    @Override
     public void writeTo(Element parentElement)
     /* Is passed an (probably empty) Element by TC, which is expected to be populated from the settings
      * in memory. 
