@@ -37,6 +37,8 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
     private int maxCommitsToDisplay;
     private boolean showFailureReason;
     private String botName;
+	private String templateTitle;
+	private String templateBody;
     private String iconUrl;
 
 	public SlacknotificationConfigAndBuildTypeListHolder(SlackNotificationConfig config, SlackNotificationMainSettings mainSettings) {
@@ -61,6 +63,8 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
         showCommitters = valueOrFallback(config.getContent().getShowCommitters(), valueOrFallback(mainSettings.getShowCommitters(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITTERS));
         showFailureReason = valueOrFallback(config.getContent().getShowFailureReason(), valueOrFallback(mainSettings.getShowFailureReason(), SlackNotificationContentConfig.DEFAULT_SHOW_FAILURE_REASON));
         botName = valueOrFallback(config.getContent().getBotName(), SlackNotificationMainConfig.DEFAULT_BOTNAME);
+        templateTitle = config.getContent().getTemplateTitle();
+        templateBody = config.getContent().getTemplateBody();
         iconUrl = valueOrFallback(config.getContent().getIconUrl(), SlackNotificationMainConfig.DEFAULT_ICONURL);
 	}
 

@@ -26,6 +26,8 @@ public class SlackNotificationConfig {
 	private static final String ENABLED_FOR_ALL = "enabled-for-all";
 	private static final String ENABLED_FOR_SUBPROJECTS = "enabled-for-subprojects";
 	private static final String BOT_NAME = "botName";
+	private static final String TEMPLATE_TITLE = "templateTitle";
+	private static final String TEMPLATE_BODY = "templateBody";
 	private static final String CUSTOM_TEMPLATES = "custom-templates";
 	private static final String CONTENT = "content";
 	private static final String ICON_URL = "iconUrl";
@@ -161,6 +163,12 @@ public class SlackNotificationConfig {
             if (eContent.getAttribute(BOT_NAME) != null){
                 this.content.setBotName(eContent.getAttributeValue(BOT_NAME));
             }
+			if (eContent.getAttribute(TEMPLATE_TITLE) != null){
+				this.content.setTemplateTitle(eContent.getAttributeValue(TEMPLATE_TITLE));
+			}
+			if (eContent.getAttribute(TEMPLATE_BODY) != null){
+				this.content.setTemplateBody(eContent.getAttributeValue(TEMPLATE_BODY));
+			}
             if (eContent.getAttribute(SHOW_BUILD_AGENT) != null){
                 this.content.setShowBuildAgent(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_BUILD_AGENT)));
             }
@@ -269,6 +277,8 @@ public class SlackNotificationConfig {
             Element customContentEl = new Element(CONTENT);
             customContentEl.setAttribute(ICON_URL, this.content.getIconUrl());
             customContentEl.setAttribute(BOT_NAME, this.content.getBotName());
+			customContentEl.setAttribute(TEMPLATE_TITLE, this.content.getTemplateTitle());
+			customContentEl.setAttribute(TEMPLATE_BODY, this.content.getTemplateBody());
             customContentEl.setAttribute(MAX_COMMITS_TO_DISPLAY, Integer.toString(this.content.getMaxCommitsToDisplay()));
             customContentEl.setAttribute(SHOW_BUILD_AGENT, this.content.getShowBuildAgent().toString());
             customContentEl.setAttribute("showElapsedBuildTime", this.content.getShowElapsedBuildTime().toString());

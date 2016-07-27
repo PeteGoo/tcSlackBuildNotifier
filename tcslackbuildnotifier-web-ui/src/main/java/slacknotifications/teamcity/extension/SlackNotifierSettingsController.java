@@ -38,6 +38,8 @@ public class SlackNotifierSettingsController extends BaseController {
     private String token;
     private String botName;
     private String iconUrl;
+    private String templateTitle;
+    private String templateBody;
     private String defaultChannel;
     private String maxCommitsToDisplay;
     private String showBuildAgent;
@@ -106,6 +108,8 @@ public class SlackNotifierSettingsController extends BaseController {
         token = request.getParameter("token");
         botName = request.getParameter("botName");
         iconUrl = request.getParameter("iconUrl");
+        templateTitle = request.getParameter("templateTitle");
+        templateBody = request.getParameter("templateBody");
         defaultChannel = request.getParameter("defaultChannel");
         maxCommitsToDisplay = request.getParameter("maxCommitsToDisplay");
         showBuildAgent = request.getParameter("showBuildAgent");
@@ -125,7 +129,7 @@ public class SlackNotifierSettingsController extends BaseController {
 
         Validate(teamName, token, botName, iconUrl, defaultChannel, maxCommitsToDisplay, showBuildAgent, proxyHost, proxyPort, proxyUser, proxyPassword);
 
-        SlackNotification notification = createMockNotification(teamName, defaultChannel, botName,
+        SlackNotification notification = createMockNotification(teamName, defaultChannel, botName, templateTitle, templateBody,
                 token, iconUrl, Integer.parseInt(maxCommitsToDisplay),
                 Boolean.parseBoolean(showElapsedBuildTime), Boolean.parseBoolean(showBuildAgent),
                 Boolean.parseBoolean(showCommits), Boolean.parseBoolean(showCommitters), Boolean.parseBoolean(showFailureReason),
@@ -166,6 +170,7 @@ public class SlackNotifierSettingsController extends BaseController {
     }
 
     public SlackNotification createMockNotification(String teamName, String defaultChannel, String botName,
+                                                    String templateTitle, String templateBody,
                                                     String token, String iconUrl, Integer maxCommitsToDisplay,
                                                     Boolean showElapsedBuildTime, Boolean showBuildAgent, Boolean showCommits,
                                                     Boolean showCommitters, Boolean showFailureReason, String proxyHost,
@@ -175,6 +180,8 @@ public class SlackNotifierSettingsController extends BaseController {
         notification.setBotName(botName);
         notification.setToken(token);
         notification.setIconUrl(iconUrl);
+        notification.setTemplateTitle(templateTitle);
+        notification.setTemplateBody(templateBody);
         notification.setMaxCommitsToDisplay(maxCommitsToDisplay);
         notification.setShowElapsedBuildTime(showElapsedBuildTime);
         notification.setShowBuildAgent(showBuildAgent);
@@ -240,6 +247,8 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.setToken(token);
         this.config.getContent().setBotName(botName);
         this.config.getContent().setIconUrl(iconUrl);
+        this.config.getContent().setTemplateTitle(templateTitle);
+        this.config.getContent().setTemplateBody(templateBody);
         this.config.setDefaultChannel(defaultChannel);
         this.config.getContent().setMaxCommitsToDisplay(Integer.parseInt(maxCommitsToDisplay));
         this.config.getContent().setShowBuildAgent(Boolean.parseBoolean(showBuildAgent));
@@ -247,7 +256,6 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.getContent().setShowCommitters(Boolean.parseBoolean(showCommitters));
         this.config.getContent().setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
         this.config.getContent().setShowFailureReason((Boolean.parseBoolean(showFailureReason)));
-
 
         this.config.setProxyHost(proxyHost);
         this.config.setProxyPort(isNullOrEmpty(proxyPort) ? null : Integer.parseInt(proxyPort));

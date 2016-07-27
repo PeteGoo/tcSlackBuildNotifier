@@ -241,6 +241,23 @@
                                                     <input type="text" name="iconUrl" id="iconUrl" />
                                                 </td>
                                             </tr>
+
+											<tr class="onCustomContentEnabled">
+												<td>
+													<label for="templateTitle">Message title:</label>
+												</td>
+												<td colspan="2">
+													<input type="text" name="templateTitle" id="templateTitle" />
+												</td>
+											</tr>
+											<tr class="onCustomContentEnabled">
+												<td>
+													<label for="templateBody">Message body:</label>
+												</td>
+												<td colspan="2">
+													<input type="text" name="templateBody" id="templateBody" />
+												</td>
+											</tr>
                                         </table>
 
                                 </div>

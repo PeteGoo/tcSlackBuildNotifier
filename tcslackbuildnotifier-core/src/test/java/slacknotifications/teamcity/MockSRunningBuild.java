@@ -25,6 +25,8 @@ import jetbrains.buildServer.vcs.SVcsModification;
 import jetbrains.buildServer.vcs.SelectPrevBuildPolicy;
 import jetbrains.buildServer.vcs.VcsException;
 import jetbrains.buildServer.vcs.VcsRootInstanceEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -471,7 +473,23 @@ public class MockSRunningBuild implements SRunningBuild {
 
 	public ParametersProvider getParametersProvider() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ParametersProvider() {
+			@Nullable
+			@Override
+			public String get(@NotNull String s) {
+				return null;
+			}
+
+			@Override
+			public int size() {
+				return 0;
+			}
+
+			@Override
+			public Map<String, String> getAll() {
+				return Collections.emptyMap();
+			}
+		};
 	}
 
 	public boolean isOutdated() {

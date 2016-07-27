@@ -145,7 +145,9 @@
 					jQuerySlacknotification('#showCommitters').attr('checked', slacknotification.showCommitters);
 					jQuerySlacknotification('#showElapsedBuildTime').attr('checked', slacknotification.showElapsedBuildTime);
 					jQuerySlacknotification('#botName').val(slacknotification.botName);
-					jQuerySlacknotification('#iconUrl').val(slacknotification.iconUrl)
+					jQuerySlacknotification('#iconUrl').val(slacknotification.iconUrl);
+					jQuerySlacknotification('#templateTitle').val(slacknotification.templateTitle);
+					jQuerySlacknotification('#templateBody').val(slacknotification.templateBody);
 					jQuerySlacknotification('#showFailureReason').attr('checked', slacknotification.showFailureReason);
 				}
 			});

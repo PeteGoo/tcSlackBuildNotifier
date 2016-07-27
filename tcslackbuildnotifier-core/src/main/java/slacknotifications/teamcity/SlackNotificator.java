@@ -216,6 +216,8 @@ public class SlackNotificator implements Notificator {
         notification.setToken(mainConfig.getToken());
         notification.setIconUrl(mainConfig.getIconUrl());
         notification.setBotName(mainConfig.getBotName());
+        notification.setTemplateTitle(mainConfig.getTemplateTitle());
+        notification.setTemplateBody(mainConfig.getTemplateBody());
         notification.setEnabled(mainConfig.getEnabled());
         notification.setShowBuildAgent(mainConfig.getShowBuildAgent());
         notification.setShowElapsedBuildTime(mainConfig.getShowElapsedBuildTime());

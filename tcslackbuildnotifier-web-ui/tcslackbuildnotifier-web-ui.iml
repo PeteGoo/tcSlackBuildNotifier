@@ -15,6 +15,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="tcslackbuildnotifier-core" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.4" level="project" />
+    <orderEntry type="library" name="Maven: org.freemarker:freemarker-gae:2.3.25-incubating" level="project" />
     <orderEntry type="module" module-name="tcslackbuildnotifier-core" scope="TEST" production-on-test="" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.jetbrains.teamcity:server-api:8.0.0" level="project" />

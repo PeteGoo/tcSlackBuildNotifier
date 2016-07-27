@@ -19,6 +19,8 @@ public class SlackNotificationContentConfig {
     private int maxCommitsToDisplay = 5;
     private boolean enabled;
     private Boolean showFailureReason;
+    private String templateTitle = "";
+    private String templateBody = "";
 
     public String getIconUrl() {
         return iconUrl;
@@ -34,6 +36,22 @@ public class SlackNotificationContentConfig {
 
     public void setBotName(String botName) {
         this.botName = botName;
+    }
+
+    public String getTemplateTitle() {
+        return templateTitle;
+    }
+
+    public void setTemplateTitle(String templateTitle) {
+        this.templateTitle = templateTitle;
+    }
+
+    public String getTemplateBody() {
+        return templateBody;
+    }
+
+    public void setTemplateBody(String templateBody) {
+        this.templateBody = templateBody;
     }
 
     public Boolean getShowBuildAgent() {

@@ -1,6 +1,9 @@
 package slacknotifications;
 
 import com.google.gson.Gson;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
 import jetbrains.buildServer.util.StringUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -17,7 +20,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpHost;
-import org.springframework.util.StringUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
@@ -26,13 +28,15 @@ import slacknotifications.teamcity.payload.content.SlackNotificationPayloadConte
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -71,7 +75,9 @@ public class SlackNotificationImpl implements SlackNotification {
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
     private boolean showFailureReason;
-	
+    private String templateTitle;
+    private String templateBody;
+
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
  *  We'll set that as the default, and then override if we get a more specific bit mask. */
@@ -361,8 +367,26 @@ public class SlackNotificationImpl implements SlackNotification {
             attachment.addField("", mentionContent, true);
         }
 
+        addCustomTemplate(attachment, this.payload.getParams());
         attachments.add(attachment);
         return attachments;
+    }
+
+    private void addCustomTemplate(Attachment attachment, Map<String, String> dataModel) {
+        try {
+            if (templateTitle != null && templateTitle.length() > 0) {
+                Configuration e = new Configuration();
+                e.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+                Template template = new Template("template", new StringReader(templateBody), e);
+                StringWriter writer = new StringWriter();
+                template.process(dataModel, writer);
+                writer.flush();
+                attachment.addField(templateTitle, writer.toString(), false);
+            }
+        } catch (Throwable e) {
+            Loggers.SERVER.error(e.getMessage(), e);
+        }
+
     }
 
     private class WebHookPayload {
@@ -472,6 +496,26 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public void setBotName(String botName) {
         this.botName = botName;
+    }
+
+    @Override
+    public String getTemplateTitle() {
+        return templateTitle;
+    }
+
+    @Override
+    public void setTemplateTitle(String templateTitle) {
+        this.templateTitle = templateTitle;
+    }
+
+    @Override
+    public String getTemplateBody() {
+        return templateBody;
+    }
+
+    @Override
+    public void setTemplateBody(String templateBody) {
+        this.templateBody = templateBody;
     }
 
     public String getChannel() {

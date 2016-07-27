@@ -72,6 +72,8 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setToken(StringUtil.isEmpty(slackNotificationConfig.getToken()) ? myMainSettings.getToken() : slackNotificationConfig.getToken());
         slackNotification.setIconUrl(myMainSettings.getIconUrl());
         slackNotification.setBotName(myMainSettings.getBotName());
+        slackNotification.setTemplateTitle(myMainSettings.getTemplateTitle());
+        slackNotification.setTemplateBody(myMainSettings.getTemplateBody());
 		slackNotification.setEnabled(myMainSettings.getEnabled() && slackNotificationConfig.getEnabled());
 		slackNotification.setBuildStates(slackNotificationConfig.getBuildStates());
 		slackNotification.setProxy(myMainSettings.getProxyConfig());
@@ -86,6 +88,8 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
         if(slackNotificationConfig.getContent() != null && slackNotificationConfig.getContent().isEnabled()) {
             slackNotification.setBotName(slackNotificationConfig.getContent().getBotName());
+            slackNotification.setTemplateTitle(slackNotificationConfig.getContent().getTemplateTitle());
+            slackNotification.setTemplateBody(slackNotificationConfig.getContent().getTemplateBody());
             slackNotification.setIconUrl(slackNotificationConfig.getContent().getIconUrl());
             slackNotification.setMaxCommitsToDisplay(slackNotificationConfig.getContent().getMaxCommitsToDisplay());
             slackNotification.setShowBuildAgent(slackNotificationConfig.getContent().getShowBuildAgent());

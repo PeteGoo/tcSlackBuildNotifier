@@ -12,8 +12,10 @@ import slacknotifications.teamcity.TeamCityIdResolver;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class SlackNotificationPayloadContent {
     String buildStatus;
@@ -75,6 +77,7 @@ public class SlackNotificationPayloadContent {
     private boolean isComplete;
     private ArrayList<String> failedBuildMessages = new ArrayList<String>();
     private ArrayList<String> failedTestNames = new ArrayList<String>();
+	private Map<String, String> params = new HashMap<String, String>();
 
     public SlackNotificationPayloadContent(){
 
@@ -106,7 +109,12 @@ public class SlackNotificationPayloadContent {
             populateCommits(sRunningBuild);
     		populateArtifacts(sRunningBuild);
             populateResults(sRunningBuild);
+			populateParams(sRunningBuild);
 		}
+
+	private void populateParams(SRunningBuild sRunningBuild) {
+		this.params = sRunningBuild.getParametersProvider().getAll();
+	}
 
     private void populateResults(SRunningBuild sRunningBuild) {
         List<BuildProblemData> failureReasons = sRunningBuild.getFailureReasons();
@@ -435,4 +443,9 @@ public class SlackNotificationPayloadContent {
     public ArrayList<String> getFailedTestNames() {
         return failedTestNames;
     }
+
+	public Map<String, String> getParams() {
+		return this.params;
+	}
+
 }

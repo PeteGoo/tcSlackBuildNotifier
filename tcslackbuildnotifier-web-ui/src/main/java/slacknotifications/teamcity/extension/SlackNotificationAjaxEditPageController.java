@@ -49,9 +49,10 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 		protected static final String BUILD_FIXED = "BuildFixed";
 		protected static final String BUILD_FAILED = "BuildFailed";
 		protected static final String BUILD_SUCCESSFUL = "BuildSuccessful";
-		
-		
-		private final WebControllerManager myWebManager;
+	private static final String TEMPLATE_TITLE = "templateTitle";
+	private static final String TEMPLATE_BODY = "templateBody";
+
+	private final WebControllerManager myWebManager;
     private final SlackNotificationMainSettings myMainSettings;
     private SBuildServer myServer;
 	    private ProjectSettingsManager mySettings;
@@ -185,7 +186,16 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
                                                     && (request.getParameter(ICON_URL).length() > 0)){
                                                 content.setIconUrl(request.getParameter(ICON_URL));
                                             }
-                                        }
+
+											if(request.getParameter(TEMPLATE_TITLE) != null && request.getParameter(TEMPLATE_TITLE).length() > 0) {
+												content.setTemplateTitle(request.getParameter(TEMPLATE_TITLE));
+											}
+
+											if(request.getParameter(TEMPLATE_BODY) != null && request.getParameter(TEMPLATE_BODY).length() > 0) {
+												content.setTemplateBody(request.getParameter(TEMPLATE_BODY));
+											}
+
+										}
 
 			    						BuildState states = new BuildState();
 			    						
