@@ -171,12 +171,22 @@ public class SlackNotificationImpl implements SlackNotification {
             if (this.teamName == null) {
                 this.teamName = "";
             }
+
+            String text = "";
+            if (payload != null) {
+                text = payload.getBuildDescriptionWithLinkSyntax();
+                if (StringUtil.isEmpty(templateTitle)) {
+                    // Single line mode
+                    text += renderTemplate(payload.getParams());
+                }
+            }
+
             String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
                     this.botName == null ? "" : URLEncoder.encode(this.botName, UTF8),
                     this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, UTF8),
                     this.channel == null ? "" : URLEncoder.encode(this.channel, UTF8),
-                    this.payload == null ? "" : URLEncoder.encode(payload.getBuildDescriptionWithLinkSyntax(), UTF8),
+                    URLEncoder.encode(text, UTF8),
                     "");
 
             HttpPost httppost = new HttpPost(url);
@@ -377,23 +387,29 @@ public class SlackNotificationImpl implements SlackNotification {
 
     private void addCustomTemplate(Attachment attachment, Map<String, String> dataModel) {
         String title = templateTitle != null ? templateTitle : "";
-        String body = templateBody != null ? templateBody : "";
+        if (title.isEmpty()) return;
+
+        String bodyText = renderTemplate(dataModel);
+        attachment.addField(title, bodyText, false);
+    }
+
+    private String renderTemplate(Map<String, String> dataModel) {
+        if (StringUtil.isEmpty(templateBody)) return "";
+
         try {
-            if (!title.isEmpty() || !body.isEmpty()) {
-                Configuration configuration = new Configuration();
-                configuration.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
-                configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
+            Configuration configuration = new Configuration();
+            configuration.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+            configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
 
-                Template template = new Template("template", new StringReader(body), configuration);
-                StringWriter writer = new StringWriter();
-                template.process(dataModel, writer);
-                writer.flush();
-                attachment.addField(title, writer.toString(), false);
-            }
-        } catch (Throwable e) {
+            Template template = new Template("template", new StringReader(templateBody), configuration);
+            StringWriter writer = new StringWriter();
+            template.process(dataModel, writer);
+            writer.flush();
+            return writer.toString();
+        } catch (Exception e) {
             Loggers.SERVER.error(e.getMessage(), e);
+            return "";
         }
-
     }
 
     private class WebHookPayload {
