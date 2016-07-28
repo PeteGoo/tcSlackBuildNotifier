@@ -174,10 +174,12 @@ public class SlackNotificationImpl implements SlackNotification {
 
             String text = "";
             if (payload != null) {
-                text = payload.getBuildDescriptionWithLinkSyntax();
+                String description = payload.getBuildDescriptionWithLinkSyntax();
                 if (StringUtil.isEmpty(templateTitle)) {
                     // Single line mode
-                    text += renderTemplate(payload.getParams());
+                    text = detectMessageIcon(payload.getColor()) + " " + description + renderTemplate(payload.getParams());
+                } else {
+                    text = description;
                 }
             }
 
@@ -220,6 +222,16 @@ public class SlackNotificationImpl implements SlackNotification {
                 httppost.releaseConnection();
             }
         }
+    }
+
+    private String detectMessageIcon(String color) {
+        String icon = "";
+        if ("good".equals(color)) {
+			icon = ":white_check_mark:";
+		} else if ("danger".equals(color)) {
+			icon = ":sos:";
+		}
+        return icon;
     }
 
     private void postViaWebHook() throws IOException {
