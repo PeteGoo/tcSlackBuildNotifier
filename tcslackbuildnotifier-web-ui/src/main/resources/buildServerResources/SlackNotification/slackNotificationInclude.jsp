@@ -255,7 +255,7 @@
 													<label for="templateBody">Message body:</label>
 												</td>
 												<td colspan="2">
-													<input type="text" name="templateBody" id="templateBody" />
+													<textarea rows="3" cols="50" name="templateBody" id="templateBody"></textarea>
 												</td>
 											</tr>
                                         </table>
