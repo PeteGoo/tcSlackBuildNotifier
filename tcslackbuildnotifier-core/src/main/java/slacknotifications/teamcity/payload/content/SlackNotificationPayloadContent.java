@@ -225,7 +225,7 @@ public class SlackNotificationPayloadContent {
         }
         setBuildStatusUrl(server.getRootUrl() + "/viewLog.html?buildTypeId=" + getBuildTypeId() + "&buildId=" + getBuildId());
         String branchSuffix = (getBranchIsDefault() != null && getBranchIsDefault()) || getBranchDisplayName() == null ? "" : (" [" + getBranchDisplayName() + "]");
-        setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
+		setBuildDescriptionWithLinkSyntax(String.format(getBuildResult() + " - " + "<" + getBuildStatusUrl() + "|" + sRunningBuild.getBuildType().getName() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
     }
 		
 		
