@@ -1,6 +1,7 @@
 package slacknotifications;
 
 import com.google.gson.Gson;
+import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
@@ -375,9 +376,11 @@ public class SlackNotificationImpl implements SlackNotification {
     private void addCustomTemplate(Attachment attachment, Map<String, String> dataModel) {
         try {
             if (templateTitle != null && templateTitle.length() > 0) {
-                Configuration e = new Configuration();
-                e.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
-                Template template = new Template("template", new StringReader(templateBody), e);
+                Configuration configuration = new Configuration();
+                configuration.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+                configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
+
+                Template template = new Template("template", new StringReader(templateBody), configuration);
                 StringWriter writer = new StringWriter();
                 template.process(dataModel, writer);
                 writer.flush();
