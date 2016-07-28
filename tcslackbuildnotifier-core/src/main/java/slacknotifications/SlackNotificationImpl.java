@@ -285,7 +285,9 @@ public class SlackNotificationImpl implements SlackNotification {
             firstDetailLines.add("Elapsed: " + formatTime(this.payload.getElapsedTime()));
         }
 
-        attachment.addField(this.payload.getBuildName(), StringUtil.join(firstDetailLines, "\n"), false);
+        if (!firstDetailLines.isEmpty()) {
+            attachment.addField(this.payload.getBuildName(), StringUtil.join(firstDetailLines, "\n"), false);
+        }
 
         if(showFailureReason && this.payload.getBuildResult() == SlackNotificationPayloadContent.BUILD_STATUS_FAILURE){
             if(this.payload.getFailedBuildMessages().size() > 0) {
