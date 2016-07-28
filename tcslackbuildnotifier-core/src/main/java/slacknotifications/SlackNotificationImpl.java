@@ -376,17 +376,19 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     private void addCustomTemplate(Attachment attachment, Map<String, String> dataModel) {
+        String title = templateTitle != null ? templateTitle : "";
+        String body = templateBody != null ? templateBody : "";
         try {
-            if (templateTitle != null && templateTitle.length() > 0) {
+            if (!title.isEmpty() || !body.isEmpty()) {
                 Configuration configuration = new Configuration();
                 configuration.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
                 configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
 
-                Template template = new Template("template", new StringReader(templateBody), configuration);
+                Template template = new Template("template", new StringReader(body), configuration);
                 StringWriter writer = new StringWriter();
                 template.process(dataModel, writer);
                 writer.flush();
-                attachment.addField(templateTitle, writer.toString(), false);
+                attachment.addField(title, writer.toString(), false);
             }
         } catch (Throwable e) {
             Loggers.SERVER.error(e.getMessage(), e);
