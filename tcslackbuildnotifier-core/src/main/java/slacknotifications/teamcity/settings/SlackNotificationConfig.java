@@ -17,6 +17,7 @@ import static slacknotifications.teamcity.BuildStateEnum.*;
 public class SlackNotificationConfig {
 	
 	private static final String ENABLED = "enabled";
+	private static final String TOKEN = "token";
 	private static final String CHANNEL = "channel";
 	private static final String TEAM_NAME = "teamName";
 	private static final String CHANNEL_ENABLED_MESSAGE = "mention-channel-enabled";
@@ -59,9 +60,10 @@ public class SlackNotificationConfig {
 		this.uniqueKey = Rand.toString();
 		this.templates = new TreeMap<String,CustomMessageTemplate>();
 		
-		if (e.getAttribute("token") != null){
-			this.setChannel(e.getAttributeValue("token"));
+		if (e.getAttribute(TOKEN) != null){
+			this.setToken(e.getAttributeValue(TOKEN));
 		}
+
 		if (e.getAttribute(CHANNEL) != null){
 			this.setChannel(e.getAttributeValue(CHANNEL));
 		}
@@ -285,30 +287,31 @@ public class SlackNotificationConfig {
 
 	public boolean isEnabledForBuildType(SBuildType sBuildType){
 		// If allBuildTypes enabled, return true, otherwise  return whether the build is in the list of enabled buildTypes. 
-		return isEnabledForAllBuildsInProject() ? true : enabledBuildTypesSet.contains(TeamCityIdResolver.getInternalBuildId(sBuildType));
+		return isEnabledForAllBuildsInProject() || enabledBuildTypesSet.contains(TeamCityIdResolver.getInternalBuildId(sBuildType));
 	}
 	
-	public boolean isSpecificBuildTypeEnabled(SBuildType sBuildType){
+	boolean isSpecificBuildTypeEnabled(SBuildType sBuildType){
 		// Just check if this build type is only enabled for a specific build. 
 		return enabledBuildTypesSet.contains(TeamCityIdResolver.getInternalBuildId(sBuildType));
 	}
-	
-	public String getBuildTypeCountAsFriendlyString(){
-		if (this.allBuildTypesEnabled  && !this.subProjectsEnabled){
+
+	public String getBuildTypeCountAsFriendlyString() {
+		if (this.allBuildTypesEnabled && !this.subProjectsEnabled) {
 			return "All builds";
-		} else if (this.allBuildTypesEnabled  && this.subProjectsEnabled){
-				return "All builds & Sub-Projects";
-		} else {
-			String subProjectsString = "";
-			if (this.subProjectsEnabled){
-				subProjectsString = " & All Sub-Project builds";
-			}
-			int enabledBuildTypeCount = this.enabledBuildTypesSet.size();
-			if (enabledBuildTypeCount == 1){
-				return enabledBuildTypeCount + " build" + subProjectsString;
-			}
-			return enabledBuildTypeCount + " builds" + subProjectsString; 
+		} else if (this.allBuildTypesEnabled) {
+			return "All builds & Sub-Projects";
 		}
+
+		String subProjectsString = "";
+		if (this.subProjectsEnabled) {
+			subProjectsString = " & All Sub-Project builds";
+		}
+		int enabledBuildTypeCount = this.enabledBuildTypesSet.size();
+		if (enabledBuildTypeCount == 1) {
+			return enabledBuildTypeCount + " build" + subProjectsString;
+		}
+		return enabledBuildTypeCount + " builds" + subProjectsString;
+
 	}
 
 	public Boolean getEnabled() {
