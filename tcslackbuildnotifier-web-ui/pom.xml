@@ -1,263 +1,264 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>tcslackbuildnotifier</artifactId>
-    <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
-    <version>${currentVersion}</version>
-    <relativePath>..</relativePath>
-  </parent>
-  <artifactId>tcslackbuildnotifier-web-ui</artifactId>
-  
-  	<build>
-		<defaultGoal>package</defaultGoal>
-		<resources>
-	      <resource>
-	        <directory>src/main/resources</directory>
-	        <filtering>false</filtering>
-	      </resource>
-	      <resource>
-	        <directory>src/main/teamcity-plugin-resources</directory>
-	        <filtering>true</filtering>
-	        <includes>
-	          <include>*.xml</include>
-	          <include>*.properties</include>
-	        </includes>
-	      </resource>
-	      <resource>
-	        <directory>src/main/teamcity-plugin-resources</directory>
-	        <filtering>false</filtering>
-	        <excludes>
-	          <exclude>*.xml</exclude>
-	          <exclude>*.properties</exclude>
-	        </excludes>
-	      </resource>
-	    </resources>
-		
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-		<plugins>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>tcslackbuildnotifier</artifactId>
+        <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+        <version>${currentVersion}</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <artifactId>tcslackbuildnotifier-web-ui</artifactId>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>				
-			</plugin>
-			<plugin>
-				<!--
-					NOTE: We don't need a groupId specification because the group is
-					org.apache.maven.plugins ...which is assumed by default.
-				-->
-				<artifactId>maven-assembly-plugin</artifactId>
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.xml</include>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>*.xml</exclude>
+                    <exclude>*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
 
-			<executions>
-			  <execution>
-			  	<id>make-assembly</id>
-           		<phase>package</phase>
-           		<goals>
-              		<goal>single</goal> <!-- goals == mojos -->
-            	</goals>
+        <pluginManagement>
+            <plugins>
+            </plugins>
+        </pluginManagement>
+        <plugins>
 
-           		<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>				
-				</configuration>
-              </execution>
-            </executions>
-			</plugin>			
-		
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		    <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-jar-plugin</artifactId>
-		    </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<plugin>
-		        <artifactId>maven-antrun-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <phase>package</phase>
-		            <configuration>
-		              <tasks>
-						<echo message="Attempting to build dist zip file" />
-						<mkdir dir="${project.build.directory}/dist" />
-						<mkdir dir="${project.build.directory}/dist/server" />
-						
-						<echo message=" - Copying resources to dist" />
-						<copy todir="${project.build.directory}/dist/">
-							<fileset dir="${project.build.directory}/classes/">
-								<include name="teamcity-plugin.xml"/>
-							</fileset>
-						</copy> 
-		
-						<echo message=" - Copying dep jar to dist/server" />
-						<copy todir="${project.build.directory}/dist/server/">
-							  <fileset dir="${project.build.directory}/">
-		    						<include name="*-jar-with-dependencies.jar" />
-		    				  </fileset>
-		    			</copy>
-		    			
-		    			<echo message=" - Creating ZIP file" />
-		    			<zip destfile="${project.basedir}/../target/${project.parent.artifactId}-${project.version}.zip"
-		    				 basedir="${project.build.directory}/dist"
-		    			 />
-		
-		               </tasks>
-		            </configuration>
-		            <goals>
-		              <goal>run</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-      		</plugin>
-		</plugins>  
-  </build>
-  
-  <dependencies>
-	  	<dependency>
-	  		<groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
-	  		<artifactId>tcslackbuildnotifier-core</artifactId>
-	  		<version>${currentVersion}</version>
-	  		<scope>compile</scope>
-	  	</dependency>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!--
+                    NOTE: We don't need a groupId specification because the group is
+                    org.apache.maven.plugins ...which is assumed by default.
+                -->
+                <artifactId>maven-assembly-plugin</artifactId>
 
-	    <dependency>
-	      <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
-	      <artifactId>tcslackbuildnotifier-core</artifactId>
-	      <version>${currentVersion}</version>
-	      <type>test-jar</type>
-	      <scope>test</scope>
-	    </dependency>
-  	
-  		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-			<scope>test</scope>
-		</dependency>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal> <!-- goals == mojos -->
+                        </goals>
 
-		<!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
-		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
-			<artifactId>server-api</artifactId>
-			<version>8.0.0</version>
-			<scope>provided</scope>
-		</dependency>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-		<!-- TeamCity/webapps/WEB-INF/lib/runtime-util.jar -->
-		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
-			<artifactId>runtime-util</artifactId>
-			<version>7.1.0</version>
-			<scope>provided</scope>
-		</dependency>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-		<!-- TeamCity/webapps/WEB-INF/lib/server-model.jar -->
-		<!--
-			<dependency> <groupId>com.jetbrains.teamcity</groupId>
-			<artifactId>model</artifactId> <version>4.0.2</version>
-			<scope>provided</scope> </dependency>
-		-->
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <echo message="Attempting to build dist zip file"/>
+                                <mkdir dir="${project.build.directory}/dist"/>
+                                <mkdir dir="${project.build.directory}/dist/server"/>
 
-		<!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
-		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
-			<artifactId>common-api</artifactId>
-			<version>8.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-   			<groupId>com.intellij</groupId>
-   			<artifactId>openapi</artifactId>
-   			<version>7.0.3</version>
-   			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
-			<artifactId>annotations</artifactId>
-			<version>7.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
+                                <echo message=" - Copying resources to dist"/>
+                                <copy todir="${project.build.directory}/dist/">
+                                    <fileset dir="${project.build.directory}/classes/">
+                                        <include name="teamcity-plugin.xml"/>
+                                    </fileset>
+                                </copy>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring</artifactId>
-			<version>2.0.1</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>1.3.1</version>
-			<scope>provided</scope>
-		</dependency>
+                                <echo message=" - Copying dep jar to dist/server"/>
+                                <copy todir="${project.build.directory}/dist/server/">
+                                    <fileset dir="${project.build.directory}/">
+                                        <include name="*-jar-with-dependencies.jar"/>
+                                    </fileset>
+                                </copy>
 
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom</artifactId>
-			<version>1.1</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.mockito</groupId>
-		  	<artifactId>mockito-all</artifactId>
-			<version>1.8.0</version>
-			<scope>test</scope>
-		</dependency>
-  	
-  		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.3.5</version>
-			<scope>provided</scope>
-		</dependency>
-  	
-  		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.3</version>
-			<scope>test</scope>
-		</dependency>  	
-  </dependencies>
+                                <echo message=" - Creating ZIP file"/>
+                                <zip destfile="${project.build.directory}/${project.parent.artifactId}-${project.version}.zip"
+                                     basedir="${project.build.directory}/dist"
+                                />
+
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+            <artifactId>tcslackbuildnotifier-core</artifactId>
+            <version>${currentVersion}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+            <artifactId>tcslackbuildnotifier-core</artifactId>
+            <version>${currentVersion}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- TeamCity/webapps/WEB-INF/lib/server-api.jar -->
+        <dependency>
+            <groupId>com.jetbrains.teamcity</groupId>
+            <artifactId>server-api</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- TeamCity/webapps/WEB-INF/lib/runtime-util.jar -->
+        <dependency>
+            <groupId>com.jetbrains.teamcity</groupId>
+            <artifactId>runtime-util</artifactId>
+            <version>7.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- TeamCity/webapps/WEB-INF/lib/server-model.jar -->
+        <!--
+            <dependency> <groupId>com.jetbrains.teamcity</groupId>
+            <artifactId>model</artifactId> <version>4.0.2</version>
+            <scope>provided</scope> </dependency>
+        -->
+
+        <!-- TeamCity/webapps/WEB-INF/lib/common-api.jar -->
+        <dependency>
+            <groupId>com.jetbrains.teamcity</groupId>
+            <artifactId>common-api</artifactId>
+            <version>8.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>openapi</artifactId>
+            <version>7.0.3</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jetbrains.teamcity</groupId>
+            <artifactId>annotations</artifactId>
+            <version>7.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>2.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.3.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
