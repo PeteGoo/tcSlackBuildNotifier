@@ -1,46 +1,47 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
-	<artifactId>tcslackbuildnotifier</artifactId>
-	<properties>
-    	<majorVersion>1.4</majorVersion>
-    	<minorVersion>6</minorVersion>
-    	<currentVersion>${majorVersion}.${minorVersion}</currentVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+    <artifactId>tcslackbuildnotifier</artifactId>
+    <properties>
+        <majorVersion>1</majorVersion>
+        <minorVersion>4</minorVersion>
+        <patchVersion>6</patchVersion>
+        <currentVersion>${majorVersion}.${minorVersion}.${patchVersion}</currentVersion>
     </properties>
-	<version>${currentVersion}</version>
-	<name>tcSlackNotifications - A SlackNotifications plugin for TeamCity</name>
- 	<build>
-		<defaultGoal>package</defaultGoal>
-		
-		<resources>
-	      <resource>
-	        <directory>src/main/resources</directory>
-	        <filtering>false</filtering>
-	      </resource>
-	      <resource>
-	        <directory>src/main/teamcity-plugin-resources</directory>
-	        <filtering>true</filtering>
-	        <includes>
-	          <include>*.xml</include>
-	          <include>*.properties</include>
-	        </includes>
-	      </resource>
-	      <resource>
-	        <directory>src/main/teamcity-plugin-resources</directory>
-	        <filtering>false</filtering>
-	        <excludes>
-	          <exclude>*.xml</exclude>
-	          <exclude>*.properties</exclude>
-	        </excludes>
-	      </resource>
-	    </resources>
-		
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-		<plugins>
+    <version>${currentVersion}</version>
+    <name>tcSlackNotifications - A SlackNotifications plugin for TeamCity</name>
+    <build>
+        <defaultGoal>package</defaultGoal>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.xml</include>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>*.xml</exclude>
+                    <exclude>*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+            </plugins>
+        </pluginManagement>
+        <plugins>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -52,10 +53,10 @@
                             <goal>jar</goal>
                         </goals>
                     </execution>
-                </executions>               
+                </executions>
             </plugin>
-            
-        
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -161,6 +162,26 @@
            </plugin>-->
 
 
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.0.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
 
         </plugins>
 	</build>
@@ -185,38 +206,38 @@
 			
 		</plugins>
 	</reporting>
-	
-	<repositories>
-	  <repository>
-        <id>tcslacknotifications.sourceforge</id>
-        <url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
-      </repository>
-<!-- 	  <repository>
-	    <id>jetbrains-all</id>
-	    <url>http://repository.jetbrains.com/all</url>
-	  </repository> -->
-	</repositories>
-	<dependencies>
 
-  		 
-	</dependencies>
-	
+    <repositories>
+        <repository>
+            <id>tcslacknotifications.sourceforge</id>
+            <url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
+        </repository>
+        <!-- 	  <repository>
+                <id>jetbrains-all</id>
+                <url>http://repository.jetbrains.com/all</url>
+              </repository> -->
+    </repositories>
+    <dependencies>
 
-	<developers>
-		<developer>
-			<id>petegoo</id>
-			<name>PeteGoo</name>
-			<url>http://www.petegoo.com</url>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-		</developer>
-	</developers>	
-	
-	<packaging>pom</packaging>
-	<modules>
-		<module>tcslackbuildnotifier-web-ui</module>
-		<module>tcslackbuildnotifier-core</module>
-	</modules>
+
+    </dependencies>
+
+
+    <developers>
+        <developer>
+            <id>petegoo</id>
+            <name>PeteGoo</name>
+            <url>http://www.petegoo.com</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>tcslackbuildnotifier-web-ui</module>
+        <module>tcslackbuildnotifier-core</module>
+    </modules>
 </project>
