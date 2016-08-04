@@ -82,7 +82,9 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--<plugin>
+            <!--
+            why is this disabled?!
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.6</version>
                 <executions>
@@ -214,7 +216,6 @@
 	
 	<packaging>pom</packaging>
 	<modules>
-		<module>tcslackbuildnotifier-rest-api</module>
 		<module>tcslackbuildnotifier-web-ui</module>
 		<module>tcslackbuildnotifier-core</module>
 	</modules>
