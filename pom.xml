@@ -4,13 +4,14 @@
     <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
     <artifactId>tcslackbuildnotifier</artifactId>
     <properties>
+        <teamcity-version>9.1.7</teamcity-version>
         <majorVersion>1</majorVersion>
         <minorVersion>4</minorVersion>
         <patchVersion>6</patchVersion>
         <currentVersion>${majorVersion}.${minorVersion}.${patchVersion}</currentVersion>
     </properties>
     <version>${currentVersion}</version>
-    <name>tcSlackNotifications - A SlackNotifications plugin for TeamCity</name>
+    <name>tcSlackNotifications - Extends TeamCity functionality by adding slack notifications</name>
     <build>
         <defaultGoal>package</defaultGoal>
 
@@ -83,85 +84,15 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-            why is this disabled?!
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>teamcityPluginXML</id>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <target>
-                                <copy file="teamcity-plugin.xml" toDir="${project.build.directory}">
-                                  <filterset>
-                                    <filter token="VERSION" value="${project.version}"/>
-                                  </filterset>
-                                </copy>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>buildZip</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <target>
-                                <zip destfile="${project.build.directory}/${project.name}-${project.version}.zip"
-                                     basedir="${project.build.directory}"
-                                     includes="**/*.jar, teamcity-plugin.xml"
-                                        />
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.jetbrains.teamcity</groupId>
+                <artifactId>teamcity-sdk-maven-plugin</artifactId>
+                <version>0.2</version>
+                <configuration>
+                    <teamcityDir>servers/${teamcity-version}</teamcityDir>
+                    <pluginPackageName>${project.artifactId}-${version}.zip</pluginPackageName>
+                </configuration>
             </plugin>
-           <plugin>
-               <artifactId>maven-antrun-plugin</artifactId>
-               <executions>
-                 <execution>
-                   <phase>package</phase>
-                   <configuration>
-                     <tasks>
-                       <echo message="Attempting to build dist zip file" />
-                       <mkdir dir="${project.build.directory}/dist" />
-                       <mkdir dir="${project.build.directory}/dist/server" />
-                       
-                       <echo message=" - Copying resources to dist" />
-                       <copy todir="${project.build.directory}/dist/">
-                           <fileset dir="${project.build.directory}/classes/">
-                               <include name="teamcity-plugin.xml"/>
-                           </fileset>
-                       </copy> 
-       
-                       <echo message=" - Copying dep jar to dist/server" />
-                       <copy todir="${project.build.directory}/dist/server/">
-                             <fileset dir="${project.build.directory}/">
-                                   <include name="${artifactId}-${version}.jar" />
-                             </fileset>
-                       </copy>
-                       
-                       <echo message=" - Creating ZIP file" />
-                       <zip destfile="${project.build.directory}/tcSlackNotificationsPlugin-${version}.zip"
-                            basedir="${project.build.directory}/dist"
-                        />
-       
-                      </tasks>
-                   </configuration>
-                   <goals>
-                     <goal>run</goal>
-                   </goals>
-                 </execution>
-               </executions>
-           </plugin>-->
-
-
         </plugins>
     </build>
     <reporting>
@@ -212,16 +143,14 @@
             <id>tcslacknotifications.sourceforge</id>
             <url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
         </repository>
-        <!-- 	  <repository>
-                <id>jetbrains-all</id>
-                <url>http://repository.jetbrains.com/all</url>
-              </repository> -->
     </repositories>
-    <dependencies>
 
-
-    </dependencies>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>JetBrains</id>
+            <url>http://download.jetbrains.com/teamcity-repository</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <developers>
         <developer>

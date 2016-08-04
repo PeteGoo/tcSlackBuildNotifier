@@ -128,7 +128,7 @@
 		    			</copy>
 		    			
 		    			<echo message=" - Creating ZIP file" />
-		    			<zip destfile="${project.build.directory}/tcSlackNotificationsPlugin.zip"
+		    			<zip destfile="${project.basedir}/../target/${project.parent.artifactId}-${project.version}.zip"
 		    				 basedir="${project.build.directory}/dist"
 		    			 />
 		
@@ -196,15 +196,6 @@
 			<version>8.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<!--
-		<dependency>
-			<groupId>com.jetbrains.teamcity</groupId>
-			<artifactId>openapi</artifactId>
-			<version>7.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		-->
 		
 		<dependency>
    			<groupId>com.intellij</groupId>
