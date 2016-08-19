@@ -60,6 +60,11 @@ public class SlackNotificationConfigTest {
 	}
 
 	@Test
+	public void testGetToken() {
+		assertTrue(slacknotificationAllEnabled.getToken().equals("hook.slack.com"));
+	}
+
+	@Test
 	public void testGetUrl() {
 		assertTrue(slacknotificationAllEnabled.getChannel().equals("http://localhost/test"));
 	}
