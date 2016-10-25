@@ -229,6 +229,9 @@ public class SlackNotificationConfig {
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
 		el.setAttribute(CHANNEL, this.getChannel());
+		if(StringUtil.isNotEmpty(this.getToken())) {
+			el.setAttribute(TOKEN, this.getToken());
+		}
 
         if(StringUtil.isNotEmpty(this.getTeamName())) {
             el.setAttribute(TEAM_NAME, this.getTeamName());
