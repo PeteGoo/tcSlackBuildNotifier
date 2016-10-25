@@ -40,3 +40,15 @@ From the Slack tab on the Project or Build Configuration page, add a new Slack N
 ### Mentions
 
 In order to receive mentions and direct messages from the notifier you must go to your profile page in TeamCity and tell it your slack username (no need to include the @). Once you have done this you can be mentioned on failed builds. You can also subscribe to notifications on your profile page.
+
+## Contribution
+
+In order to contribute to the project you first need to checkout the project sources. This project uses the Teamcity Plugin SDK for development.
+
+In order to test the plugin simply run the following command with java and mvn installed:
+
+    mvn package tc-sdk:start
+
+By default it will install TeamCity in the version listed in the property in the root `pom.xml`. However you can overwrite this setting by using the `-DteamcityVersion=10.0` switch.
+
+Other available commands can be found [here](https://github.com/JetBrains/teamcity-sdk-maven-plugin).

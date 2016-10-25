@@ -3,6 +3,9 @@
 */target/**
 target/**
 
+# TC integration
+servers/*
+
 # IntelliJ files
 .idea/*
 *.iml
