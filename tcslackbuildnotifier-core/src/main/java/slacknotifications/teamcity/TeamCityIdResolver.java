@@ -6,15 +6,20 @@ import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SProject;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class TeamCityIdResolver {
-	
+
+	private static final Logger LOGGER = Logger.getLogger(TeamCityIdResolver.class.getName());
+
 	private TeamCityIdResolver(){}
 	
 	public static String getBuildTypeId(SBuildType buildType){
 		try {
 			return buildType.getExternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return buildType.getBuildTypeId();
 		}
 	}
@@ -23,6 +28,7 @@ public final class TeamCityIdResolver {
 		try {
 			return buildType.getExternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return buildType.getBuildTypeId();
 		}
 	}
@@ -31,6 +37,7 @@ public final class TeamCityIdResolver {
 		try {
 			return buildType.getExternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return null;
 		}
 	}
@@ -39,6 +46,7 @@ public final class TeamCityIdResolver {
 		try {
 			return buildType.getInternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return buildType.getBuildTypeId();
 		}
 	}
@@ -47,6 +55,7 @@ public final class TeamCityIdResolver {
 		try {
 			return buildType.getInternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return null;
 		}
 	}
@@ -55,6 +64,7 @@ public final class TeamCityIdResolver {
 		try {
 			return project.getExternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return project.getProjectId();
 		}
 	}
@@ -67,6 +77,7 @@ public final class TeamCityIdResolver {
 		try {
 			return project.getExternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return project.getProjectId();
 		}
 	}
@@ -75,6 +86,7 @@ public final class TeamCityIdResolver {
 		try {
 			return project.getExternalId();
 		} catch (NoSuchMethodError ex) {
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return null;
 		}
 	}
@@ -90,6 +102,7 @@ public final class TeamCityIdResolver {
 		try {
 			return projectManager.findProjectByExternalId(projectId);
 		} catch (NoSuchMethodError ex){
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return projectManager.findProjectById(projectId);
 		}
 	}
@@ -105,6 +118,7 @@ public final class TeamCityIdResolver {
 		try {
 			return projectManager.findBuildTypeByExternalId(buildTypeId);
 		} catch (NoSuchMethodError ex){
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return projectManager.findBuildTypeById(buildTypeId);
 		}
 	}
@@ -119,6 +133,7 @@ public final class TeamCityIdResolver {
 		try {
 			return project.getOwnBuildTypes();
 		} catch (NoSuchMethodError ex){
+			LOGGER.log(Level.INFO,ex.getMessage(),ex);
 			return project.getBuildTypes();
 		}
 	}
