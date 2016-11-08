@@ -16,16 +16,6 @@ public class SimpleBuildState implements BuildStateInterface {
 	}
 
 	@Override
-	public String getShortName() {
-		return state.getShortName();
-	}
-
-	@Override
-	public String getDescriptionSuffix() {
-		return state.getDescriptionSuffix();
-	}
-
-	@Override
 	public void enable() {
 		this.enabled = true;
 		

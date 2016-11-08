@@ -4,7 +4,7 @@
     <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
     <artifactId>tcslackbuildnotifier</artifactId>
     <properties>
-        <teamcity-version>9.1.7</teamcity-version>
+        <teamcityVersion>9.1.7</teamcityVersion>
         <majorVersion>1</majorVersion>
         <minorVersion>4</minorVersion>
         <patchVersion>6</patchVersion>
@@ -74,7 +74,7 @@
                 <artifactId>teamcity-sdk-maven-plugin</artifactId>
                 <version>0.2</version>
                 <configuration>
-                    <teamcityDir>servers/${teamcity-version}</teamcityDir>
+                    <teamcityDir>servers/${teamcityVersion}</teamcityDir>
                     <pluginPackageName>${project.artifactId}-${project.version}.zip</pluginPackageName>
                 </configuration>
             </plugin>

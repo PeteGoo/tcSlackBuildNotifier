@@ -94,11 +94,11 @@ public class TemplateMatcher{
 
     /*-------------------------------------------------[ VariableResolver ]---------------------------------------------------*/
     
-    public static interface VariableResolver{
-        public String resolve(String variable);
+    public interface VariableResolver{
+        String resolve(String variable);
     }
 
-    public static class MapVariableResolver implements VariableResolver{
+    public static class MapVariableResolver implements VariableResolver {
         private Map<String, String> variables;
 
         public MapVariableResolver(Map<String, String> variables){
