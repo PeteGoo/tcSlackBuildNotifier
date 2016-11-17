@@ -10,7 +10,26 @@ Posts Build Status to [Slack](http://www.slack.com)
 ![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-status_pass.png)
 ![Sample Notification](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-status_fail.png)
 
-_Tested on TeamCity 8.1.2 (build 29993), 9.1 (build 36973)_
+## What's New
+
+This is fork of https://github.com/PeteGoo/tcSlackBuildNotifier, with ability to customize message with freemarker templates, including any build parameters into the message.
+
+For example, if the builds have any of parameters `newVersion`, `toVersion`, `testMode`, `emailToAddress` or `services`, for the message body defined as
+```
+<#if newVersion?has_content || toVersion?has_content>: ${newVersion}${toVersion}</#if>
+<#if testMode?has_content && testMode="true"> `TEST MODE`</#if>
+<#if emailToAddress?has_content> to ${emailToAddress} about</#if>
+<#if services?has_content>: ${services}</#if>
+```
+
+Like this:
+![Configuration](https://github.com/Ecwid/tcSlackBuildNotifier/master/docs/configuration.png)
+
+We will see the following message in Slack:
+![Sample Notification](https://github.com/Ecwid/tcSlackBuildNotifier/master/docs/custom_message.png)
+
+Also there is ability to remove header and make compact one line message format (if "Message title" is not specified, and other build options are not selected).
+
 
 ## Installation
 Head over to the [releases](https://github.com/PeteGoo/tcSlackBuildNotifier/releases) section and get the zip labelled `tcSlackNotifierPlugin.zip` from there (do not download the one on this page). Copy the zip file into your [team city plugins directory](https://confluence.jetbrains.com/display/TCD9/Installing+Additional+Plugins)
