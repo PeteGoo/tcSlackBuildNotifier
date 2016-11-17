@@ -26,6 +26,7 @@ Like this:
 ![Configuration](https://raw.github.com/Ecwid/tcSlackBuildNotifier/master/docs/configuration.png)
 
 We will see the following message in Slack:
+
 ![Sample Notification](https://raw.github.com/Ecwid/tcSlackBuildNotifier/master/docs/custom_message.png)
 
 Also there is ability to remove header and make compact one line message format (if "Message title" is not specified, and other build options are not selected).
