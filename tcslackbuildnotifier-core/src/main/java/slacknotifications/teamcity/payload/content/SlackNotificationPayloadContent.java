@@ -77,8 +77,7 @@ public class SlackNotificationPayloadContent {
     private ArrayList<String> failedTestNames = new ArrayList<String>();
 
     public SlackNotificationPayloadContent(){
-
-        }
+    }
 
     /**
 		 * Constructor: Only called by RepsonsibilityChanged.

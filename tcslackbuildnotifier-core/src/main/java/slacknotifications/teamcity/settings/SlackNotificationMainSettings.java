@@ -64,7 +64,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
      * in memory. 
      */
     {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
     
     public String getProxy(){

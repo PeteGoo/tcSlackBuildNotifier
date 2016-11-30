@@ -277,7 +277,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 
 	@Override
 	public void responsibleRemoved(SProject project, TestNameResponsibilityEntry entry){
-		
+		throw new UnsupportedOperationException("This method is not implemented yet!");
 	}
 	
     

@@ -60,7 +60,7 @@ public class SlackNotificator implements Notificator {
     }
 
     public void register(){
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
@@ -101,11 +101,12 @@ public class SlackNotificator implements Notificator {
 
     @Override
     public void notifyBuildFailedToStart(SRunningBuild sRunningBuild, Set<SUser> set) {
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyLabelingFailed(Build build, VcsRoot vcsRoot, Throwable throwable, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
@@ -122,67 +123,67 @@ public class SlackNotificator implements Notificator {
 
     @Override
     public void notifyBuildProbablyHanging(SRunningBuild sRunningBuild, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyResponsibleChanged(SBuildType sBuildType, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyResponsibleAssigned(SBuildType sBuildType, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyResponsibleChanged(TestNameResponsibilityEntry testNameResponsibilityEntry, TestNameResponsibilityEntry testNameResponsibilityEntry1, SProject sProject, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyResponsibleAssigned(TestNameResponsibilityEntry testNameResponsibilityEntry, TestNameResponsibilityEntry testNameResponsibilityEntry1, SProject sProject, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyResponsibleChanged(Collection<TestName> collection, ResponsibilityEntry responsibilityEntry, SProject sProject, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyResponsibleAssigned(Collection<TestName> collection, ResponsibilityEntry responsibilityEntry, SProject sProject, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyBuildProblemResponsibleAssigned(Collection<BuildProblemInfo> collection, ResponsibilityEntry responsibilityEntry, SProject sProject, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyBuildProblemResponsibleChanged(Collection<BuildProblemInfo> collection, ResponsibilityEntry responsibilityEntry, SProject sProject, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyTestsMuted(Collection<STest> collection, MuteInfo muteInfo, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyTestsUnmuted(Collection<STest> collection, MuteInfo muteInfo, SUser sUser, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyBuildProblemsMuted(Collection<BuildProblemInfo> collection, MuteInfo muteInfo, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @Override
     public void notifyBuildProblemsUnmuted(Collection<BuildProblemInfo> collection, MuteInfo muteInfo, SUser sUser, Set<SUser> set) {
-
+        throw new UnsupportedOperationException("This method is not implemented yet!");
     }
 
     @NotNull
