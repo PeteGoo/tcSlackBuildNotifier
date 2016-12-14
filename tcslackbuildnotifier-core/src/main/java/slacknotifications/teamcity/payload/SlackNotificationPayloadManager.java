@@ -11,10 +11,13 @@ import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SlackNotificationPayloadManager {
 
     private static final String NOBODY = "nobody";
+    private static final Logger LOGGER = Logger.getLogger(SlackNotificationPayloadManager.class.getName());
 	SBuildServer server;
 
     public SlackNotificationPayloadManager(SBuildServer server){
@@ -55,10 +58,14 @@ public class SlackNotificationPayloadManager {
         String newUser = NOBODY;
         try {
             oldUser = responsibilityInfoOld.getResponsibleUser().getDescriptiveName();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            LOGGER.log(Level.INFO,e.getMessage(),e);
+        }
         try {
             newUser = responsibilityInfoNew.getResponsibleUser().getDescriptiveName();
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            LOGGER.log(Level.INFO,e.getMessage(),e);
+        }
 
         content.setText(buildType.getFullName() 
                         + " changed responsibility from "
