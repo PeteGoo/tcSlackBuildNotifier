@@ -10,7 +10,7 @@ public class Attachment {
     private String text;
     private String pretext;
     private String color;
-
+    private String fallback;
     private List<Field> fields;
 
     public Attachment(String fallback, String text, String pretext, String color) {
@@ -29,7 +29,7 @@ public class Attachment {
         return fallback;
     }
 
-    private String fallback;
+   
 
     public String getText() {
         return text;
