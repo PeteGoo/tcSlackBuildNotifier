@@ -104,15 +104,6 @@
                 </tr>
                 <tr>
                     <th>
-                        <label for="branchName">Only for specific branch: </label>
-                    </th>
-                    <td>
-                       <forms:textField name="branchName" value="${branchName}" style="width: 70px;" />
-                        <span style="color: #888; font-size: 90%;">When specified, the name of the branch to send notifications</span>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
                         <label for="showCommitters">Show committers: </label>
                     </th>
                     <td>
