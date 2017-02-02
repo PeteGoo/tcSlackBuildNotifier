@@ -104,11 +104,19 @@
                 </tr>
                 <tr>
                     <th>
+<<<<<<< HEAD
                         <label for="showTriggeredBy">Show triggered by: </label>
                     </th>
                     <td>
                         <forms:checkbox name="showTriggeredBy" checked="${showTriggeredBy}" value="${showTriggeredBy}"/>
                         <span style="color: #888; font-size: 90%;">When checked, the triggered by build will be displayed in the notification.</span>
+=======
+                        <label for="branchName">Only for specific branch: </label>
+                    </th>
+                    <td>
+                       <forms:textField name="branchName" value="${branchName}" style="width: 70px;" />
+                        <span style="color: #888; font-size: 90%;">When specified, the name of the branch to send notifications</span>
+>>>>>>> initial hack
                     </td>
                 </tr>
                 <tr>

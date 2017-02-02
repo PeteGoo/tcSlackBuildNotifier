@@ -66,6 +66,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private boolean showCommits;
     private boolean showCommitters;
     private boolean showTriggeredBy;
+    private String branchName;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
@@ -151,13 +152,18 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public void post() throws IOException {
-        if(getIsApiToken()){
-            postViaApi();
-        }
-        else{
-            postViaWebHook();
-        }
 
+        // The actual branch
+        String branchDisplayName = this.payload.getBranchDisplayName();
+
+        boolean branchNameNotSpecified = this.branchName == null || this.branchName.isEmpty();
+        if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.branchName)) {
+            if (getIsApiToken()) {
+                postViaApi();
+            } else {
+                postViaWebHook();
+            }
+        }
     }
 
     private void postViaApi() throws IOException {
@@ -656,6 +662,11 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setShowTriggeredBy(boolean showTriggeredBy) {
         this.showTriggeredBy = showTriggeredBy;
+    }
+
+    @Override
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     @Override

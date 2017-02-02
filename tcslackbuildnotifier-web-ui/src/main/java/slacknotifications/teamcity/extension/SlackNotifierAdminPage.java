@@ -64,6 +64,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         model.put("botName", this.slackMainSettings.getBotName());
         model.put("iconUrl", this.slackMainSettings.getIconUrl());
         model.put("defaultChannel", this.slackMainSettings.getDefaultChannel());
+        model.put("branchName", this.slackMainSettings.getBranchName());
         model.put("maxCommitsToDisplay", this.slackMainSettings.getMaxCommitsToDisplay());
         model.put("showBuildAgent", this.slackMainSettings.getShowBuildAgent());
         model.put("showCommits", this.slackMainSettings.getShowCommits());

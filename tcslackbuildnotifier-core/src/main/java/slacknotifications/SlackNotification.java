@@ -105,6 +105,8 @@ public interface SlackNotification {
 	
 	public abstract void setShowTriggeredBy(boolean showTriggeredBy);
 
+	public abstract void setBranchName(String branchName);
+
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 
     public abstract void setMentionChannelEnabled(boolean mentionChannelEnabled);
