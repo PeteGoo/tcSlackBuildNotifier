@@ -155,7 +155,13 @@ public class SlackNotificationImpl implements SlackNotification {
         // The actual branch
         String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
 
+        // master branch is not displayed, so we fudge it to be displayed...
+        if (branchDisplayName == null || branchDisplayName.length() == 0) branchDisplayName = "master";
+
         boolean branchNameNotSpecified = this.branchName == null || this.branchName.isEmpty();
+
+
+
         if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.branchName)) {
             if (getIsApiToken()) {
                 postViaApi();
