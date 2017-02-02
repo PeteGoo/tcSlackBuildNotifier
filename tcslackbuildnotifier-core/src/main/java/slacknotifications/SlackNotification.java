@@ -103,6 +103,8 @@ public interface SlackNotification {
 	
     public abstract void setShowCommitters(boolean showCommitters);
 
+	public abstract void setBranchName(String branchName);
+
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 
     public abstract void setMentionChannelEnabled(boolean mentionChannelEnabled);

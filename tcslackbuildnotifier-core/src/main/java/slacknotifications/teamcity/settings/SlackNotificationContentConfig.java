@@ -19,6 +19,7 @@ public class SlackNotificationContentConfig {
     private int maxCommitsToDisplay = 5;
     private boolean enabled;
     private Boolean showFailureReason;
+    private String branchName;
 
     public String getIconUrl() {
         return iconUrl;
@@ -90,5 +91,13 @@ public class SlackNotificationContentConfig {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBranchName() {
+        return branchName;
     }
 }
