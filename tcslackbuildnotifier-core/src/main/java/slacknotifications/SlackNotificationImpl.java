@@ -154,7 +154,7 @@ public class SlackNotificationImpl implements SlackNotification {
     public void post() throws IOException {
 
         // The actual branch
-        String branchDisplayName = this.payload.getBranchDisplayName();
+        String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
 
         boolean branchNameNotSpecified = this.branchName == null || this.branchName.isEmpty();
         if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.branchName)) {
