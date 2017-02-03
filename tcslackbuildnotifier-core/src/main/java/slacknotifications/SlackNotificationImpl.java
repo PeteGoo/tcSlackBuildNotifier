@@ -24,8 +24,7 @@ import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 
 
 public class SlackNotificationImpl implements SlackNotification {
@@ -150,13 +148,25 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public void post() throws IOException {
 
+        File file = new File("C:/open/stuff.txt");
+        file.createNewFile();
+        DataOutputStream stream = new DataOutputStream(new FileOutputStream(file));
+        //filterBranchName = this.
+        stream.writeUTF("filterBranchName: " + filterBranchName + " \r\n");
+
         // The actual branch
         String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
+        stream.writeUTF("branchDisplayName: " + branchDisplayName + " \r\n");
 
         // master branch is not displayed, so we fudge it to be displayed...
         if (branchDisplayName == null || branchDisplayName.length() == 0) branchDisplayName = "master";
 
+        stream.writeUTF("branchDisplayName after check: " + branchDisplayName + " \r\n");
+
         boolean branchNameNotSpecified = this.filterBranchName == null || this.filterBranchName.isEmpty();
+
+        stream.writeUTF("branchNameNotSpecified: " + branchNameNotSpecified + " \r\n");
+        stream.close();
 
         if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.filterBranchName)) {
             if (getIsApiToken()) {
@@ -639,6 +649,10 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public void setFilterBranchName(String filterBranchName) {
         this.filterBranchName = filterBranchName;
+    }
+
+    public String getFilterBranchName() {
+        return this.filterBranchName;
     }
 
     @Override

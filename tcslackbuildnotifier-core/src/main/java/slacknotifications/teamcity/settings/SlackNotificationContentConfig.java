@@ -10,6 +10,7 @@ public class SlackNotificationContentConfig {
     public static final boolean DEFAULT_SHOW_COMMITS = true;
     public static final boolean DEFAULT_SHOW_COMMITTERS = true;
     public static final boolean DEFAULT_SHOW_FAILURE_REASON = false;
+    public static final String DEFAULT_FILTER_BRANCH_NAME = "";
     private String iconUrl = SlackNotificationMainConfig.DEFAULT_ICONURL;
     private String botName = SlackNotificationMainConfig.DEFAULT_BOTNAME;
     private Boolean showBuildAgent;
@@ -19,7 +20,6 @@ public class SlackNotificationContentConfig {
     private int maxCommitsToDisplay = 5;
     private boolean enabled;
     private Boolean showFailureReason;
-    private String filterBranchName;
 
     public String getIconUrl() {
         return iconUrl;
@@ -93,11 +93,4 @@ public class SlackNotificationContentConfig {
         this.enabled = enabled;
     }
 
-    public void setFilterBranchName(String filterBranchName) {
-        this.filterBranchName = filterBranchName;
-    }
-
-    public String getFilterBranchName() {
-        return filterBranchName;
-    }
 }
