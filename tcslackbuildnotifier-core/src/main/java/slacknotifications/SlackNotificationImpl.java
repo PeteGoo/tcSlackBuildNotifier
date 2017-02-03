@@ -151,25 +151,13 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public void post() throws IOException {
 
-        File file = new File("C:/open/stuff.txt");
-        file.createNewFile();
-        DataOutputStream stream = new DataOutputStream(new FileOutputStream(file));
-        //filterBranchName = this.
-        stream.writeUTF("filterBranchName: " + filterBranchName + " \r\n");
-
         // The actual branch
         String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
-        stream.writeUTF("branchDisplayName: " + branchDisplayName + " \r\n");
 
         // master branch is not displayed, so we fudge it to be displayed...
         if (branchDisplayName == null || branchDisplayName.length() == 0) branchDisplayName = "master";
 
-        stream.writeUTF("branchDisplayName after check: " + branchDisplayName + " \r\n");
-
         boolean branchNameNotSpecified = this.filterBranchName == null || this.filterBranchName.isEmpty();
-
-        stream.writeUTF("branchNameNotSpecified: " + branchNameNotSpecified + " \r\n");
-        stream.close();
 
         if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.filterBranchName)) {
             if (getIsApiToken()) {
