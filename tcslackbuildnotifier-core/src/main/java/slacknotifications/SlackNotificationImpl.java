@@ -66,7 +66,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private boolean showCommits;
     private boolean showCommitters;
     private boolean showTriggeredBy;
-    private String branchName;
+    private String filterBranchName;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
@@ -159,11 +159,9 @@ public class SlackNotificationImpl implements SlackNotification {
         // master branch is not displayed, so we fudge it to be displayed...
         if (branchDisplayName == null || branchDisplayName.length() == 0) branchDisplayName = "master";
 
-        boolean branchNameNotSpecified = this.branchName == null || this.branchName.isEmpty();
+        boolean branchNameNotSpecified = this.filterBranchName == null || this.filterBranchName.isEmpty();
 
-
-
-        if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.branchName)) {
+        if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.filterBranchName)) {
             if (getIsApiToken()) {
                 postViaApi();
             } else {
@@ -671,8 +669,8 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     @Override
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
+    public void setFilterBranchName(String filterBranchName) {
+        this.filterBranchName = filterBranchName;
     }
 
     @Override

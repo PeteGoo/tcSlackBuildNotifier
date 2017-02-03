@@ -96,7 +96,11 @@
                                                 </tr>
                                                 <tr style="border:none;">
                                                     <td>Branch Name:</td>
-                                                    <td colspan=2><input id="branchName" name="branchName" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;" watermark="master"/></td>
+                                                    <td colspan=2><input id="filterBranchName" name="filterBranchName" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;" watermark="master"/></td>
+                                                </tr>
+												<tr style="border:none">
+                                                  <td></td>
+                                                  <td colspan="2"><span class="smallNote" style="margin-left:0px;">Only notify for builds on this branch.</span></td>
                                                 </tr>
 												<tr style="border:none;">
 													<td><label for="slackNotificationsEnabled">Enabled:</label></td>
