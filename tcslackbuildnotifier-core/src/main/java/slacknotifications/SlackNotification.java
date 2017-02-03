@@ -40,6 +40,10 @@ public interface SlackNotification {
 
     public abstract void setBotName(String botName);
 
+    public abstract String getFilterBranchName();
+
+    public abstract void setFilterBranchName(String branchName);
+
     public abstract String getIconUrl();
 
     public abstract void setIconUrl(String iconUrl);
@@ -104,8 +108,6 @@ public interface SlackNotification {
     public abstract void setShowCommitters(boolean showCommitters);
 	
 	public abstract void setShowTriggeredBy(boolean showTriggeredBy);
-
-	public abstract void setFilterBranchName(String filterBranchName);
 
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 

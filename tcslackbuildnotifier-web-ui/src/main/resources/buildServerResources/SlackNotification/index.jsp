@@ -123,6 +123,7 @@
 					jQuerySlacknotification('#slackNotificationId').val(slacknotification.uniqueKey);
 					jQuerySlacknotification('#slackNotificationToken').val(slacknotification.token);
 					jQuerySlacknotification('#slackNotificationChannel').val(slacknotification.channel);
+					jQuerySlacknotification('#filterBranchName').val(slacknotification.filterBranchName);
 				    jQuerySlacknotification('#slackNotificationsEnabled').attr('checked', slacknotification.enabled);
 				    jQuerySlacknotification.each(slacknotification.states, function(name, value){
 				    	jQuerySlacknotification('#' + value.buildStateName).attr('checked', value.enabled);

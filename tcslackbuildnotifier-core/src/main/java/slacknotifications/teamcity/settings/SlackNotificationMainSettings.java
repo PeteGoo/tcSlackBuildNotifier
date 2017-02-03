@@ -19,7 +19,6 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
 	private SBuildServer server;
     private ServerPaths serverPaths;
     private String version;
-    private String includeBranchName;
 
     public SlackNotificationMainSettings(SBuildServer server, ServerPaths serverPaths){
         this.serverPaths = serverPaths;
@@ -132,7 +131,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
     }
 
     public String getFilterBranchName() {
-        return this.slackNotificationMainConfig.getContent().getFilterBranchName();
+        return this.slackNotificationMainConfig.getFilterBranchName();
     }
 
     public Boolean getSlackNotificationShowFurtherReading(){
@@ -163,13 +162,5 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         props.load(SlackNotificationMainSettings.class.getResourceAsStream("/version.txt"));
         version = props.getProperty("version");
         return version;
-    }
-
-    public String getBranchName() {
-        return includeBranchName;
-    }
-
-    public void setBranchName(String includeBranchName) {
-        this.includeBranchName = includeBranchName;
     }
 }
