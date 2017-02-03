@@ -103,7 +103,7 @@ public interface SlackNotification {
 	
     public abstract void setShowCommitters(boolean showCommitters);
 
-	public abstract void setBranchName(String branchName);
+	public abstract void setFilterBranchName(String filterBranchName);
 
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 

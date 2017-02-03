@@ -17,7 +17,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpHost;
-import org.springframework.util.StringUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
@@ -26,7 +25,6 @@ import slacknotifications.teamcity.payload.content.SlackNotificationPayloadConte
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -67,7 +65,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
     private boolean showCommitters;
-    private String branchName;
+    private String filterBranchName;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
@@ -158,11 +156,9 @@ public class SlackNotificationImpl implements SlackNotification {
         // master branch is not displayed, so we fudge it to be displayed...
         if (branchDisplayName == null || branchDisplayName.length() == 0) branchDisplayName = "master";
 
-        boolean branchNameNotSpecified = this.branchName == null || this.branchName.isEmpty();
+        boolean branchNameNotSpecified = this.filterBranchName == null || this.filterBranchName.isEmpty();
 
-
-
-        if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.branchName)) {
+        if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.filterBranchName)) {
             if (getIsApiToken()) {
                 postViaApi();
             } else {
@@ -641,9 +637,8 @@ public class SlackNotificationImpl implements SlackNotification {
         this.showCommitters = showCommitters;
     }
 
-    @Override
-    public void setBranchName(String branchName) {
-        this.branchName = branchName;
+    public void setFilterBranchName(String filterBranchName) {
+        this.filterBranchName = filterBranchName;
     }
 
     @Override
