@@ -100,7 +100,7 @@
                                                 </tr>
 												<tr style="border:none">
                                                   <td></td>
-                                                  <td colspan="2"><span class="smallNote" style="margin-left:0px;">Only notify for builds on this branch.</span></td>
+                                                  <td colspan="2"><span class="smallNote" style="margin-left:0px;">Only notify for builds on this branch. Note that if you want to notify on the default branch, use the magic value &lt;default&gt;.</span></td>
                                                 </tr>
 												<tr style="border:none;">
 													<td><label for="slackNotificationsEnabled">Enabled:</label></td>
