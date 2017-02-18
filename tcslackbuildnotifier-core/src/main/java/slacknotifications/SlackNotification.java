@@ -42,6 +42,8 @@ public interface SlackNotification {
 
     public abstract String getFilterBranchName();
 
+	public abstract String getBranchDisplayName();
+
     public abstract void setFilterBranchName(String branchName);
 
     public abstract String getIconUrl();

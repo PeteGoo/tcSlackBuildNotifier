@@ -149,22 +149,28 @@ public class SlackNotificationImpl implements SlackNotification {
 		}
     }
 
-    public void post() throws IOException {
-
+    public String getBranchDisplayName() {
         // The actual branch
         String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
 
-        // master branch is not displayed, so we fudge it to be displayed...
-        if (branchDisplayName == null || branchDisplayName.length() == 0) branchDisplayName = "master";
+        // when branchDisplayName is not available, we fudge it to be the magic value <default>.
+        if (branchDisplayName == null || branchDisplayName.length() == 0) {
+            Loggers.SERVER.info("SlackNotificationImpl :: getBranchDisplayName :: branchDisplayName is empty, defaults to <default>.");
+            branchDisplayName = "<default>";
+        }
+        return branchDisplayName;
+    }
 
-        boolean branchNameNotSpecified = this.filterBranchName == null || this.filterBranchName.isEmpty();
-
-        if (branchNameNotSpecified || branchDisplayName.equalsIgnoreCase(this.filterBranchName)) {
+    public void post() throws IOException {
+        if (getFilterBranchName().equalsIgnoreCase(getBranchDisplayName()) ||
+            getFilterBranchName().equalsIgnoreCase("<default>") && this.payload != null && this.payload.getBranchIsDefault()) {
             if (getIsApiToken()) {
                 postViaApi();
             } else {
                 postViaWebHook();
             }
+        } else {
+            Loggers.SERVER.warn("SlackNotificationImpl :: post :: filterBranchName not applicable, posting to Slack skipped.");
         }
     }
 
@@ -655,7 +661,7 @@ public class SlackNotificationImpl implements SlackNotification {
     public void setShowCommits(boolean showCommits) {
         this.showCommits = showCommits;
     }
-	
+
     @Override
     public void setShowCommitters(boolean showCommitters) {
         this.showCommitters = showCommitters;
@@ -672,6 +678,10 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public String getFilterBranchName() {
+        if (this.filterBranchName == null || this.filterBranchName.isEmpty()){
+            setFilterBranchName("<default>");
+            Loggers.SERVER.info("SlackNotification :: filterBranchName is empty, defaults to <default>.");
+        }
         return this.filterBranchName;
     }
 
