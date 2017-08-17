@@ -31,7 +31,7 @@ Once you have installed the plugin and restarted head on over to the Admin page 
 
 ## Usage
 
-From the Slack tab on the Project or Build Configuration page, add a new Slack Notification and you're away!
+From the Slack tab on the project or build page (_not_ the Build Configuration Settings page), add a new Slack Notification and you're away!
 
 ![Sample Build Configuration](https://raw.github.com/petegoo/tcSlackBuildNotifier/master/docs/build-slack-config.png)
 
