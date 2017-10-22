@@ -1,6 +1,7 @@
 package slacknotifications.teamcity;
 
 import jetbrains.buildServer.Build;
+import jetbrains.buildServer.messages.Status;
 import jetbrains.buildServer.notification.Notificator;
 import jetbrains.buildServer.notification.NotificatorRegistry;
 import jetbrains.buildServer.responsibility.ResponsibilityEntry;
@@ -207,7 +208,7 @@ public class SlackNotificator implements Notificator {
     private SlackNotification createNotification(SUser sUser){
         SlackNotification notification = notificationFactory.getSlackNotification();
         String userName = sUser.getPropertyValue(USERNAME_KEY);
-        if(userName.substring(0,1) == "@"){
+        if (userName.substring(0, 1).equals("@")){
             userName = userName.substring(1);
         }
         notification.setChannel("@" + userName);

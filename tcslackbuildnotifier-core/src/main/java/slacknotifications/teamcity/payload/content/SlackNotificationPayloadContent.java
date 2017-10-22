@@ -137,14 +137,11 @@ public class SlackNotificationPayloadContent {
 
     private void populateCommits(SRunningBuild sRunningBuild) {
         List<SVcsModification> changes = sRunningBuild.getContainingChanges();
-        if(changes == null){
-            return;
-        }
 
         for(SVcsModification change : changes){
 			Collection<SUser> committers = change.getCommitters();
 			String slackUserName = null;
-			if(committers != null && !committers.isEmpty()){
+			if(!committers.isEmpty()){
 				SUser committer = committers.iterator().next();
 				slackUserName = committer.getPropertyValue(SlackNotificator.USERNAME_KEY);
 				Loggers.ACTIVITIES.debug("Resolved committer " + change.getUserName() + " to Slack User " + slackUserName);
@@ -383,7 +380,7 @@ public class SlackNotificationPayloadContent {
     }
 
     public String getBuildDescriptionWithLinkSyntax() {
-        return buildLink;
+            return buildLink;
     }
 
 

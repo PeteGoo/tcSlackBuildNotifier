@@ -6,7 +6,6 @@ import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.tests.TestName;
 import jetbrains.buildServer.util.StringUtil;
-import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import slacknotifications.SlackNotification;
@@ -16,8 +15,6 @@ import slacknotifications.teamcity.settings.SlackNotificationContentConfig;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,16 +36,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
     private final SlackNotificationFactory slackNotificationFactory;
 	private NotificationUtility notificationUtility;
 
-    public SlackNotificationListener(){
-        myBuildServer = null;
-        mySettings = null;
-        myMainSettings = null;
-        myManager = null;
-        slackNotificationFactory = null;
-		notificationUtility = new NotificationUtility();
-    }
-
-    public SlackNotificationListener(SBuildServer sBuildServer, ProjectSettingsManager settings,
+	public SlackNotificationListener(SBuildServer sBuildServer, ProjectSettingsManager settings,
                                      SlackNotificationMainSettings configSettings, SlackNotificationPayloadManager manager,
                                      SlackNotificationFactory factory) {
 
@@ -139,7 +127,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
 			SlackNotificationProjectSettings projSettings = (SlackNotificationProjectSettings) mySettings.getSettings(project.getProjectId(), SLACKNOTIFICATIONS_SETTINGS_ATTRIBUTE_NAME);
 	    	if (projSettings.isEnabled()){
 		    	for (SlackNotificationConfig whc : projSettings.getSlackNotificationsConfigs()){
-		    		if (whc.isEnabledForSubProjects() == false && !myProject.getProjectId().equals(project.getProjectId())){
+		    		if (!whc.isEnabledForSubProjects() && !myProject.getProjectId().equals(project.getProjectId())){
 		    			// Sub-projects are disabled and we are a subproject.
 		    			if (Loggers.ACTIVITIES.isDebugEnabled()){
 			    			Loggers.ACTIVITIES.debug(this.getClass().getSimpleName() + ":getListOfEnabledSlackNotifications() "

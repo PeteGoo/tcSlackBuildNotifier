@@ -489,8 +489,7 @@ public class SlackNotificationImpl implements SlackNotification {
 
     public String parametersAsQueryString() {
         String s = "";
-        for (Iterator<NameValuePair> i = this.params.iterator(); i.hasNext(); ) {
-            NameValuePair nv = i.next();
+        for (NameValuePair nv : this.params) {
             s += "&" + nv.getName() + "=" + nv.getValue();
         }
         if (s.length() > 0) {
@@ -504,14 +503,13 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public void addParams(List<NameValuePair> paramsList) {
-        for (Iterator<NameValuePair> i = paramsList.iterator(); i.hasNext(); ) {
-            this.params.add(i.next());
+        for (NameValuePair aParamsList : paramsList) {
+            this.params.add(aParamsList);
         }
     }
 
     public String getParam(String key) {
-        for (Iterator<NameValuePair> i = this.params.iterator(); i.hasNext(); ) {
-            NameValuePair nv = i.next();
+        for (NameValuePair nv : this.params) {
             if (nv.getName().equals(key)) {
                 return nv.getValue();
             }
@@ -540,11 +538,7 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public void setEnabled(String enabled) {
-        if ("true".equals(enabled.toLowerCase())) {
-            this.enabled = true;
-        } else {
-            this.enabled = false;
-        }
+        this.enabled = "true".equals(enabled.toLowerCase());
     }
 
     public Boolean isErrored() {
@@ -651,11 +645,8 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     public boolean getIsApiToken() {
-        if(this.token != null && this.token.startsWith("http")){
-            // We now accept a webhook url.
-            return false;
-        }
-        return this.token == null || this.token.split("-").length > 1;
+        // We now accept a webhook url.
+        return !(this.token != null && this.token.startsWith("http")) && (this.token == null || this.token.split("-").length > 1);
     }
 
     private String formatTime(long seconds){
