@@ -22,7 +22,7 @@ public class SlackNotificationConfig {
 	private static final String TEAM_NAME = "teamName";
 	private static final String CHANNEL_ENABLED_MESSAGE = "mention-channel-enabled";
 	private static final String SLACK_USER_ENABLED_MESSAGE = "mention-slack-user-enabled";
-	private static final String SLACK_TEAM_ENABLED_MESSAGE = "mention-slack-team-enabled";
+	private static final String HERE_ENABLED_MESSAGE = "mention-here-enabled";
 	private static final String STATES = "states";
 	private static final String BUILD_TYPES = "build-types";
 	private static final String ENABLED_FOR_ALL = "enabled-for-all";
@@ -94,8 +94,8 @@ public class SlackNotificationConfig {
 			this.setMentionSlackUserEnabled(Boolean.parseBoolean(e.getAttributeValue("mention-slack-user-enabled")));
 		}
 
-		if (e.getAttribute(SLACK_TEAM_ENABLED_MESSAGE) != null){
-			this.setMentionHereEnabled(Boolean.parseBoolean(e.getAttributeValue("mention-slack-team-enabled")));
+		if (e.getAttribute(HERE_ENABLED_MESSAGE) != null){
+			this.setMentionHereEnabled(Boolean.parseBoolean(e.getAttributeValue("mention-here-enabled")));
 		}
 		
 		if(e.getChild(STATES) != null){
@@ -247,7 +247,7 @@ public class SlackNotificationConfig {
 		el.setAttribute(ENABLED, String.valueOf(this.enabled));
         el.setAttribute(CHANNEL_ENABLED_MESSAGE, String.valueOf(this.getMentionChannelEnabled()));
 		el.setAttribute(SLACK_USER_ENABLED_MESSAGE, String.valueOf(this.getMentionSlackUserEnabled()));
-		el.setAttribute(SLACK_TEAM_ENABLED_MESSAGE, String.valueOf(this.getMentionHereEnabled()));
+		el.setAttribute(HERE_ENABLED_MESSAGE, String.valueOf(this.getMentionHereEnabled()));
 
 		Element statesEl = new Element(STATES);
 		for (BuildStateEnum state : states.getStateSet()){
