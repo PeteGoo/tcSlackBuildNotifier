@@ -6,7 +6,6 @@ import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.serverSide.settings.ProjectSettingsManager;
 import jetbrains.buildServer.tests.TestName;
 import jetbrains.buildServer.util.StringUtil;
-import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import slacknotifications.SlackNotification;
@@ -16,8 +15,6 @@ import slacknotifications.teamcity.settings.SlackNotificationContentConfig;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 import slacknotifications.teamcity.settings.SlackNotificationProjectSettings;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -83,6 +80,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setMaxCommitsToDisplay(myMainSettings.getMaxCommitsToDisplay());
         slackNotification.setMentionChannelEnabled(slackNotificationConfig.getMentionChannelEnabled());
 		slackNotification.setMentionSlackUserEnabled(slackNotificationConfig.getMentionSlackUserEnabled());
+		slackNotification.setMentionHereEnabled(slackNotificationConfig.getMentionHereEnabled());
         slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
         if(slackNotificationConfig.getContent() != null && slackNotificationConfig.getContent().isEnabled()) {
             slackNotification.setBotName(slackNotificationConfig.getContent().getBotName());
