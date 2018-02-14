@@ -87,8 +87,8 @@
                         <configuration>
                             <tasks>
                                 <echo message=" - Copy artefact zip to root target/ folder"/>
-                                <copy todir="${project.build.directory}">
-                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/">
+                                <copy failonerror="false" todir="${project.build.directory}">
+                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/" erroronmissingdir="false">
                                         <include name="*.zip"/>
                                     </fileset>
                                 </copy>
