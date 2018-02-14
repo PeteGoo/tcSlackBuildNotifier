@@ -109,5 +109,7 @@ public interface SlackNotification {
 
 	public abstract void setMentionSlackUserEnabled(boolean mentionSlackUserEnabled);
 
+	public abstract void setMentionHereEnabled(boolean mentionHereEnabled);
+
     public abstract void setShowFailureReason(boolean showFailureReason);
 }

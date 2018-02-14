@@ -153,6 +153,12 @@
 														 Slack User (if known)</label>
 													</td>
 												</tr>
+												<tr style="border:none;"><td>&nbsp;</td>
+													<td><label style='white-space:nowrap;'>
+                                                        <input class="buildState" id="mentionHereEnabled" name="mentionHereEnabled" type=checkbox />
+                                                         @here</label>
+													</td>
+												</tr>
 					    					</table>     
 					    					
 					    			</div><!--hookPane -->

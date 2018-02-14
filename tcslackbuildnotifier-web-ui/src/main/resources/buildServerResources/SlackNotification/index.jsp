@@ -138,6 +138,7 @@
 					});
 					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', slacknotification.mentionChannelEnabled);
 					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', slacknotification.mentionSlackUserEnabled);
+					jQuerySlacknotification('#mentionHereEnabled').attr('checked', slacknotification.mentionHereEnabled);
 					jQuerySlacknotification('#maxCommitsToDisplay').val(slacknotification.maxCommitsToDisplay);
 					jQuerySlacknotification('#customContentEnabled').attr('checked', slacknotification.customContentEnabled);
 					jQuerySlacknotification('#showBuildAgent').attr('checked', slacknotification.showBuildAgent);
