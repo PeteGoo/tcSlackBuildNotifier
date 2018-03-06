@@ -1,61 +1,48 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
-	<artifactId>tcslackbuildnotifier</artifactId>
-	<properties>
-    	<majorVersion>1.4</majorVersion>
-    	<minorVersion>5</minorVersion>
-    	<currentVersion>${majorVersion}.${minorVersion}</currentVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+    <artifactId>tcslackbuildnotifier</artifactId>
+    <properties>
+        <teamcity-version>9.1.7</teamcity-version>
+        <majorVersion>1</majorVersion>
+        <minorVersion>4</minorVersion>
+        <patchVersion>6</patchVersion>
+        <currentVersion>${majorVersion}.${minorVersion}.${patchVersion}</currentVersion>
     </properties>
-	<version>${currentVersion}</version>
-	<name>tcSlackNotifications - A SlackNotifications plugin for TeamCity</name>
- 	<build>
-		<defaultGoal>package</defaultGoal>
-		
-		<resources>
-	      <resource>
-	        <directory>src/main/resources</directory>
-	        <filtering>false</filtering>
-	      </resource>
-	      <resource>
-	        <directory>src/main/teamcity-plugin-resources</directory>
-	        <filtering>true</filtering>
-	        <includes>
-	          <include>*.xml</include>
-	          <include>*.properties</include>
-	        </includes>
-	      </resource>
-	      <resource>
-	        <directory>src/main/teamcity-plugin-resources</directory>
-	        <filtering>false</filtering>
-	        <excludes>
-	          <exclude>*.xml</exclude>
-	          <exclude>*.properties</exclude>
-	        </excludes>
-	      </resource>
-	    </resources>
-		
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-		<plugins>
+    <version>${currentVersion}</version>
+    <name>tcSlackNotifications - Extends TeamCity functionality by adding slack notifications</name>
+    <build>
+        <defaultGoal>package</defaultGoal>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>2.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>               
-            </plugin>
-            
-        
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.xml</include>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>*.xml</exclude>
+                    <exclude>*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+            </plugins>
+        </pluginManagement>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -82,38 +69,30 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--
-            why is this disabled?!
+            <plugin>
+                <groupId>org.jetbrains.teamcity</groupId>
+                <artifactId>teamcity-sdk-maven-plugin</artifactId>
+                <version>0.2</version>
+                <configuration>
+                    <teamcityDir>servers/${teamcity-version}</teamcityDir>
+                    <pluginPackageName>${project.artifactId}-${project.version}.zip</pluginPackageName>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.6</version>
                 <executions>
                     <execution>
-                        <id>teamcityPluginXML</id>
-                        <phase>generate-resources</phase>
+                        <phase>package</phase>
                         <configuration>
-                            <target>
-                                <copy file="teamcity-plugin.xml" toDir="${project.build.directory}">
-                                  <filterset>
-                                    <filter token="VERSION" value="${project.version}"/>
-                                  </filterset>
+                            <tasks>
+                                <echo message=" - Copy artefact zip to root target/ folder"/>
+                                <copy todir="${project.build.directory}">
+                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/">
+                                        <include name="*.zip"/>
+                                    </fileset>
                                 </copy>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>buildZip</id>
-                        <phase>install</phase>
-                        <configuration>
-                            <target>
-                                <zip destfile="${project.build.directory}/${project.name}-${project.version}.zip"
-                                     basedir="${project.build.directory}"
-                                     includes="**/*.jar, teamcity-plugin.xml"
-                                        />
-                            </target>
+                            </tasks>
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -121,51 +100,10 @@
                     </execution>
                 </executions>
             </plugin>
-           <plugin>
-               <artifactId>maven-antrun-plugin</artifactId>
-               <executions>
-                 <execution>
-                   <phase>package</phase>
-                   <configuration>
-                     <tasks>
-                       <echo message="Attempting to build dist zip file" />
-                       <mkdir dir="${project.build.directory}/dist" />
-                       <mkdir dir="${project.build.directory}/dist/server" />
-                       
-                       <echo message=" - Copying resources to dist" />
-                       <copy todir="${project.build.directory}/dist/">
-                           <fileset dir="${project.build.directory}/classes/">
-                               <include name="teamcity-plugin.xml"/>
-                           </fileset>
-                       </copy> 
-       
-                       <echo message=" - Copying dep jar to dist/server" />
-                       <copy todir="${project.build.directory}/dist/server/">
-                             <fileset dir="${project.build.directory}/">
-                                   <include name="${artifactId}-${version}.jar" />
-                             </fileset>
-                       </copy>
-                       
-                       <echo message=" - Creating ZIP file" />
-                       <zip destfile="${project.build.directory}/tcSlackNotificationsPlugin-${version}.zip"
-                            basedir="${project.build.directory}/dist"
-                        />
-       
-                      </tasks>
-                   </configuration>
-                   <goals>
-                     <goal>run</goal>
-                   </goals>
-                 </execution>
-               </executions>
-           </plugin>-->
-
-
-
         </plugins>
-	</build>
-	<reporting>
-		<plugins>
+    </build>
+    <reporting>
+        <plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
@@ -185,38 +123,36 @@
 			
 		</plugins>
 	</reporting>
-	
-	<repositories>
-	  <repository>
-        <id>tcslacknotifications.sourceforge</id>
-        <url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
-      </repository>
-<!-- 	  <repository>
-	    <id>jetbrains-all</id>
-	    <url>http://repository.jetbrains.com/all</url>
-	  </repository> -->
-	</repositories>
-	<dependencies>
 
-  		 
-	</dependencies>
-	
+    <repositories>
+        <repository>
+            <id>tcslacknotifications.sourceforge</id>
+            <url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
+        </repository>
+    </repositories>
 
-	<developers>
-		<developer>
-			<id>petegoo</id>
-			<name>PeteGoo</name>
-			<url>http://www.petegoo.com</url>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-		</developer>
-	</developers>	
-	
-	<packaging>pom</packaging>
-	<modules>
-		<module>tcslackbuildnotifier-web-ui</module>
-		<module>tcslackbuildnotifier-core</module>
-	</modules>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>JetBrains</id>
+            <url>http://download.jetbrains.com/teamcity-repository</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <developers>
+        <developer>
+            <id>petegoo</id>
+            <name>PeteGoo</name>
+            <url>http://www.petegoo.com</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>tcslackbuildnotifier-web-ui</module>
+        <module>tcslackbuildnotifier-core</module>
+    </modules>
 </project>
