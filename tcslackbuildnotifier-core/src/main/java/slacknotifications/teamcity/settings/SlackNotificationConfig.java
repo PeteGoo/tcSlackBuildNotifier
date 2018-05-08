@@ -34,6 +34,7 @@ public class SlackNotificationConfig {
 	private static final String SHOW_BUILD_AGENT = "showBuildAgent";
 	private static final String SHOW_COMMITS = "showCommits";
 	private static final String SHOW_COMMITTERS = "showCommitters";
+	private static final String SHOW_TRIGGERED_BY = "showTriggeredBy";
 	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
 	private static final String SHOW_FAILURE_REASON = "showFailureReason";
 	
@@ -180,6 +181,9 @@ public class SlackNotificationConfig {
             }
             if (eContent.getAttribute(SHOW_COMMITTERS) != null){
                 this.content.setShowCommitters(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_COMMITTERS)));
+			}
+			if (eContent.getAttribute(SHOW_TRIGGERED_BY) != null){
+                this.content.setShowTriggeredBy(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_TRIGGERED_BY)));
             }
             if (eContent.getAttribute(MAX_COMMITS_TO_DISPLAY) != null){
                 this.content.setMaxCommitsToDisplay(Integer.parseInt(eContent.getAttributeValue(MAX_COMMITS_TO_DISPLAY)));
@@ -288,6 +292,7 @@ public class SlackNotificationConfig {
             customContentEl.setAttribute("showElapsedBuildTime", this.content.getShowElapsedBuildTime().toString());
             customContentEl.setAttribute(SHOW_COMMITS, this.content.getShowCommits().toString());
             customContentEl.setAttribute(SHOW_COMMITTERS, this.content.getShowCommitters().toString());
+            customContentEl.setAttribute(SHOW_TRIGGERED_BY, this.content.getShowTriggeredBy().toString());
             customContentEl.setAttribute(SHOW_FAILURE_REASON, this.content.getShowFailureReason().toString());
             el.addContent(customContentEl);
         }

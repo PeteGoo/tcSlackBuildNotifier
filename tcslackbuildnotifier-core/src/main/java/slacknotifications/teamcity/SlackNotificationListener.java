@@ -76,6 +76,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
         slackNotification.setShowCommits(myMainSettings.getShowCommits());
         slackNotification.setShowCommitters(myMainSettings.getShowCommitters());
+        slackNotification.setShowTriggeredBy(myMainSettings.getShowTriggeredBy());
         slackNotification.setShowFailureReason(myMainSettings.getShowFailureReason() == null ? SlackNotificationContentConfig.DEFAULT_SHOW_FAILURE_REASON : myMainSettings.getShowFailureReason());
         slackNotification.setMaxCommitsToDisplay(myMainSettings.getMaxCommitsToDisplay());
         slackNotification.setMentionChannelEnabled(slackNotificationConfig.getMentionChannelEnabled());
@@ -89,7 +90,8 @@ public class SlackNotificationListener extends BuildServerAdapter {
             slackNotification.setShowBuildAgent(slackNotificationConfig.getContent().getShowBuildAgent());
             slackNotification.setShowElapsedBuildTime(slackNotificationConfig.getContent().getShowElapsedBuildTime());
             slackNotification.setShowCommits(slackNotificationConfig.getContent().getShowCommits());
-            slackNotification.setShowCommitters(slackNotificationConfig.getContent().getShowCommitters());
+			slackNotification.setShowCommitters(slackNotificationConfig.getContent().getShowCommitters());
+			slackNotification.setShowTriggeredBy(slackNotificationConfig.getContent().getShowTriggeredBy());
             slackNotification.setShowFailureReason(slackNotificationConfig.getContent().getShowFailureReason() == null ? SlackNotificationContentConfig.DEFAULT_SHOW_FAILURE_REASON : slackNotificationConfig.getContent().getShowFailureReason());
         }
 		Loggers.ACTIVITIES.debug("SlackNotificationListener :: SlackNotification proxy set to "

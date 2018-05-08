@@ -189,16 +189,16 @@
                                                <td>
                                                    <span style="color: #888; font-size: 90%;">When checked, the elapsed time taken to complete the build is displayed in the notification.</span>
                                                </td>
-                                           </tr>
-                                           <tr class="onCustomContentEnabled">
+										   </tr>
+										   <tr class="onCustomContentEnabled">
                                                <td>
-                                                   <label for="showCommitters">Show committers: </label>
+                                                   <label for="showTriggeredBy">Show triggered by: </label>
                                                </td>
                                                <td>
-                                                   <input type="checkbox" name="showCommitters" id="showCommitters"/>
+                                                   <input type="checkbox" name="showTriggeredBy" id="showTriggeredBy"/>
                                                </td>
                                                <td>
-                                                   <span style="color: #888; font-size: 90%;">When checked, the committers responsible for the changes in the build will be displayed in the notification.</span>
+                                                   <span style="color: #888; font-size: 90%;">When checked, the triggered by build will be displayed in the notification.</span>
                                                </td>
                                            </tr>
                                            <tr class="onCustomContentEnabled">
