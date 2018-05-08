@@ -129,8 +129,12 @@ public class SlackNotifierSettingsController extends BaseController {
 
         SlackNotification notification = createMockNotification(teamName, defaultChannel, botName,
                 token, iconUrl, Integer.parseInt(maxCommitsToDisplay),
-                Boolean.parseBoolean(showElapsedBuildTime), Boolean.parseBoolean(showBuildAgent),
-                Boolean.parseBoolean(showCommits), Boolean.parseBoolean(showCommitters), Boolean.parseBoolean(showTriggeredBy), Boolean.parseBoolean(showFailureReason),
+                Boolean.parseBoolean(showElapsedBuildTime),
+                Boolean.parseBoolean(showBuildAgent),
+                Boolean.parseBoolean(showCommits),
+                Boolean.parseBoolean(showCommitters),
+                Boolean.parseBoolean(showTriggeredBy),
+                Boolean.parseBoolean(showFailureReason),
                 proxyHost, proxyPort, proxyUser, proxyPassword);
 
 
