@@ -347,6 +347,10 @@ public class SlackNotificationImpl implements SlackNotification {
                 attachment.addField("Changes By", committersString, false);
             }
         }
+        
+        if(this.payload.getIsComplete()){
+            attachment.addField("Triggered By", this.payload.getTriggeredBy(), false);
+        }
 
         // Mention the channel and/or the Slack Username of any committers if known
         if(payload.getIsFirstFailedBuild()
