@@ -102,6 +102,8 @@ public interface SlackNotification {
     public abstract void setShowCommits(boolean showCommits);
 	
     public abstract void setShowCommitters(boolean showCommitters);
+	
+	public abstract void setShowTriggeredBy(boolean showTriggeredBy);
 
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 

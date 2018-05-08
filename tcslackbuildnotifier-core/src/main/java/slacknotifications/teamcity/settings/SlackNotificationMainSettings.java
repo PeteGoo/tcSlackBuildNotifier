@@ -122,6 +122,10 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         return this.slackNotificationMainConfig.getContent().getShowCommitters();
     }
 
+    public boolean getShowTriggeredBy(){
+        return this.slackNotificationMainConfig.getContent().getShowTriggeredBy();
+    }
+
     public Boolean getShowFailureReason() {
         return this.slackNotificationMainConfig.getContent().getShowFailureReason();
     }

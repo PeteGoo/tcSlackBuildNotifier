@@ -68,6 +68,7 @@ public class SlackNotifierAdminPage extends AdminPage {
         model.put("showBuildAgent", this.slackMainSettings.getShowBuildAgent());
         model.put("showCommits", this.slackMainSettings.getShowCommits());
         model.put("showCommitters", this.slackMainSettings.getShowCommitters());
+        model.put("showTriggeredBy", this.slackMainSettings.getShowTriggeredBy());
         model.put("showElapsedBuildTime", this.slackMainSettings.getShowElapsedBuildTime());
         model.put("showFailureReason", this.slackMainSettings.getShowFailureReason());
 

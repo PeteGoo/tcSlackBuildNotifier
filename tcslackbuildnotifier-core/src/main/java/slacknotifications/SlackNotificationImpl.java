@@ -65,6 +65,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
     private boolean showCommitters;
+    private boolean showTriggeredBy;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
@@ -348,7 +349,7 @@ public class SlackNotificationImpl implements SlackNotification {
             }
         }
         
-        if(this.payload.getIsComplete()){
+        if(showTriggeredBy){
             attachment.addField("Triggered By", this.payload.getTriggeredBy(), false);
         }
 
@@ -637,6 +638,11 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setShowCommitters(boolean showCommitters) {
         this.showCommitters = showCommitters;
+    }
+
+    @Override
+    public void setShowTriggeredBy(boolean showTriggeredBy) {
+        this.showTriggeredBy = showTriggeredBy;
     }
 
     @Override
