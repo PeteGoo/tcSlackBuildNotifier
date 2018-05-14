@@ -61,8 +61,8 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
         showBuildAgent = valueOrFallback(config.getContent().getShowBuildAgent(), valueOrFallback(mainSettings.getShowBuildAgent(), SlackNotificationContentConfig.DEFAULT_SHOW_BUILD_AGENT));
         showElapsedBuildTime = valueOrFallback(config.getContent().getShowElapsedBuildTime(), valueOrFallback(mainSettings.getShowElapsedBuildTime(), SlackNotificationContentConfig.DEFAULT_SHOW_ELAPSED_BUILD_TIME));
         showCommits = valueOrFallback(config.getContent().getShowCommits(), valueOrFallback(mainSettings.getShowCommits(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITS));
-		showCommitters = valueOrFallback(config.getContent().getShowCommitters(), valueOrFallback(mainSettings.getShowCommitters(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITTERS));
-		showTriggeredBy = valueOrFallback(config.getContent().getShowTriggeredBy(), valueOrFallback(mainSettings.getShowTriggeredBy(), SlackNotificationContentConfig.DEFAULT_SHOW_TRIGGERED_BY));
+        showCommitters = valueOrFallback(config.getContent().getShowCommitters(), valueOrFallback(mainSettings.getShowCommitters(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITTERS));
+        showTriggeredBy = valueOrFallback(config.getContent().getShowTriggeredBy(), valueOrFallback(mainSettings.getShowTriggeredBy(), SlackNotificationContentConfig.DEFAULT_SHOW_TRIGGERED_BY));
         showFailureReason = valueOrFallback(config.getContent().getShowFailureReason(), valueOrFallback(mainSettings.getShowFailureReason(), SlackNotificationContentConfig.DEFAULT_SHOW_FAILURE_REASON));
         botName = valueOrFallback(config.getContent().getBotName(), SlackNotificationMainConfig.DEFAULT_BOTNAME);
         iconUrl = valueOrFallback(config.getContent().getIconUrl(), SlackNotificationMainConfig.DEFAULT_ICONURL);

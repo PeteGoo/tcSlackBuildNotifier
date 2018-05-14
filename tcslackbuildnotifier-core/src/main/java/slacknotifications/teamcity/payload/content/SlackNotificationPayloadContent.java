@@ -336,7 +336,7 @@ public class SlackNotificationPayloadContent {
 
 		public void setTriggeredBy(String triggeredBy) {
 			this.triggeredBy = triggeredBy;
-        }
+		}
         
 		public String getBuildId() {
 			return buildId;

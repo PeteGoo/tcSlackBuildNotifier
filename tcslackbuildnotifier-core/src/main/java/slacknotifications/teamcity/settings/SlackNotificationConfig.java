@@ -181,7 +181,7 @@ public class SlackNotificationConfig {
             }
             if (eContent.getAttribute(SHOW_COMMITTERS) != null){
                 this.content.setShowCommitters(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_COMMITTERS)));
-			}
+            }
 			if (eContent.getAttribute(SHOW_TRIGGERED_BY) != null){
                 this.content.setShowTriggeredBy(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_TRIGGERED_BY)));
             }

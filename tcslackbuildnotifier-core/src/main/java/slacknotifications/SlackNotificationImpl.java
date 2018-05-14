@@ -349,7 +349,7 @@ public class SlackNotificationImpl implements SlackNotification {
             }
         }
         
-        if(showTriggeredBy){
+        if (showTriggeredBy){
             attachment.addField("Triggered By", this.payload.getTriggeredBy(), false);
         }
 
