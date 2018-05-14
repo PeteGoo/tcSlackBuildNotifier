@@ -3,20 +3,17 @@ package slacknotifications.teamcity.payload.content;
 import jetbrains.buildServer.BuildProblemData;
 import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.tests.TestInfo;
-import jetbrains.buildServer.users.SUser;
-import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
-import slacknotifications.teamcity.SlackNotificator;
 import slacknotifications.teamcity.TeamCityIdResolver;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
 public class SlackNotificationPayloadContent {
-    String buildStatus;
+	final PayloadContentCommits payloadCommits;
+	String buildStatus;
     String buildResult;
     String buildResultPrevious;
     String buildResultDelta;
@@ -46,8 +43,7 @@ public class SlackNotificationPayloadContent {
     String branchDisplayName;
     String buildStateDescription;
     String progressSummary;
-    List<Commit> commits;
-    private boolean isFirstFailedBuild;
+	private boolean isFirstFailedBuild;
 
     Boolean branchIsDefault;
 
@@ -77,7 +73,7 @@ public class SlackNotificationPayloadContent {
     private ArrayList<String> failedTestNames = new ArrayList<String>();
 
     public SlackNotificationPayloadContent(){
-
+		payloadCommits = new PayloadContentCommits();
         }
 
     /**
@@ -87,6 +83,7 @@ public class SlackNotificationPayloadContent {
 		 * @param buildState
 		 */
 		public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState) {
+			payloadCommits = new PayloadContentCommits();
 			populateCommonContent(server, buildType, buildState);
 		}
 
@@ -99,11 +96,10 @@ public class SlackNotificationPayloadContent {
 		 */
 		public SlackNotificationPayloadContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
                                                BuildStateEnum buildState) {
-
-            this.commits = new ArrayList<Commit>();
+			payloadCommits = new PayloadContentCommits();
             populateCommonContent(server, sRunningBuild, previousBuild, buildState);
     		populateMessageAndText(sRunningBuild, buildState);
-            populateCommits(sRunningBuild);
+			payloadCommits.populateCommits(sRunningBuild);
     		populateArtifacts(sRunningBuild);
             populateResults(sRunningBuild);
 		}
@@ -136,22 +132,9 @@ public class SlackNotificationPayloadContent {
     }
 
     private void populateCommits(SRunningBuild sRunningBuild) {
-        List<SVcsModification> changes = sRunningBuild.getContainingChanges();
-        if(changes == null){
-            return;
-        }
 
-        for(SVcsModification change : changes){
-			Collection<SUser> committers = change.getCommitters();
-			String slackUserName = null;
-			if(committers != null && !committers.isEmpty()){
-				SUser committer = committers.iterator().next();
-				slackUserName = committer.getPropertyValue(SlackNotificator.USERNAME_KEY);
-				Loggers.ACTIVITIES.debug("Resolved committer " + change.getUserName() + " to Slack User " + slackUserName);
-			}
-			commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName(), slackUserName));
-        }
-    }
+		payloadCommits.populateCommits(sRunningBuild);
+	}
 
     private void populateArtifacts(SRunningBuild runningBuild) {
 			//ArtifactsInfo artInfo = new ArtifactsInfo(runningBuild);
@@ -414,12 +397,12 @@ public class SlackNotificationPayloadContent {
     }
 
     public List<Commit> getCommits() {
-        return commits;
-    }
+		return payloadCommits.getCommits();
+	}
 
     public void setCommits(List<Commit> commits) {
-        this.commits = commits;
-    }
+		payloadCommits.setCommits(commits);
+	}
 
     public boolean getIsComplete() {
         return isComplete;
