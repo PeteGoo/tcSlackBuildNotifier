@@ -7,7 +7,7 @@
         <teamcity-version>9.1.7</teamcity-version>
         <majorVersion>1</majorVersion>
         <minorVersion>4</minorVersion>
-        <patchVersion>6</patchVersion>
+        <patchVersion>7</patchVersion>
         <currentVersion>${majorVersion}.${minorVersion}.${patchVersion}</currentVersion>
     </properties>
     <version>${currentVersion}</version>
@@ -43,6 +43,19 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                <execution>
+                    <id>auto-clean</id>
+                    <phase>initialize</phase>
+                    <goals>
+                    <goal>clean</goal>
+                    </goals>
+                </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

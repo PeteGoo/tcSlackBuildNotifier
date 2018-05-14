@@ -175,6 +175,9 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
                                             content.setShowCommitters((request.getParameter("showCommitters") != null)
                                                     && ("on".equalsIgnoreCase(request.getParameter("showCommitters"))));
 
+                                            content.setShowTriggeredBy((request.getParameter("showTriggeredBy") != null)
+                                                    && ("on".equalsIgnoreCase(request.getParameter("showTriggeredBy"))));
+
                                             content.setShowElapsedBuildTime((request.getParameter("showElapsedBuildTime") != null)
                                                     && ("on".equalsIgnoreCase(request.getParameter("showElapsedBuildTime"))));
 

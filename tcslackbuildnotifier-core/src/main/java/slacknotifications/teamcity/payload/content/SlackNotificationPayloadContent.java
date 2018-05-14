@@ -198,6 +198,7 @@ public class SlackNotificationPayloadContent {
         setBuildResult(sRunningBuild, previousBuild, buildState);
         setBuildFullName(sRunningBuild.getBuildType().getFullName());
         setBuildName(sRunningBuild.getBuildType().getName());
+        setTriggeredBy(sRunningBuild.getTriggeredBy().getAsString());
         setBuildId(Long.toString(sRunningBuild.getBuildId()));
         setBuildTypeId(TeamCityIdResolver.getBuildTypeId(sRunningBuild.getBuildType()));
         setAgentName(sRunningBuild.getAgentName());
@@ -329,6 +330,14 @@ public class SlackNotificationPayloadContent {
 			this.buildName = buildName;
 		}
 
+		public String getTriggeredBy() {
+			return triggeredBy;
+		}
+
+		public void setTriggeredBy(String triggeredBy) {
+			this.triggeredBy = triggeredBy;
+		}
+        
 		public String getBuildId() {
 			return buildId;
 		}

@@ -104,6 +104,15 @@
                 </tr>
                 <tr>
                     <th>
+                        <label for="showTriggeredBy">Show triggered by: </label>
+                    </th>
+                    <td>
+                        <forms:checkbox name="showTriggeredBy" checked="${showTriggeredBy}" value="${showTriggeredBy}"/>
+                        <span style="color: #888; font-size: 90%;">When checked, the triggered by build will be displayed in the notification.</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         <label for="showCommitters">Show committers: </label>
                     </th>
                     <td>

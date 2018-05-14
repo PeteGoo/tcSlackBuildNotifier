@@ -35,6 +35,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
     private boolean showElapsedBuildTime;
     private boolean showCommits;
     private boolean showCommitters;
+    private boolean showTriggeredBy;
     private int maxCommitsToDisplay;
     private boolean showFailureReason;
     private String botName;
@@ -61,6 +62,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
         showElapsedBuildTime = valueOrFallback(config.getContent().getShowElapsedBuildTime(), valueOrFallback(mainSettings.getShowElapsedBuildTime(), SlackNotificationContentConfig.DEFAULT_SHOW_ELAPSED_BUILD_TIME));
         showCommits = valueOrFallback(config.getContent().getShowCommits(), valueOrFallback(mainSettings.getShowCommits(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITS));
         showCommitters = valueOrFallback(config.getContent().getShowCommitters(), valueOrFallback(mainSettings.getShowCommitters(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITTERS));
+        showTriggeredBy = valueOrFallback(config.getContent().getShowTriggeredBy(), valueOrFallback(mainSettings.getShowTriggeredBy(), SlackNotificationContentConfig.DEFAULT_SHOW_TRIGGERED_BY));
         showFailureReason = valueOrFallback(config.getContent().getShowFailureReason(), valueOrFallback(mainSettings.getShowFailureReason(), SlackNotificationContentConfig.DEFAULT_SHOW_FAILURE_REASON));
         botName = valueOrFallback(config.getContent().getBotName(), SlackNotificationMainConfig.DEFAULT_BOTNAME);
         iconUrl = valueOrFallback(config.getContent().getIconUrl(), SlackNotificationMainConfig.DEFAULT_ICONURL);
