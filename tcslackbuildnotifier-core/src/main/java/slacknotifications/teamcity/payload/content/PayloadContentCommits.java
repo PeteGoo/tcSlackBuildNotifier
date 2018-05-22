@@ -11,13 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 public class PayloadContentCommits {
-    List<Commit> commits;
+    private List<Commit> commits;
 
     public PayloadContentCommits() {
         commits = new ArrayList<Commit>();
     }
 
-    void populateCommits(SRunningBuild sRunningBuild) {
+    public void populateCommits(SRunningBuild sRunningBuild) {
         List<SVcsModification> changes = sRunningBuild.getContainingChanges();
         if (changes == null) {
             return;
