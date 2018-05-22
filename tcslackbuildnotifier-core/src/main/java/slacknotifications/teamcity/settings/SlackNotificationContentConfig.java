@@ -9,6 +9,7 @@ public class SlackNotificationContentConfig {
     public static final boolean DEFAULT_SHOW_ELAPSED_BUILD_TIME = true;
     public static final boolean DEFAULT_SHOW_COMMITS = true;
     public static final boolean DEFAULT_SHOW_COMMITTERS = true;
+    public static final boolean DEFAULT_SHOW_TRIGGERED_BY = true;
     public static final boolean DEFAULT_SHOW_FAILURE_REASON = false;
     private String iconUrl = SlackNotificationMainConfig.DEFAULT_ICONURL;
     private String botName = SlackNotificationMainConfig.DEFAULT_BOTNAME;
@@ -16,6 +17,7 @@ public class SlackNotificationContentConfig {
     private Boolean showElapsedBuildTime;
     private Boolean showCommits = true;
     private Boolean showCommitters = true;
+    private Boolean showTriggeredBy = true;
     private int maxCommitsToDisplay = 5;
     private boolean enabled;
     private Boolean showFailureReason;
@@ -74,6 +76,14 @@ public class SlackNotificationContentConfig {
 
     public void setShowCommitters(Boolean showCommitters) {
         this.showCommitters = showCommitters;
+    }
+
+    public Boolean getShowTriggeredBy() {
+        return showTriggeredBy;
+    }
+
+    public void setShowTriggeredBy(Boolean showTriggeredBy) {
+        this.showTriggeredBy = showTriggeredBy;
     }
 
     public int getMaxCommitsToDisplay() {

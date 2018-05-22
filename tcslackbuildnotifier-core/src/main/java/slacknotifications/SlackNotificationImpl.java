@@ -17,7 +17,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.http.HttpHost;
-import org.springframework.util.StringUtils;
 import slacknotifications.teamcity.BuildState;
 import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
@@ -26,7 +25,6 @@ import slacknotifications.teamcity.payload.content.SlackNotificationPayloadConte
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -67,9 +65,11 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
     private boolean showCommitters;
+    private boolean showTriggeredBy;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
+    private boolean mentionHereEnabled;
     private boolean showFailureReason;
 	
 /*	This is a bit mask of states that should trigger a SlackNotification.
@@ -330,7 +330,7 @@ public class SlackNotificationImpl implements SlackNotification {
 
         for(Commit commit : commits){
             if(commit.hasSlackUsername()){
-                slackUsers.add("@" + commit.getSlackUserName());
+                slackUsers.add("<@" + commit.getSlackUserName() + ">");
             }
         }
         HashSet<String> tempHash = new HashSet<String>(slackUsers);
@@ -348,15 +348,26 @@ public class SlackNotificationImpl implements SlackNotification {
                 attachment.addField("Changes By", committersString, false);
             }
         }
+        
+        if (showTriggeredBy){
+            attachment.addField("Triggered By", this.payload.getTriggeredBy(), false);
+        }
 
         // Mention the channel and/or the Slack Username of any committers if known
-        if(payload.getIsFirstFailedBuild() && (mentionChannelEnabled || (mentionSlackUserEnabled && !slackUsers.isEmpty()))){
+        if(payload.getIsFirstFailedBuild()
+                && (mentionChannelEnabled
+                    || mentionHereEnabled
+                    ||(mentionSlackUserEnabled
+                        && !slackUsers.isEmpty()))){
             String mentionContent = ":arrow_up: \"" + this.payload.getBuildName() + "\" Failed ";
             if(mentionChannelEnabled){
                 mentionContent += "<!channel> ";
             }
             if(mentionSlackUserEnabled && !slackUsers.isEmpty() && !this.payload.isMergeBranch()) {
                 mentionContent += StringUtil.join(" ", slackUsers);
+            }
+            if (mentionHereEnabled) {
+                mentionContent += "<!here>";
             }
             attachment.addField("", mentionContent, true);
         }
@@ -630,6 +641,11 @@ public class SlackNotificationImpl implements SlackNotification {
     }
 
     @Override
+    public void setShowTriggeredBy(boolean showTriggeredBy) {
+        this.showTriggeredBy = showTriggeredBy;
+    }
+
+    @Override
     public void setMaxCommitsToDisplay(int maxCommitsToDisplay) {
         this.maxCommitsToDisplay = maxCommitsToDisplay;
     }
@@ -644,6 +660,10 @@ public class SlackNotificationImpl implements SlackNotification {
         this.mentionSlackUserEnabled = mentionSlackUserEnabled;
     }
 
+    @Override
+    public void setMentionHereEnabled(boolean mentionHereEnabled) {
+        this.mentionHereEnabled = mentionHereEnabled;
+    }
 
     @Override
     public void setShowFailureReason(boolean showFailureReason) {

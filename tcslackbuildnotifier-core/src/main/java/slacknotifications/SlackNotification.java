@@ -102,12 +102,16 @@ public interface SlackNotification {
     public abstract void setShowCommits(boolean showCommits);
 	
     public abstract void setShowCommitters(boolean showCommitters);
+	
+	public abstract void setShowTriggeredBy(boolean showTriggeredBy);
 
     public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 
     public abstract void setMentionChannelEnabled(boolean mentionChannelEnabled);
 
 	public abstract void setMentionSlackUserEnabled(boolean mentionSlackUserEnabled);
+
+	public abstract void setMentionHereEnabled(boolean mentionHereEnabled);
 
     public abstract void setShowFailureReason(boolean showFailureReason);
 }
