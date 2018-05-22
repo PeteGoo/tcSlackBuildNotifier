@@ -3,19 +3,16 @@ package slacknotifications.teamcity.payload.content;
 import jetbrains.buildServer.BuildProblemData;
 import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.tests.TestInfo;
-import jetbrains.buildServer.users.SUser;
-import jetbrains.buildServer.vcs.SVcsModification;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
-import slacknotifications.teamcity.SlackNotificator;
 import slacknotifications.teamcity.TeamCityIdResolver;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
 public class SlackNotificationPayloadContent {
+    final PayloadContentCommits payloadCommits = new PayloadContentCommits();
     String buildStatus;
     String buildResult;
     String buildResultPrevious;
@@ -46,7 +43,6 @@ public class SlackNotificationPayloadContent {
     String branchDisplayName;
     String buildStateDescription;
     String progressSummary;
-    List<Commit> commits;
     private boolean isFirstFailedBuild;
 
     Boolean branchIsDefault;
@@ -77,36 +73,33 @@ public class SlackNotificationPayloadContent {
     private ArrayList<String> failedTestNames = new ArrayList<String>();
 
     public SlackNotificationPayloadContent(){
-
-        }
+    }
 
     /**
-		 * Constructor: Only called by RepsonsibilityChanged.
-		 * @param server
-		 * @param buildType
-		 * @param buildState
-		 */
-		public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState) {
-			populateCommonContent(server, buildType, buildState);
-		}
+     * Constructor: Only called by RepsonsibilityChanged.
+     * @param server
+     * @param buildType
+     * @param buildState
+     */
+    public SlackNotificationPayloadContent(SBuildServer server, SBuildType buildType, BuildStateEnum buildState) {
+        populateCommonContent(server, buildType, buildState);
+    }
 
-		/**
-		 * Constructor: Called by everything except RepsonsibilityChanged.
-		 * @param server
-		 * @param sRunningBuild
-		 * @param previousBuild
-		 * @param buildState
-		 */
-		public SlackNotificationPayloadContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
-                                               BuildStateEnum buildState) {
-
-            this.commits = new ArrayList<Commit>();
-            populateCommonContent(server, sRunningBuild, previousBuild, buildState);
-    		populateMessageAndText(sRunningBuild, buildState);
-            populateCommits(sRunningBuild);
-    		populateArtifacts(sRunningBuild);
-            populateResults(sRunningBuild);
-		}
+    /**
+     * Constructor: Called by everything except RepsonsibilityChanged.
+     * @param server
+     * @param sRunningBuild
+     * @param previousBuild
+     * @param buildState
+     */
+    public SlackNotificationPayloadContent(SBuildServer server, SRunningBuild sRunningBuild, SFinishedBuild previousBuild,
+                                           BuildStateEnum buildState) {
+        populateCommonContent(server, sRunningBuild, previousBuild, buildState);
+        populateMessageAndText(sRunningBuild, buildState);
+        payloadCommits.populateCommits(sRunningBuild);
+        populateArtifacts(sRunningBuild);
+        populateResults(sRunningBuild);
+    }
 
     private void populateResults(SRunningBuild sRunningBuild) {
         List<BuildProblemData> failureReasons = sRunningBuild.getFailureReasons();
@@ -135,55 +128,37 @@ public class SlackNotificationPayloadContent {
         failedTestNames = new ArrayList<String>(failureTestNames);
     }
 
-    private void populateCommits(SRunningBuild sRunningBuild) {
-        List<SVcsModification> changes = sRunningBuild.getContainingChanges();
-        if(changes == null){
-            return;
-        }
+    private void populateArtifacts(SRunningBuild runningBuild) {
+        //ArtifactsInfo artInfo = new ArtifactsInfo(runningBuild);
+        //artInfo.
 
-        for(SVcsModification change : changes){
-			Collection<SUser> committers = change.getCommitters();
-			String slackUserName = null;
-			if(committers != null && !committers.isEmpty()){
-				SUser committer = committers.iterator().next();
-				slackUserName = committer.getPropertyValue(SlackNotificator.USERNAME_KEY);
-				Loggers.ACTIVITIES.debug("Resolved committer " + change.getUserName() + " to Slack User " + slackUserName);
-			}
-			commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName(), slackUserName));
-        }
     }
 
-    private void populateArtifacts(SRunningBuild runningBuild) {
-			//ArtifactsInfo artInfo = new ArtifactsInfo(runningBuild);
-			//artInfo.
-			
-		}
+    /**
+     * Used by RepsonsiblityChanged.
+     * Therefore, does not have access to a specific build instance.
+     * @param server
+     * @param buildType
+     * @param state
+     */
+    private void populateCommonContent(SBuildServer server, SBuildType buildType, BuildStateEnum state) {
+        setBuildFullName(buildType.getFullName());
+        setBuildName(buildType.getName());
+        setBuildTypeId(TeamCityIdResolver.getBuildTypeId(buildType));
+        setBuildStatusUrl(server.getRootUrl() + "/viewLog.html?buildTypeId=" + buildType.getBuildTypeId() + "&buildId=lastFinished");
 
-		/**
-		 * Used by RepsonsiblityChanged.
-		 * Therefore, does not have access to a specific build instance.
-		 * @param server
-		 * @param buildType
-		 * @param state
-		 */
-		private void populateCommonContent(SBuildServer server, SBuildType buildType, BuildStateEnum state) {
-			setBuildFullName(buildType.getFullName());
-			setBuildName(buildType.getName());
-			setBuildTypeId(TeamCityIdResolver.getBuildTypeId(buildType));
-			setBuildStatusUrl(server.getRootUrl() + "/viewLog.html?buildTypeId=" + buildType.getBuildTypeId() + "&buildId=lastFinished");
+    }
 
-		}
-		
-		private void populateMessageAndText(SRunningBuild sRunningBuild,
-				BuildStateEnum state) {
-			// Message is a long form message, for on webpages or in email.
+    private void populateMessageAndText(SRunningBuild sRunningBuild,
+                                        BuildStateEnum state) {
+        // Message is a long form message, for on webpages or in email.
 
-			// Text is designed to be shorter, for use in Text messages and the like.    		
-    		setText(getBuildDescriptionWithLinkSyntax()
-                    + " has " + state.getDescriptionSuffix() + ". Status: " + this.buildResult);
+        // Text is designed to be shorter, for use in Text messages and the like.
+        setText(getBuildDescriptionWithLinkSyntax()
+                + " has " + state.getDescriptionSuffix() + ". Status: " + this.buildResult);
 
 
-		}
+    }
 
     /**
      * Used by everything except ResponsibilityChanged. Is passed a valid build instance.
@@ -220,171 +195,171 @@ public class SlackNotificationPayloadContent {
         String branchSuffix = (getBranchIsDefault() != null && getBranchIsDefault()) || getBranchDisplayName() == null ? "" : (" [" + getBranchDisplayName() + "]");
         setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
     }
-		
-		
-
-		private Branch getBranch() {
-			return this.branch;
-		}
-		
-		public void setBranch(Branch branch) {
-			this.branch = branch;
-		}
-
-		public String getBranchDisplayName() {
-			return this.branchDisplayName;
-		}
-		
-		public void setBranchDisplayName(String displayName) {
-			this.branchDisplayName = displayName;
-		}
-
-		public Boolean getBranchIsDefault() {
-			return branchIsDefault;
-		}
-
-		public Boolean isMergeBranch() { return this.branchName != null && this.branchName.endsWith("/merge");}
-
-		public void setBranchIsDefault(boolean branchIsDefault) {
-			this.branchIsDefault = branchIsDefault;
-		}
-
-		/**
-		 * Determines a useful build result. The one from TeamCity can't be trusted because it
-		 * is not set until all the Notifiers have run, of which we are one. 
-		 * @param sRunningBuild
-		 * @param previousBuild
-		 * @param buildState
-		 */
-		private void setBuildResult(SRunningBuild sRunningBuild,
-				SFinishedBuild previousBuild, BuildStateEnum buildState) {
 
 
-			if (previousBuild != null){
-				if (previousBuild.isFinished()){ 
-					if (previousBuild.getStatusDescriptor().isSuccessful()){
-						this.buildResultPrevious = BUILD_STATUS_SUCCESS;
-					} else {
-						this.buildResultPrevious = BUILD_STATUS_FAILURE;
-					}
-				} else {
-					this.buildResultPrevious = BUILD_STATUS_RUNNING;
-				}
-			} else {
-				this.buildResultPrevious = BUILD_STATUS_UNKNOWN;
-			}
 
-            isComplete = buildState == BuildStateEnum.BUILD_FINISHED;
+    private Branch getBranch() {
+        return this.branch;
+    }
 
-			if (buildState == BuildStateEnum.BEFORE_BUILD_FINISHED || buildState == BuildStateEnum.BUILD_FINISHED){ 
-				if (sRunningBuild.getStatusDescriptor().isSuccessful()){
-					this.buildResult = BUILD_STATUS_SUCCESS;
-                    this.color = "good";
-					if (this.buildResultPrevious.equals(this.buildResult)){
-						this.buildResultDelta = BUILD_STATUS_NO_CHANGE;
-					} else {
-						this.buildResultDelta = BUILD_STATUS_FIXED;
-					}
-				} else {
-					this.buildResult = BUILD_STATUS_FAILURE;
-                    this.color = "danger";
-					if (this.buildResultPrevious.equals(this.buildResult)){
-						this.buildResultDelta = BUILD_STATUS_NO_CHANGE;
-					} else {
-						this.buildResultDelta = BUILD_STATUS_BROKEN;
-                        this.setFirstFailedBuild(true);
-					}
-				}
-			} else {
-				this.buildResult = BUILD_STATUS_RUNNING;
-				this.buildResultDelta = BUILD_STATUS_UNKNOWN;
-			}
-			
-		}
+    public void setBranch(Branch branch) {
+        this.branch = branch;
+    }
 
-		// Getters and setters
-		
+    public String getBranchDisplayName() {
+        return this.branchDisplayName;
+    }
 
-		public String getBuildResult() {
-			return buildResult;
-		}
+    public void setBranchDisplayName(String displayName) {
+        this.branchDisplayName = displayName;
+    }
 
-		public void setBuildResult(String buildResult) {
-			this.buildResult = buildResult;
-		}
+    public Boolean getBranchIsDefault() {
+        return branchIsDefault;
+    }
+
+    public Boolean isMergeBranch() { return this.branchName != null && this.branchName.endsWith("/merge");}
+
+    public void setBranchIsDefault(boolean branchIsDefault) {
+        this.branchIsDefault = branchIsDefault;
+    }
+
+    /**
+     * Determines a useful build result. The one from TeamCity can't be trusted because it
+     * is not set until all the Notifiers have run, of which we are one.
+     * @param sRunningBuild
+     * @param previousBuild
+     * @param buildState
+     */
+    private void setBuildResult(SRunningBuild sRunningBuild,
+                                SFinishedBuild previousBuild, BuildStateEnum buildState) {
 
 
-		public String getBuildFullName() {
-			return buildFullName;
-		}
+        if (previousBuild != null){
+            if (previousBuild.isFinished()){
+                if (previousBuild.getStatusDescriptor().isSuccessful()){
+                    this.buildResultPrevious = BUILD_STATUS_SUCCESS;
+                } else {
+                    this.buildResultPrevious = BUILD_STATUS_FAILURE;
+                }
+            } else {
+                this.buildResultPrevious = BUILD_STATUS_RUNNING;
+            }
+        } else {
+            this.buildResultPrevious = BUILD_STATUS_UNKNOWN;
+        }
 
-		public void setBuildFullName(String buildFullName) {
-			this.buildFullName = buildFullName;
-		}
+        isComplete = buildState == BuildStateEnum.BUILD_FINISHED;
 
-		public String getBuildName() {
-			return buildName;
-		}
+        if (buildState == BuildStateEnum.BEFORE_BUILD_FINISHED || buildState == BuildStateEnum.BUILD_FINISHED){
+            if (sRunningBuild.getStatusDescriptor().isSuccessful()){
+                this.buildResult = BUILD_STATUS_SUCCESS;
+                this.color = "good";
+                if (this.buildResultPrevious.equals(this.buildResult)){
+                    this.buildResultDelta = BUILD_STATUS_NO_CHANGE;
+                } else {
+                    this.buildResultDelta = BUILD_STATUS_FIXED;
+                }
+            } else {
+                this.buildResult = BUILD_STATUS_FAILURE;
+                this.color = "danger";
+                if (this.buildResultPrevious.equals(this.buildResult)){
+                    this.buildResultDelta = BUILD_STATUS_NO_CHANGE;
+                } else {
+                    this.buildResultDelta = BUILD_STATUS_BROKEN;
+                    this.setFirstFailedBuild(true);
+                }
+            }
+        } else {
+            this.buildResult = BUILD_STATUS_RUNNING;
+            this.buildResultDelta = BUILD_STATUS_UNKNOWN;
+        }
 
-		public void setBuildName(String buildName) {
-			this.buildName = buildName;
-		}
+    }
 
-		public String getTriggeredBy() {
-			return triggeredBy;
-		}
-
-		public void setTriggeredBy(String triggeredBy) {
-			this.triggeredBy = triggeredBy;
-		}
-        
-		public String getBuildId() {
-			return buildId;
-		}
-
-		public void setBuildId(String buildId) {
-			this.buildId = buildId;
-		}
-
-		public String getBuildTypeId() {
-			return buildTypeId;
-		}
-
-		public void setBuildTypeId(String buildTypeId) {
-			this.buildTypeId = buildTypeId;
-		}
+    // Getters and setters
 
 
+    public String getBuildResult() {
+        return buildResult;
+    }
+
+    public void setBuildResult(String buildResult) {
+        this.buildResult = buildResult;
+    }
+
+
+    public String getBuildFullName() {
+        return buildFullName;
+    }
+
+    public void setBuildFullName(String buildFullName) {
+        this.buildFullName = buildFullName;
+    }
+
+    public String getBuildName() {
+        return buildName;
+    }
+
+    public void setBuildName(String buildName) {
+        this.buildName = buildName;
+    }
+
+    public String getTriggeredBy() {
+        return triggeredBy;
+    }
+
+    public void setTriggeredBy(String triggeredBy) {
+        this.triggeredBy = triggeredBy;
+    }
+
+    public String getBuildId() {
+        return buildId;
+    }
+
+    public void setBuildId(String buildId) {
+        this.buildId = buildId;
+    }
+
+    public String getBuildTypeId() {
+        return buildTypeId;
+    }
+
+    public void setBuildTypeId(String buildTypeId) {
+        this.buildTypeId = buildTypeId;
+    }
 
 
 
 
-		public String getAgentName() {
-			return agentName;
-		}
-
-		public void setAgentName(String agentName) {
-			this.agentName = agentName;
-		}
 
 
-		public String getBuildStatusUrl() {
-			return buildStatusUrl;
-		}
+    public String getAgentName() {
+        return agentName;
+    }
 
-		public void setBuildStatusUrl(String buildStatusUrl) {
-			this.buildStatusUrl = buildStatusUrl;
-		}
-
-
-		public String getText() {
-			return text;
-		}
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
+    }
 
 
-		public void setText(String text) {
-			this.text = text;
-		}
+    public String getBuildStatusUrl() {
+        return buildStatusUrl;
+    }
+
+    public void setBuildStatusUrl(String buildStatusUrl) {
+        this.buildStatusUrl = buildStatusUrl;
+    }
+
+
+    public String getText() {
+        return text;
+    }
+
+
+    public void setText(String text) {
+        this.text = text;
+    }
 
 
     public void setBuildDescriptionWithLinkSyntax(String buildLink) {
@@ -414,11 +389,11 @@ public class SlackNotificationPayloadContent {
     }
 
     public List<Commit> getCommits() {
-        return commits;
+        return payloadCommits.getCommits();
     }
 
     public void setCommits(List<Commit> commits) {
-        this.commits = commits;
+        payloadCommits.setCommits(commits);
     }
 
     public boolean getIsComplete() {
