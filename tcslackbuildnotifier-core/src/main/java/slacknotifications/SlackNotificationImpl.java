@@ -330,8 +330,8 @@ public class SlackNotificationImpl implements SlackNotification {
 
 
         for(Commit commit : commits){
-            if(commit.hasSlackUsername()){
-                slackUsers.add("<@" + commit.getSlackUserName() + ">");
+            if(commit.hasSlackUserId()){
+                slackUsers.add("<!" + commit.getSlackUserId() + ">");
             }
         }
         HashSet<String> tempHash = new HashSet<String>(slackUsers);
