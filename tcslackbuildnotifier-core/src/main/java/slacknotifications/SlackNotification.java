@@ -114,4 +114,6 @@ public interface SlackNotification {
 	public abstract void setMentionHereEnabled(boolean mentionHereEnabled);
 
     public abstract void setShowFailureReason(boolean showFailureReason);
+
+	public abstract void setMentionWhoTriggeredEnabled(boolean mentionWhoTriggeredEnabled);
 }

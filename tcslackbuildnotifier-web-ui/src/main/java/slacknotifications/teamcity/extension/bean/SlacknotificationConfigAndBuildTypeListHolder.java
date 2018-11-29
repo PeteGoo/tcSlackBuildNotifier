@@ -30,6 +30,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private boolean mentionChannelEnabled;
 	private boolean mentionSlackUserEnabled;
 	private boolean mentionHereEnabled;
+	private boolean mentionWhoTriggeredEnabled;
     private boolean customContentEnabled;
     private boolean showBuildAgent;
     private boolean showElapsedBuildTime;
@@ -56,6 +57,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 		mentionChannelEnabled = config.getMentionChannelEnabled();
 		mentionSlackUserEnabled = config.getMentionSlackUserEnabled();
 		mentionHereEnabled = config.getMentionHereEnabled();
+		mentionWhoTriggeredEnabled = config.isMentionWhoTriggeredEnabled();
         maxCommitsToDisplay = config.getContent().getMaxCommitsToDisplay();
         customContentEnabled = config.getContent().isEnabled();
         showBuildAgent = valueOrFallback(config.getContent().getShowBuildAgent(), valueOrFallback(mainSettings.getShowBuildAgent(), SlackNotificationContentConfig.DEFAULT_SHOW_BUILD_AGENT));

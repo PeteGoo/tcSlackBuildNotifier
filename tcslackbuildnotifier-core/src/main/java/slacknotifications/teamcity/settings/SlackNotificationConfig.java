@@ -23,6 +23,7 @@ public class SlackNotificationConfig {
 	private static final String CHANNEL_ENABLED_MESSAGE = "mention-channel-enabled";
 	private static final String SLACK_USER_ENABLED_MESSAGE = "mention-slack-user-enabled";
 	private static final String HERE_ENABLED_MESSAGE = "mention-here-enabled";
+	private static final String WHO_TRIGGERED_ENABLED_MESSAGE = "mention-who-triggered-enabled";
 	private static final String STATES = "states";
 	private static final String BUILD_TYPES = "build-types";
 	private static final String ENABLED_FOR_ALL = "enabled-for-all";
@@ -52,6 +53,7 @@ public class SlackNotificationConfig {
     private boolean mentionChannelEnabled;
 	private boolean mentionSlackUserEnabled;
 	private boolean mentionHereEnabled;
+	private boolean mentionWhoTriggeredEnabled;
     private boolean customContent;
     private SlackNotificationContentConfig content;
 
@@ -97,6 +99,10 @@ public class SlackNotificationConfig {
 
 		if (e.getAttribute(HERE_ENABLED_MESSAGE) != null){
 			this.setMentionHereEnabled(Boolean.parseBoolean(e.getAttributeValue("mention-here-enabled")));
+		}
+
+		if (e.getAttribute(WHO_TRIGGERED_ENABLED_MESSAGE) != null){
+			this.setMentionWhoTriggeredEnabled(Boolean.parseBoolean(e.getAttributeValue(WHO_TRIGGERED_ENABLED_MESSAGE)));
 		}
 		
 		if(e.getChild(STATES) != null){
@@ -216,7 +222,8 @@ public class SlackNotificationConfig {
 								   Set<String> enabledBuildTypes,
 								   boolean mentionChannelEnabled,
 								   boolean mentionSlackUserEnabled,
-								   boolean mentionHereEnabled) {
+								   boolean mentionHereEnabled,
+								   boolean mentionWhoTriggeredEnabled) {
         this.content = new SlackNotificationContentConfig();
         int Min = 1000000, Max = 1000000000;
         Integer Rand = Min + (int) (Math.random() * ((Max - Min) + 1));
@@ -232,6 +239,7 @@ public class SlackNotificationConfig {
         this.setMentionChannelEnabled(mentionChannelEnabled);
 		this.setMentionSlackUserEnabled(mentionSlackUserEnabled);
 		this.setMentionHereEnabled(mentionHereEnabled);
+		this.setMentionWhoTriggeredEnabled(mentionWhoTriggeredEnabled);
 
         if (!this.allBuildTypesEnabled) {
             this.enabledBuildTypesSet = enabledBuildTypes;
@@ -252,6 +260,7 @@ public class SlackNotificationConfig {
         el.setAttribute(CHANNEL_ENABLED_MESSAGE, String.valueOf(this.getMentionChannelEnabled()));
 		el.setAttribute(SLACK_USER_ENABLED_MESSAGE, String.valueOf(this.getMentionSlackUserEnabled()));
 		el.setAttribute(HERE_ENABLED_MESSAGE, String.valueOf(this.getMentionHereEnabled()));
+		el.setAttribute(WHO_TRIGGERED_ENABLED_MESSAGE, String.valueOf(this.isMentionWhoTriggeredEnabled()));
 
 		Element statesEl = new Element(STATES);
 		for (BuildStateEnum state : states.getStateSet()){
@@ -568,4 +577,13 @@ public class SlackNotificationConfig {
     public void setContent(SlackNotificationContentConfig content) {
         this.content = content;
     }
+
+	public boolean isMentionWhoTriggeredEnabled() {
+		return mentionWhoTriggeredEnabled;
+	}
+
+	public void setMentionWhoTriggeredEnabled(boolean mentionWhoTriggeredEnabled) {
+		this.mentionWhoTriggeredEnabled = mentionWhoTriggeredEnabled;
+	}
+
 }

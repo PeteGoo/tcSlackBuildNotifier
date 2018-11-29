@@ -38,9 +38,11 @@ public class SlackNotificator implements Notificator {
     private NotificationUtility notificationUtility;
 
     private static final String SLACK_USERNAME_KEY = "tcSlackNotifier.userName";
+    private static final String SLACK_USERID_KEY = "tcSlackNotifier.userId";
     private static final String TYPE = "tcSlackBuildNotifier";
 
     public static final PropertyKey USERNAME_KEY = new NotificatorPropertyKey(TYPE, SLACK_USERNAME_KEY);
+    public static final PropertyKey USERID_KEY = new NotificatorPropertyKey(TYPE, SLACK_USERID_KEY);
 
     public SlackNotificator(NotificatorRegistry notificatorRegistry,
                             SBuildServer sBuildServer,
@@ -51,6 +53,7 @@ public class SlackNotificator implements Notificator {
 
         userProps = new ArrayList<UserPropertyInfo>();
         userProps.add(new UserPropertyInfo(SLACK_USERNAME_KEY, "Slack Username"));
+        userProps.add(new UserPropertyInfo(SLACK_USERID_KEY, "Slack User Id"));
         notificatorRegistry.register(this, userProps);
         mainConfig = configSettings;
         notificationFactory = factory;
@@ -206,12 +209,8 @@ public class SlackNotificator implements Notificator {
 
     private SlackNotification createNotification(SUser sUser){
         SlackNotification notification = notificationFactory.getSlackNotification();
-        String userName = sUser.getPropertyValue(USERNAME_KEY);
-        if(userName.substring(0,1) == "@"){
-            userName = userName.substring(1);
-        }
-        notification.setChannel("@" + userName);
-
+        String userId = sUser.getPropertyValue(USERID_KEY);
+        notification.setChannel(userId);
         notification.setTeamName(mainConfig.getTeamName());
         notification.setToken(mainConfig.getToken());
         notification.setIconUrl(mainConfig.getIconUrl());
