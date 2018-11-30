@@ -164,7 +164,7 @@ public class SlackNotificationImpl implements SlackNotification {
             if (this.teamName == null) {
                 this.teamName = "";
             }
-            String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
+            String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&as_user=0&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
                     this.botName == null ? "" : URLEncoder.encode(this.botName, UTF8),
                     this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, UTF8),
