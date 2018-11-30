@@ -5,6 +5,7 @@ import jetbrains.buildServer.serverSide.*;
 import jetbrains.buildServer.tests.TestInfo;
 import slacknotifications.teamcity.BuildStateEnum;
 import slacknotifications.teamcity.Loggers;
+import slacknotifications.teamcity.SlackNotificator;
 import slacknotifications.teamcity.TeamCityIdResolver;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class SlackNotificationPayloadContent {
     String agentOs;
     String agentHostname;
     String triggeredBy;
+    String triggeredBySlackUserId;
     String comment;
     String message;
     String text;
@@ -173,6 +175,9 @@ public class SlackNotificationPayloadContent {
         setBuildResult(sRunningBuild, previousBuild, buildState);
         setBuildFullName(sRunningBuild.getBuildType().getFullName());
         setBuildName(sRunningBuild.getBuildType().getName());
+        if (sRunningBuild.getTriggeredBy().getUser() != null) {
+            setTriggeredBySlackUserId(sRunningBuild.getTriggeredBy().getUser().getPropertyValue(SlackNotificator.USERID_KEY));
+        }
         setTriggeredBy(sRunningBuild.getTriggeredBy().getAsString());
         setBuildId(Long.toString(sRunningBuild.getBuildId()));
         setBuildTypeId(TeamCityIdResolver.getBuildTypeId(sRunningBuild.getBuildType()));
@@ -418,5 +423,13 @@ public class SlackNotificationPayloadContent {
 
     public ArrayList<String> getFailedTestNames() {
         return failedTestNames;
+    }
+
+    public String getTriggeredBySlackUserId() {
+        return triggeredBySlackUserId;
+    }
+
+    public void setTriggeredBySlackUserId(String triggeredBySlackUserId) {
+        this.triggeredBySlackUserId = triggeredBySlackUserId;
     }
 }

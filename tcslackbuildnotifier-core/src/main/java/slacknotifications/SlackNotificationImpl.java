@@ -70,8 +70,9 @@ public class SlackNotificationImpl implements SlackNotification {
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
     private boolean mentionHereEnabled;
+    private boolean mentionWhoTriggeredEnabled;
     private boolean showFailureReason;
-	
+
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
  *  We'll set that as the default, and then override if we get a more specific bit mask. */
@@ -329,8 +330,8 @@ public class SlackNotificationImpl implements SlackNotification {
 
 
         for(Commit commit : commits){
-            if(commit.hasSlackUsername()){
-                slackUsers.add("<@" + commit.getSlackUserName() + ">");
+            if(commit.hasSlackUserId()){
+                slackUsers.add("<!" + commit.getSlackUserId() + ">");
             }
         }
         HashSet<String> tempHash = new HashSet<String>(slackUsers);
@@ -354,12 +355,16 @@ public class SlackNotificationImpl implements SlackNotification {
         }
 
         // Mention the channel and/or the Slack Username of any committers if known
-        if(payload.getIsFirstFailedBuild()
+        boolean needMentionForFirstFailure = payload.getIsFirstFailedBuild()
                 && (mentionChannelEnabled
-                    || mentionHereEnabled
-                    ||(mentionSlackUserEnabled
-                        && !slackUsers.isEmpty()))){
-            String mentionContent = ":arrow_up: \"" + this.payload.getBuildName() + "\" Failed ";
+                || mentionHereEnabled
+                || (mentionSlackUserEnabled
+                && !slackUsers.isEmpty()));
+
+        String mentionContent = ":arrow_up: ";
+        if(needMentionForFirstFailure){
+            mentionContent += "\"" + this.payload.getBuildName() + "\" Failed ";
+
             if(mentionChannelEnabled){
                 mentionContent += "<!channel> ";
             }
@@ -369,6 +374,14 @@ public class SlackNotificationImpl implements SlackNotification {
             if (mentionHereEnabled) {
                 mentionContent += "<!here>";
             }
+        }
+
+        boolean needMentionForTheOneWhoTriggered = mentionWhoTriggeredEnabled && payload.getTriggeredBySlackUserId() != null;
+        if (needMentionForTheOneWhoTriggered) {
+            mentionContent += "<@" + payload.getTriggeredBySlackUserId() + ">";
+        }
+
+        if (needMentionForFirstFailure || needMentionForTheOneWhoTriggered) {
             attachment.addField("", mentionContent, true);
         }
 
@@ -668,6 +681,15 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setShowFailureReason(boolean showFailureReason) {
         this.showFailureReason = showFailureReason;
+    }
+
+    public boolean isMentionWhoTriggeredEnabled() {
+        return mentionWhoTriggeredEnabled;
+    }
+
+    @Override
+    public void setMentionWhoTriggeredEnabled(boolean mentionWhoTriggeredEnabled) {
+        this.mentionWhoTriggeredEnabled = mentionWhoTriggeredEnabled;
     }
 
     public boolean getIsApiToken() {
