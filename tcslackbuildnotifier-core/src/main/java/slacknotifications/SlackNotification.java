@@ -28,27 +28,27 @@ public interface SlackNotification {
 
 	public abstract void setChannel(String channel);
 
-    public abstract String getTeamName();
+	public abstract String getTeamName();
 
-    public abstract void setTeamName(String teamName);
+	public abstract void setTeamName(String teamName);
 
-    public abstract String getToken();
+	public abstract String getToken();
 
-    public abstract void setToken(String token);
+	public abstract void setToken(String token);
 
-    public abstract String getBotName();
+	public abstract String getBotName();
 
-    public abstract void setBotName(String botName);
+	public abstract void setBotName(String botName);
 
-    public abstract String getFilterBranchName();
+	public abstract String getFilterBranchName();
 
 	public abstract String getBranchDisplayName();
 
-    public abstract void setFilterBranchName(String branchName);
+	public abstract void setFilterBranchName(String branchName);
 
-    public abstract String getIconUrl();
+	public abstract String getIconUrl();
 
-    public abstract void setIconUrl(String iconUrl);
+	public abstract void setIconUrl(String iconUrl);
 
 	public abstract String getParameterisedUrl();
 
@@ -99,19 +99,19 @@ public interface SlackNotification {
 
 	public abstract void setPayload(SlackNotificationPayloadContent payloadContent);
 
-    public abstract PostMessageResponse getResponse();
+	public abstract PostMessageResponse getResponse();
 
-    public abstract void setShowBuildAgent(Boolean showBuildAgent);
+	public abstract void setShowBuildAgent(Boolean showBuildAgent);
 
-    public abstract void setShowElapsedBuildTime(Boolean showElapsedBuildTime);
-
-    public abstract void setShowCommits(boolean showCommits);
+	public abstract void setShowElapsedBuildTime(Boolean showElapsedBuildTime);
 	
-    public abstract void setShowCommitters(boolean showCommitters);
+	public abstract void setShowCommits(boolean showCommits);
+	
+	public abstract void setShowCommitters(boolean showCommitters);
 
-    public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
+	public abstract void setMaxCommitsToDisplay(int maxCommitsToDisplay);
 
-    public abstract void setMentionChannelEnabled(boolean mentionChannelEnabled);
+	public abstract void setMentionChannelEnabled(boolean mentionChannelEnabled);
 
 	public abstract void setMentionSlackUserEnabled(boolean mentionSlackUserEnabled);
 
