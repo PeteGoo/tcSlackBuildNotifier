@@ -214,8 +214,8 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    						}
 		    						
 			    						if ("new".equals(request.getParameter(SLACK_NOTIFICATION_ID))){
-			    							projSettings.addNewSlackNotification(myProject.getProjectId(), request.getParameter("token"), request.getParameter(CHANNEL), request.getParameter("team"), enabled,
-													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
+			    							projSettings.addNewSlackNotification(myProject.getProjectId(), request.getParameter("token"), request.getParameter(CHANNEL), request.getParameter("team"), request.getParameter("filterBranchName"),
+													enabled, states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
 			    	    						params.put(MESSAGES, ERRORS_TAG);
@@ -224,9 +224,9 @@ public class SlackNotificationAjaxEditPageController extends BaseController {
 			    							}
 			    						} else {
 			    							projSettings.updateSlackNotification(myProject.getProjectId(), request.getParameter("token"),
-                                                    request.getParameter(SLACK_NOTIFICATION_ID), request.getParameter(CHANNEL), enabled,
-													states, buildTypeAll, buildTypeSubProjects, buildTypes, mentionChannelEnabled,
-													mentionSlackUserEnabled, content);
+                                                    request.getParameter(SLACK_NOTIFICATION_ID), request.getParameter(CHANNEL),
+													request.getParameter("filterBranchName"), enabled, states, buildTypeAll,
+													buildTypeSubProjects, buildTypes, mentionChannelEnabled, mentionSlackUserEnabled, content);
 			    							if(projSettings.updateSuccessful()){
 			    								myProject.persist();
 			    	    						params.put(MESSAGES, ERRORS_TAG);

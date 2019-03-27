@@ -45,6 +45,9 @@ public class SlackNotificationCollection {
             		&& this.canConvertToInt(tokens[SLACKNOTIFICATION_ID])) {
             	// Check if we have already created a slacknotifications instance
             	if (slackNotifications.containsKey(this.convertToInt(tokens[SLACKNOTIFICATION_ID]))){
+            		if ("filterBranchName".equals(tokens[SLACKNOTIFICATION_KEY])) {
+            			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setFilterBranchName(val);
+					}
             		if ("channel".equals(tokens[SLACKNOTIFICATION_KEY])) {
             			slackNotifications.get(this.convertToInt(tokens[SLACKNOTIFICATION_ID])).setChannel(val);
             		} else if ("teamName".equals(tokens[SLACKNOTIFICATION_KEY])) {

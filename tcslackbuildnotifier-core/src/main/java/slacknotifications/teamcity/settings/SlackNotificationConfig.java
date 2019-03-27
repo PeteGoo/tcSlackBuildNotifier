@@ -35,6 +35,7 @@ public class SlackNotificationConfig {
 	private static final String SHOW_COMMITTERS = "showCommitters";
 	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
 	private static final String SHOW_FAILURE_REASON = "showFailureReason";
+	private static final String FILTER_BRANCH_NAME = "filterBranchName";
 	
 	
 	private Boolean enabled = true;
@@ -51,8 +52,9 @@ public class SlackNotificationConfig {
 	private boolean mentionSlackUserEnabled;
     private boolean customContent;
     private SlackNotificationContentConfig content;
+	private String filterBranchName;
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public SlackNotificationConfig(Element e) {
 		this.content = new SlackNotificationContentConfig();
 		int Min = 1000000, Max = 1000000000;
@@ -66,6 +68,10 @@ public class SlackNotificationConfig {
 
 		if (e.getAttribute(CHANNEL) != null){
 			this.setChannel(e.getAttributeValue(CHANNEL));
+		}
+
+		if (e.getAttribute(FILTER_BRANCH_NAME) != null){
+			this.setFilterBranchName(e.getAttributeValue(FILTER_BRANCH_NAME));
 		}
 
         if (e.getAttribute(TEAM_NAME) != null){
@@ -181,6 +187,9 @@ public class SlackNotificationConfig {
             if (eContent.getAttribute(SHOW_FAILURE_REASON) != null){
                 this.content.setShowFailureReason(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_FAILURE_REASON)));
             }
+            if (eContent.getAttribute(FILTER_BRANCH_NAME) != null){
+            	setFilterBranchName(eContent.getAttributeValue(FILTER_BRANCH_NAME));
+			}
         }
 
 		
@@ -199,6 +208,7 @@ public class SlackNotificationConfig {
     public SlackNotificationConfig(String token,
 								   String channel,
 								   String teamName,
+								   String filterBranchName,
 								   Boolean enabled,
 								   BuildState states,
 								   boolean buildTypeAllEnabled,
@@ -214,6 +224,7 @@ public class SlackNotificationConfig {
         this.setToken(token);
         this.setChannel(channel);
         this.setTeamName(teamName);
+        this.setFilterBranchName(filterBranchName);
         this.setEnabled(enabled);
         this.setBuildStates(states);
         this.subProjectsEnabled = buildTypeSubProjects;
@@ -228,9 +239,15 @@ public class SlackNotificationConfig {
 	
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
+
 		el.setAttribute(CHANNEL, this.getChannel());
+
 		if(StringUtil.isNotEmpty(this.getToken())) {
 			el.setAttribute(TOKEN, this.getToken());
+		}
+
+		if(StringUtil.isNotEmpty(this.getFilterBranchName())) {
+			el.setAttribute(FILTER_BRANCH_NAME, this.getFilterBranchName());
 		}
 
         if(StringUtil.isNotEmpty(this.getTeamName())) {
@@ -546,4 +563,8 @@ public class SlackNotificationConfig {
     public void setContent(SlackNotificationContentConfig content) {
         this.content = content;
     }
+
+	public String getFilterBranchName() { return filterBranchName; }
+
+	public void setFilterBranchName(String filterBranchName) { this.filterBranchName = filterBranchName; }
 }
