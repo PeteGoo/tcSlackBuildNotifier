@@ -260,7 +260,7 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.getContent().setShowCommits(Boolean.parseBoolean(showCommits));
         this.config.getContent().setShowCommitters(Boolean.parseBoolean(showCommitters));
         this.config.getContent().setShowTriggeredBy(Boolean.parseBoolean(showTriggeredBy));
-        this.config.getContent().setFilterBranchName(filterBranchName);
+        this.config.setFilterBranchName(filterBranchName);
         this.config.getContent().setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
         this.config.getContent().setShowFailureReason((Boolean.parseBoolean(showFailureReason)));
 
