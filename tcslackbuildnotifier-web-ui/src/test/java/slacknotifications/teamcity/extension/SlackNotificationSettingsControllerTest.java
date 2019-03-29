@@ -35,8 +35,21 @@ public class SlackNotificationSettingsControllerTest {
                 sBuildServer, serverPaths, webControllerManager,
                 config, payloadManager, pluginDescriptor);
 
-        SlackNotification notification = controller.createMockNotification("the team", "#general", "The Bot", "tokenthingy",
-                SlackNotificationMainConfig.DEFAULT_ICONURL, 5, true, true, true, true, "master", true, null, null, null, null);
+        SlackNotification notification = controller.createMockNotification(
+                "the team",
+                "#general",
+                "The Bot",
+                "tokenthingy",
+                SlackNotificationMainConfig.DEFAULT_ICONURL,
+                5,
+                true,
+                true,
+                true,
+                true,
+                "master",
+                true,
+                true,
+                null, null, null, null);
 
         assertNotNull(notification);
         assertEquals("the team", notification.getTeamName());

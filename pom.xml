@@ -7,7 +7,11 @@
         <teamcity-version>9.1.7</teamcity-version>
         <majorVersion>1</majorVersion>
         <minorVersion>4</minorVersion>
+<<<<<<< HEAD
         <patchVersion>8</patchVersion>
+=======
+        <patchVersion>7</patchVersion>
+>>>>>>> upstream/master
         <currentVersion>${majorVersion}.${minorVersion}.${patchVersion}</currentVersion>
     </properties>
     <version>${currentVersion}</version>
@@ -43,6 +47,19 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                <execution>
+                    <id>auto-clean</id>
+                    <phase>initialize</phase>
+                    <goals>
+                    <goal>clean</goal>
+                    </goals>
+                </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -87,8 +104,8 @@
                         <configuration>
                             <tasks>
                                 <echo message=" - Copy artefact zip to root target/ folder"/>
-                                <copy todir="${project.build.directory}">
-                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/">
+                                <copy failonerror="false" todir="${project.build.directory}">
+                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/" erroronmissingdir="false">
                                         <include name="*.zip"/>
                                     </fileset>
                                 </copy>

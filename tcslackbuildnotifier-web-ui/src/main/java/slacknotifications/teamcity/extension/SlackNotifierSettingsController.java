@@ -46,6 +46,7 @@ public class SlackNotifierSettingsController extends BaseController {
     private String showBuildAgent;
     private String showCommits;
     private String showCommitters;
+    private String showTriggeredBy;
     private String showElapsedBuildTime;
     private String showFailureReason;
     private String proxyHost;
@@ -116,6 +117,7 @@ public class SlackNotifierSettingsController extends BaseController {
         showCommits = request.getParameter("showCommits");
         showCommitters = request.getParameter("showCommitters");
         filterBranchName = request.getParameter("filterBranchName");
+        showTriggeredBy = request.getParameter("showTriggeredBy");
         showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
         showFailureReason = request.getParameter("showFailureReason");
         proxyHost = request.getParameter("proxyHost");
@@ -132,11 +134,14 @@ public class SlackNotifierSettingsController extends BaseController {
 
         SlackNotification notification = createMockNotification(teamName, defaultChannel, botName,
                 token, iconUrl, Integer.parseInt(maxCommitsToDisplay),
-                Boolean.parseBoolean(showElapsedBuildTime), Boolean.parseBoolean(showBuildAgent),
-                Boolean.parseBoolean(showCommits), Boolean.parseBoolean(showCommitters), filterBranchName, Boolean.parseBoolean(showFailureReason),
+                Boolean.parseBoolean(showElapsedBuildTime),
+                Boolean.parseBoolean(showBuildAgent),
+                Boolean.parseBoolean(showCommits),
+                Boolean.parseBoolean(showCommitters),
+                filterBranchName,
+                Boolean.parseBoolean(showTriggeredBy),
+                Boolean.parseBoolean(showFailureReason),
                 proxyHost, proxyPort, proxyUser, proxyPassword);
-
-
 
         notification.post();
 
@@ -173,8 +178,9 @@ public class SlackNotifierSettingsController extends BaseController {
     public SlackNotification createMockNotification(String teamName, String defaultChannel, String botName,
                                                     String token, String iconUrl, Integer maxCommitsToDisplay,
                                                     Boolean showElapsedBuildTime, Boolean showBuildAgent, Boolean showCommits,
-                                                    Boolean showCommitters, String branchName, Boolean showFailureReason, String proxyHost,
-                                                    String proxyPort, String proxyUser, String proxyPassword) {
+                                                    Boolean showCommitters, String branchName, Boolean showTriggeredBy,
+                                                    Boolean showFailureReason, String proxyHost, String proxyPort,
+                                                    String proxyUser, String proxyPassword) {
         SlackNotification notification = new SlackNotificationImpl(defaultChannel);
         notification.setTeamName(teamName);
         notification.setBotName(botName);
@@ -186,6 +192,7 @@ public class SlackNotifierSettingsController extends BaseController {
         notification.setShowCommits(showCommits);
         notification.setShowCommitters(showCommitters);
         notification.setFilterBranchName(branchName);
+        notification.setShowTriggeredBy(showTriggeredBy);
         notification.setShowFailureReason(showFailureReason);
 
         if(proxyHost != null && !StringUtil.isEmpty(proxyHost)){
@@ -252,6 +259,7 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.getContent().setShowCommits(Boolean.parseBoolean(showCommits));
         this.config.getContent().setShowCommitters(Boolean.parseBoolean(showCommitters));
         this.config.setFilterBranchName(filterBranchName);
+        this.config.getContent().setShowTriggeredBy(Boolean.parseBoolean(showTriggeredBy));
         this.config.getContent().setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
         this.config.getContent().setShowFailureReason((Boolean.parseBoolean(showFailureReason)));
 
