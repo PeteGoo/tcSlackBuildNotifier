@@ -50,9 +50,9 @@ public class SlackNotificationMainSettingsTest {
         ServerPaths serverPaths = mock(ServerPaths.class);
         when(serverPaths.getConfigDir()).thenReturn(expectedConfigDirectory);
 
-		SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server, serverPaths);
-		whms.register();
-		whms.readFrom(getFullConfigElement());
+        SlackNotificationMainSettings whms = new SlackNotificationMainSettings(server, serverPaths);
+        whms.register();
+        whms.readFrom(getFullConfigElement());
 		String proxy = whms.getProxy();
 		SlackNotificationProxyConfig whpc = whms.getProxyConfig();
 		assertTrue(proxy.equals(this.proxyHost));

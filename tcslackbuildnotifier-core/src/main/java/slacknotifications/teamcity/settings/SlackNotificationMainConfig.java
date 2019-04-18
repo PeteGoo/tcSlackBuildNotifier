@@ -14,6 +14,7 @@ import slacknotifications.teamcity.Loggers;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class SlackNotificationMainConfig implements ChangeListener {
     public static final String DEFAULT_BOTNAME = "TeamCity";
@@ -36,6 +37,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	private static final String PASSWORD = "password";
 	private static final String ENABLED = "enabled";
 	private static final String TEAM_NAME = "teamName";
+	private static final String FILTER_BRANCH_NAME = "filterBranchName";
 
 
     private final FileWatcher myChangeObserver;
@@ -49,6 +51,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	private String proxyUsername = null;
 	private String proxyPassword = null;
     private String defaultChannel = null;
+    private String filterBranchName = null;
     private String teamName;
     private String token;
 	private Boolean proxyShortNames = false;
@@ -174,7 +177,15 @@ public class SlackNotificationMainConfig implements ChangeListener {
 		return el;
 	}
 
-    public String getDefaultChannel() {
+	public String getFilterBranchName() {
+		return filterBranchName;
+	}
+
+	public void setFilterBranchName(String filterBranchName) {
+		this.filterBranchName = filterBranchName;
+	}
+
+	public String getDefaultChannel() {
         return defaultChannel;
     }
 
@@ -282,6 +293,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
                         rootElement.setAttribute("enabled", Boolean.toString(SlackNotificationMainConfig.this.enabled));
                         rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute(DEFAULT_CHANNEL, emptyIfNull(SlackNotificationMainConfig.this.defaultChannel));
+						rootElement.setAttribute(FILTER_BRANCH_NAME, emptyIfNull(SlackNotificationMainConfig.this.filterBranchName));
                         rootElement.setAttribute(TEAM_NAME, emptyIfNull(SlackNotificationMainConfig.this.teamName));
 						rootElement.setAttribute(TOKEN, emptyIfNull(SlackNotificationMainConfig.this.token));
 						rootElement.setAttribute(ICON_URL, emptyIfNull(SlackNotificationMainConfig.this.content.getIconUrl()));
@@ -405,6 +417,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
             {
                 content.setShowFailureReason(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_FAILURE_REASON)));
             }
+			if(slackNotificationsElement.getAttribute(FILTER_BRANCH_NAME) != null)
+			{
+				setFilterBranchName(slackNotificationsElement.getAttributeValue(FILTER_BRANCH_NAME));
+			}
 
             Element proxyElement = slackNotificationsElement.getChild(PROXY);
             if(proxyElement != null)

@@ -21,6 +21,9 @@ import slacknotifications.teamcity.settings.SlackNotificationMainConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +60,7 @@ public class SlackNotifierSettingsController extends BaseController {
     private SlackNotificationMainConfig config;
     private SlackNotificationPayloadManager payloadManager;
     private PluginDescriptor descriptor;
+    private String filterBranchName;
 
     public SlackNotifierSettingsController(@NotNull SBuildServer server,
                                            @NotNull ServerPaths serverPaths,
@@ -112,6 +116,7 @@ public class SlackNotifierSettingsController extends BaseController {
         showBuildAgent = request.getParameter("showBuildAgent");
         showCommits = request.getParameter("showCommits");
         showCommitters = request.getParameter("showCommitters");
+        filterBranchName = request.getParameter("filterBranchName");
         showTriggeredBy = request.getParameter("showTriggeredBy");
         showElapsedBuildTime = request.getParameter("showElapsedBuildTime");
         showFailureReason = request.getParameter("showFailureReason");
@@ -133,11 +138,10 @@ public class SlackNotifierSettingsController extends BaseController {
                 Boolean.parseBoolean(showBuildAgent),
                 Boolean.parseBoolean(showCommits),
                 Boolean.parseBoolean(showCommitters),
+                filterBranchName,
                 Boolean.parseBoolean(showTriggeredBy),
                 Boolean.parseBoolean(showFailureReason),
                 proxyHost, proxyPort, proxyUser, proxyPassword);
-
-
 
         notification.post();
 
@@ -174,8 +178,9 @@ public class SlackNotifierSettingsController extends BaseController {
     public SlackNotification createMockNotification(String teamName, String defaultChannel, String botName,
                                                     String token, String iconUrl, Integer maxCommitsToDisplay,
                                                     Boolean showElapsedBuildTime, Boolean showBuildAgent, Boolean showCommits,
-                                                    Boolean showCommitters, Boolean showTriggeredBy, Boolean showFailureReason, String proxyHost,
-                                                    String proxyPort, String proxyUser, String proxyPassword) {
+                                                    Boolean showCommitters, String branchName, Boolean showTriggeredBy,
+                                                    Boolean showFailureReason, String proxyHost, String proxyPort,
+                                                    String proxyUser, String proxyPassword) {
         SlackNotification notification = new SlackNotificationImpl(defaultChannel);
         notification.setTeamName(teamName);
         notification.setBotName(botName);
@@ -186,6 +191,7 @@ public class SlackNotifierSettingsController extends BaseController {
         notification.setShowBuildAgent(showBuildAgent);
         notification.setShowCommits(showCommits);
         notification.setShowCommitters(showCommitters);
+        notification.setFilterBranchName(branchName);
         notification.setShowTriggeredBy(showTriggeredBy);
         notification.setShowFailureReason(showFailureReason);
 
@@ -252,16 +258,15 @@ public class SlackNotifierSettingsController extends BaseController {
         this.config.getContent().setShowBuildAgent(Boolean.parseBoolean(showBuildAgent));
         this.config.getContent().setShowCommits(Boolean.parseBoolean(showCommits));
         this.config.getContent().setShowCommitters(Boolean.parseBoolean(showCommitters));
+        this.config.setFilterBranchName(filterBranchName);
         this.config.getContent().setShowTriggeredBy(Boolean.parseBoolean(showTriggeredBy));
         this.config.getContent().setShowElapsedBuildTime((Boolean.parseBoolean(showElapsedBuildTime)));
         this.config.getContent().setShowFailureReason((Boolean.parseBoolean(showFailureReason)));
-
 
         this.config.setProxyHost(proxyHost);
         this.config.setProxyPort(isNullOrEmpty(proxyPort) ? null : Integer.parseInt(proxyPort));
         this.config.setProxyUsername(proxyUser);
         this.config.setProxyPassword(proxyPassword);
-
 
         this.config.save();
 

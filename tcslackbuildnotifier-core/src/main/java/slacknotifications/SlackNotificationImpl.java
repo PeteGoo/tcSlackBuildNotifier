@@ -23,7 +23,6 @@ import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -33,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 
 
 public class SlackNotificationImpl implements SlackNotification {
@@ -65,6 +63,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
     private boolean showCommitters;
+    private String filterBranchName;
     private boolean showTriggeredBy;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
@@ -150,14 +149,29 @@ public class SlackNotificationImpl implements SlackNotification {
 		}
     }
 
-    public void post() throws IOException {
-        if(getIsApiToken()){
-            postViaApi();
-        }
-        else{
-            postViaWebHook();
-        }
+    public String getBranchDisplayName() {
+        // The actual branch
+        String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
 
+        // when branchDisplayName is not available, we fudge it to be the magic value <default>.
+        if (branchDisplayName == null || branchDisplayName.length() == 0) {
+            Loggers.SERVER.info("SlackNotificationImpl :: getBranchDisplayName :: branchDisplayName is empty, defaults to <default>.");
+            branchDisplayName = "<default>";
+        }
+        return branchDisplayName;
+    }
+
+    public void post() throws IOException {
+        if (getFilterBranchName().equalsIgnoreCase(getBranchDisplayName()) ||
+            getFilterBranchName().equalsIgnoreCase("<default>") && this.payload != null && this.payload.getBranchIsDefault()) {
+            if (getIsApiToken()) {
+                postViaApi();
+            } else {
+                postViaWebHook();
+            }
+        } else {
+            Loggers.SERVER.warn("SlackNotificationImpl :: post :: filterBranchName not applicable, posting to Slack skipped.");
+        }
     }
 
     private void postViaApi() throws IOException {
@@ -647,10 +661,22 @@ public class SlackNotificationImpl implements SlackNotification {
     public void setShowCommits(boolean showCommits) {
         this.showCommits = showCommits;
     }
-	
+
     @Override
     public void setShowCommitters(boolean showCommitters) {
         this.showCommitters = showCommitters;
+    }
+
+    public void setFilterBranchName(String filterBranchName) {
+        this.filterBranchName = filterBranchName;
+    }
+
+    public String getFilterBranchName() {
+        if (this.filterBranchName == null || this.filterBranchName.isEmpty()){
+            setFilterBranchName("<default>");
+            Loggers.SERVER.info("SlackNotification :: filterBranchName is empty, defaults to <default>.");
+        }
+        return this.filterBranchName;
     }
 
     @Override
