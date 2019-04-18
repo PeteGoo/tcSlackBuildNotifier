@@ -26,6 +26,7 @@ public class SlackNotificationMainConfig implements ChangeListener {
 	private static final String SHOW_BUILD_AGENT = "showBuildAgent";
 	private static final String SHOW_COMMITS = "showCommits";
 	private static final String SHOW_COMMITTERS = "showCommitters";
+	private static final String SHOW_TRIGGERED_BY = "showTriggeredBy";
 	private static final String SHOW_FAILURE_REASON = "showFailureReason";
 	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
 	private static final String SHOW_ELAPSED_BUILD_TIME = "showElapsedBuildTime";
@@ -317,6 +318,9 @@ public class SlackNotificationMainConfig implements ChangeListener {
 						if(SlackNotificationMainConfig.this.content.getShowCommitters() != null) {
 							rootElement.setAttribute(SHOW_COMMITTERS, Boolean.toString(SlackNotificationMainConfig.this.content.getShowCommitters()));
 						}
+						if(SlackNotificationMainConfig.this.content.getShowTriggeredBy() != null) {
+							rootElement.setAttribute(SHOW_TRIGGERED_BY, Boolean.toString(SlackNotificationMainConfig.this.content.getShowTriggeredBy()));
+						}
                         if(SlackNotificationMainConfig.this.content.getShowFailureReason() != null) {
                             rootElement.setAttribute(SHOW_FAILURE_REASON, Boolean.toString(SlackNotificationMainConfig.this.content.getShowFailureReason()));
                         }
@@ -400,6 +404,10 @@ public class SlackNotificationMainConfig implements ChangeListener {
             if(slackNotificationsElement.getAttribute(SHOW_COMMITTERS) != null)
             {
                 content.setShowCommitters(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_COMMITTERS)));
+            }
+            if(slackNotificationsElement.getAttribute(SHOW_TRIGGERED_BY) != null)
+            {
+                content.setShowTriggeredBy(Boolean.parseBoolean(slackNotificationsElement.getAttributeValue(SHOW_TRIGGERED_BY)));
             }
             if(slackNotificationsElement.getAttribute(MAX_COMMITS_TO_DISPLAY) != null)
             {

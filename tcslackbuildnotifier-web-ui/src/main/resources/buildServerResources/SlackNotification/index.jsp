@@ -139,11 +139,14 @@
 					});
 					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', slacknotification.mentionChannelEnabled);
 					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', slacknotification.mentionSlackUserEnabled);
+					jQuerySlacknotification('#mentionHereEnabled').attr('checked', slacknotification.mentionHereEnabled);
+					jQuerySlacknotification('#mentionWhoTriggeredEnabled').attr('checked', slacknotification.mentionWhoTriggeredEnabled);
 					jQuerySlacknotification('#maxCommitsToDisplay').val(slacknotification.maxCommitsToDisplay);
 					jQuerySlacknotification('#customContentEnabled').attr('checked', slacknotification.customContentEnabled);
 					jQuerySlacknotification('#showBuildAgent').attr('checked', slacknotification.showBuildAgent);
 					jQuerySlacknotification('#showCommits').attr('checked', slacknotification.showCommits);
 					jQuerySlacknotification('#showCommitters').attr('checked', slacknotification.showCommitters);
+					jQuerySlacknotification('#showTriggeredBy').attr('checked', slacknotification.showTriggeredBy);
 					jQuerySlacknotification('#showElapsedBuildTime').attr('checked', slacknotification.showElapsedBuildTime);
 					jQuerySlacknotification('#botName').val(slacknotification.botName);
 					jQuerySlacknotification('#iconUrl').val(slacknotification.iconUrl)

@@ -161,6 +161,16 @@
 														 Slack User (if known)</label>
 													</td>
 												</tr>
+												<tr style="border:none;"><td>&nbsp;</td>
+													<td><label style='white-space:nowrap;'>
+                                                        <input class="buildState" id="mentionHereEnabled" name="mentionHereEnabled" type=checkbox />
+                                                         @here</label>
+													</td>
+												</tr>
+												<tr style="border:none;">
+													<td><label for="mentionWhoTriggeredEnabled">Mention who triggered:</label></td>
+													<td style="padding-left:3px;" colspan=2><input id="mentionWhoTriggeredEnabled" type=checkbox name="mentionWhoTriggeredEnabled"/></td>
+												</tr>
 					    					</table>     
 					    					
 					    			</div><!--hookPane -->
@@ -191,16 +201,16 @@
                                                <td>
                                                    <span style="color: #888; font-size: 90%;">When checked, the elapsed time taken to complete the build is displayed in the notification.</span>
                                                </td>
-                                           </tr>
-                                           <tr class="onCustomContentEnabled">
+										   </tr>
+										   <tr class="onCustomContentEnabled">
                                                <td>
-                                                   <label for="showCommitters">Show committers: </label>
+                                                   <label for="showTriggeredBy">Show triggered by: </label>
                                                </td>
                                                <td>
-                                                   <input type="checkbox" name="showCommitters" id="showCommitters"/>
+                                                   <input type="checkbox" name="showTriggeredBy" id="showTriggeredBy"/>
                                                </td>
                                                <td>
-                                                   <span style="color: #888; font-size: 90%;">When checked, the committers responsible for the changes in the build will be displayed in the notification.</span>
+                                                   <span style="color: #888; font-size: 90%;">When checked, the triggered by build will be displayed in the notification.</span>
                                                </td>
                                            </tr>
                                            <tr class="onCustomContentEnabled">
