@@ -1,6 +1,10 @@
 tcSlackBuildNotifier
 ====================
 
+## Deprecation notice
+
+**This project is no longer actively maintained**
+
 [![Join the chat at https://gitter.im/PeteGoo/tcSlackBuildNotifier](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PeteGoo/tcSlackBuildNotifier?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Overview
