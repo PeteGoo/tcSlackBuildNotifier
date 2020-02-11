@@ -140,14 +140,14 @@
     <repositories>
         <repository>
             <id>tcslacknotifications.sourceforge</id>
-            <url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
+            <url>https://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
         </repository>
     </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>JetBrains</id>
-            <url>http://download.jetbrains.com/teamcity-repository</url>
+            <url>https://download.jetbrains.com/teamcity-repository</url>
         </pluginRepository>
     </pluginRepositories>
 
