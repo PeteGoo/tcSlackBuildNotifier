@@ -1,141 +1,69 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
     <artifactId>tcslackbuildnotifier</artifactId>
+    <version>1.4.7</version>
+    <packaging>pom</packaging>
+
+    <name>tcSlackNotifications</name>
+    <description>Extends TeamCity functionality by adding slack notifications</description>
+
+    <developers>
+        <developer>
+            <id>petegoo</id>
+            <name>PeteGoo</name>
+            <url>http://www.petegoo.com</url>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>tcslackbuildnotifier-web-ui</module>
+        <module>tcslackbuildnotifier-core</module>
+    </modules>
+
+    <scm/>
+    <issueManagement/>
+    <ciManagement/>
+    <distributionManagement/>
+
     <properties>
-        <teamcity-version>9.1.7</teamcity-version>
-        <majorVersion>1</majorVersion>
-        <minorVersion>4</minorVersion>
-        <patchVersion>7</patchVersion>
-        <currentVersion>${majorVersion}.${minorVersion}.${patchVersion}</currentVersion>
+        <teamcity.version>2020.1</teamcity.version>
+        <teamcity.server.directory>server</teamcity.server.directory>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.source.version>1.6</java.source.version>
+        <java.target.version>1.6</java.target.version>
+        <add.maven.descriptor>true</add.maven.descriptor>
+        <maven.min.version>3.0.5</maven.min.version>
+        <maven.max.version>3.6.3</maven.max.version>
     </properties>
-    <version>${currentVersion}</version>
-    <name>tcSlackNotifications - Extends TeamCity functionality by adding slack notifications</name>
-    <build>
-        <defaultGoal>package</defaultGoal>
 
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/main/teamcity-plugin-resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>*.xml</include>
-                    <include>*.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/teamcity-plugin-resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>*.xml</exclude>
-                    <exclude>*.properties</exclude>
-                </excludes>
-            </resource>
-        </resources>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+                <artifactId>tcslackbuildnotifier-core</artifactId>
+                <version>${project.version}</version>
+                <scope>compile</scope>
+            </dependency>
 
-        <pluginManagement>
-            <plugins>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                <execution>
-                    <id>auto-clean</id>
-                    <phase>initialize</phase>
-                    <goals>
-                    <goal>clean</goal>
-                    </goals>
-                </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jetbrains.teamcity</groupId>
-                <artifactId>teamcity-sdk-maven-plugin</artifactId>
-                <version>0.2</version>
-                <configuration>
-                    <teamcityDir>servers/${teamcity-version}</teamcityDir>
-                    <pluginPackageName>${project.artifactId}-${project.version}.zip</pluginPackageName>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <tasks>
-                                <echo message=" - Copy artefact zip to root target/ folder"/>
-                                <copy failonerror="false" todir="${project.build.directory}">
-                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/" erroronmissingdir="false">
-                                        <include name="*.zip"/>
-                                    </fileset>
-                                </copy>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    <reporting>
-        <plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.0.1</version>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.1</version>
-			</plugin>
-			
-			<plugin>
-        		<groupId>org.codehaus.mojo</groupId>
-        		<artifactId>cobertura-maven-plugin</artifactId>
-      		</plugin>
-			
-		</plugins>
-	</reporting>
+            <dependency>
+                <groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
+                <artifactId>tcslackbuildnotifier-core</artifactId>
+                <version>${project.version}</version>
+                <type>test-jar</type>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <repositories>
         <repository>
@@ -151,21 +79,255 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <developers>
-        <developer>
-            <id>petegoo</id>
-            <name>PeteGoo</name>
-            <url>http://www.petegoo.com</url>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-        </developer>
-    </developers>
+    <build>
+        <defaultGoal>package</defaultGoal>
 
-    <packaging>pom</packaging>
-    <modules>
-        <module>tcslackbuildnotifier-web-ui</module>
-        <module>tcslackbuildnotifier-core</module>
-    </modules>
+        <resources>
+            <resource>
+                <directory>src/main/teamcity-plugin-resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.xml</include>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <source>${java.source.version}</source>
+                        <target>${java.target.version}</target>
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>3.0.0-M3</version>
+                    <configuration>
+                        <rules>
+                            <requireMavenVersion>
+                                <message>
+                                    Maven ${maven.min.version} to ${maven.max.version} is required.
+                                </message>
+                                <version>[${maven.min.version},${maven.max.version}]</version>
+                            </requireMavenVersion>
+                            <requirePluginVersions>
+                                <message>
+                                    Build reproducibility : always define plugin versions
+                                </message>
+                                <banLatest>true</banLatest>
+                                <banRelease>true</banRelease>
+                                <phases>clean,deploy</phases>
+                            </requirePluginVersions>
+                        </rules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.2.0</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            </manifest>
+                            <manifestSections>
+                                <manifestSection>
+                                    <name>SCM</name>
+                                    <manifestEntries>
+                                        <Url>${project.scm.url}</Url>
+                                        <Build-Version>${project.version}</Build-Version>
+                                    </manifestEntries>
+                                </manifestSection>
+                            </manifestSections>
+                            <addMavenDescriptor>${add.maven.descriptor}</addMavenDescriptor>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.9.0</version>
+                    <inherited>false</inherited>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.wagon</groupId>
+                            <artifactId>wagon-webdav-jackrabbit</artifactId>
+                            <version>3.4.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.maven.wagon</groupId>
+                            <artifactId>wagon-ssh</artifactId>
+                            <version>3.4.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M4</version>
+                    <configuration>
+                        <forkMode>once</forkMode>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jetbrains.teamcity</groupId>
+                    <artifactId>teamcity-sdk-maven-plugin</artifactId>
+                    <version>0.4.2</version>
+                    <configuration>
+                        <teamcityDir>${teamcity.server.directory}/${teamcity.version}</teamcityDir>
+                        <pluginPackageName>${project.artifactId}-${project.version}.zip</pluginPackageName>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-rules</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jetbrains.teamcity</groupId>
+                <artifactId>teamcity-sdk-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy failonerror="false" todir="${project.build.directory}">
+                                    <fileset dir="${project.basedir}/tcslackbuildnotifier-web-ui/target/" erroronmissingdir="false">
+                                        <include name="*.zip"/>
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
