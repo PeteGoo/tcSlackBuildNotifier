@@ -25,6 +25,8 @@ import jetbrains.buildServer.vcs.SVcsModification;
 import jetbrains.buildServer.vcs.SelectPrevBuildPolicy;
 import jetbrains.buildServer.vcs.VcsException;
 import jetbrains.buildServer.vcs.VcsRootInstanceEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -66,6 +68,11 @@ public class MockSRunningBuild implements SRunningBuild {
 
 	public SBuildAgent getAgent() {
 		return sBuildAgent;
+	}
+
+	@Override
+	public int getAgentId() {
+		return 0;
 	}
 
 	public String getAgentAccessCode() {
@@ -479,6 +486,22 @@ public class MockSRunningBuild implements SRunningBuild {
 		return false;
 	}
 
+	@Nullable
+	@Override
+	public SFinishedBuild getRecentlyFinishedBuild() {
+		return null;
+	}
+
+	@Override
+	public boolean isAgentLessBuild() {
+		return false;
+	}
+
+	@Override
+	public boolean isCompositeBuild() {
+		return false;
+	}
+
 	public List<VcsRootInstanceEntry> getVcsRootEntries() {
 		// TODO Auto-generated method stub
 		return null;
@@ -514,11 +537,11 @@ public class MockSRunningBuild implements SRunningBuild {
 		
 	}
 
-	@Override
-	public BuildProblemData addUserBuildProblem(User arg0, String arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public BuildProblemData addUserBuildProblem(User arg0, String arg1) {
+//		 TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public Branch getBranch() {
@@ -529,6 +552,16 @@ public class MockSRunningBuild implements SRunningBuild {
 	@Override
 	public List<BuildProblemData> getFailureReasons() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void muteBuildProblems(@NotNull SUser sUser, boolean b, @NotNull String s) {
+
+	}
+
+	@Override
+	public BuildProblemData addUserBuildProblem(@NotNull SUser sUser, @NotNull String s) {
 		return null;
 	}
 
@@ -544,11 +577,11 @@ public class MockSRunningBuild implements SRunningBuild {
 		return false;
 	}
 
-	@Override
-	public void muteBuildProblems(User arg0, boolean arg1, String arg2) {
+//	@Override
+//	public void muteBuildProblems(User arg0, boolean arg1, String arg2) {
 		// TODO Auto-generated method stub
-		
-	}
+//
+//	}
 
 	// From 8.0
 	
@@ -561,6 +594,12 @@ public class MockSRunningBuild implements SRunningBuild {
 	@Override
 	public Map<String, BigDecimal> getStatisticValues() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public Collection<SBuildFeatureDescriptor> getBuildFeaturesOfType(@NotNull String s) {
 		return null;
 	}
 

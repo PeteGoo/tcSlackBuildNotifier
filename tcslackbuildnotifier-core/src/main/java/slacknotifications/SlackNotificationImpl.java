@@ -22,7 +22,6 @@ import slacknotifications.teamcity.Loggers;
 import slacknotifications.teamcity.payload.content.Commit;
 import slacknotifications.teamcity.payload.content.PostMessageResponse;
 import slacknotifications.teamcity.payload.content.SlackNotificationPayloadContent;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -177,7 +176,7 @@ public class SlackNotificationImpl implements SlackNotification {
             Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url + " using proxy " + this.proxyHost + ":" + this.proxyPort);
             if (this.filename.length() > 0) {
                 File file = new File(this.filename);
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
             if (this.payload != null) {
 
