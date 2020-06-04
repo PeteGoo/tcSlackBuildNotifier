@@ -68,6 +68,7 @@ public class SlackNotificationImpl implements SlackNotification {
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
+    private boolean mentionSlackUserEnabledForManualExecution;
     private boolean mentionHereEnabled;
     private boolean showFailureReason;
 	
@@ -356,13 +357,13 @@ public class SlackNotificationImpl implements SlackNotification {
         if(payload.getIsFirstFailedBuild()
                 && (mentionChannelEnabled
                     || mentionHereEnabled
-                    ||(mentionSlackUserEnabled
-                        && !slackUsers.isEmpty()))){
+                    ||(mentionSlackUserEnabled && !slackUsers.isEmpty()))) {
             String mentionContent = ":arrow_up: \"" + this.payload.getBuildName() + "\" Failed ";
             if(mentionChannelEnabled){
                 mentionContent += "<!channel> ";
             }
-            if(mentionSlackUserEnabled && !slackUsers.isEmpty() && !this.payload.isMergeBranch()) {
+            if(mentionSlackUserEnabled && !slackUsers.isEmpty() && !this.payload.isMergeBranch() &&
+                    (mentionSlackUserEnabledForManualExecution && !this.payload.isTriggeredByUser())) {
                 mentionContent += StringUtil.join(" ", slackUsers);
             }
             if (mentionHereEnabled) {
@@ -657,6 +658,11 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setMentionSlackUserEnabled(boolean mentionSlackUserEnabled) {
         this.mentionSlackUserEnabled = mentionSlackUserEnabled;
+    }
+
+    @Override
+    public void setMentionSlackUserEnabledForManualExecution(boolean mentionSlackUserEnabledForManualExecution) {
+        this.mentionSlackUserEnabledForManualExecution = mentionSlackUserEnabledForManualExecution;
     }
 
     @Override

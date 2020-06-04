@@ -38,11 +38,12 @@ public class MockSRunningBuild implements SRunningBuild {
 	private MockSBuildAgent sBuildAgent;
 	private String buildNumber;
 	private MockTriggeredBy triggeredBy;
+	private Boolean isTriggeredByUser;
 	private Status status;
 	private String statusText;
 	private long buildId = 123456;
 
-	public MockSRunningBuild(SBuildType buildType, String triggeredBy, Status status, String statusText, String buildNumber) {
+	public MockSRunningBuild(SBuildType buildType, String triggeredBy, Status status, String statusText, String buildNumber, Boolean isTriggeredByUser) {
 		this.sBuildType = buildType;
 		this.sBuildAgent = new MockSBuildAgent("Test Agent", 
 									"agent.hostname.domain.name", 
@@ -51,6 +52,7 @@ public class MockSRunningBuild implements SRunningBuild {
 									"Linux, version 2.6.27.21" );
 		sBuildAgent.setRunningBuild(this);
 		this.triggeredBy = new MockTriggeredBy(triggeredBy);
+		this.isTriggeredByUser = isTriggeredByUser;
 		this.status = status;
 		this.statusText = statusText;
 		this.buildNumber = buildNumber;
@@ -615,4 +617,11 @@ public class MockSRunningBuild implements SRunningBuild {
 		return null;
 	}
 
+	public Boolean getTriggeredByUser() {
+		return isTriggeredByUser;
+	}
+
+	public void setTriggeredByUser(Boolean triggeredByUser) {
+		isTriggeredByUser = triggeredByUser;
+	}
 }

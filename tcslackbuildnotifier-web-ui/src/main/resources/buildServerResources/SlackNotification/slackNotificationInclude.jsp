@@ -158,6 +158,10 @@
                                                         <input class="buildState" id="mentionHereEnabled" name="mentionHereEnabled" type=checkbox />
                                                          @here</label>
 													</td>
+													<td><label style='white-space:nowrap;'>
+														<input class="buildState" id="mentionSlackUserEnabledForManualExecution" name="mentionSlackUserEnabledForManualExecution" type=checkbox />
+														Slack User on Manual Run</label>
+													</td>
 												</tr>
 					    					</table>     
 					    					

@@ -44,7 +44,7 @@ public class SlackNotificationMockingFrameworkImpl implements SlackNotificationM
 	SBuildType sBuildType = new MockSBuildType("Test Build", "A Test Build", "bt1");
 	SBuildType sBuildType02 = new MockSBuildType("Test Build-2", "A Test Build 02", "bt2");
 	SBuildType sBuildType03 = new MockSBuildType("Test Build-2", "A Test Build 03", "bt3");
-	SRunningBuild sRunningBuild = new MockSRunningBuild(sBuildType, "SubVersion", Status.NORMAL, "Running", "TestBuild01");
+	SRunningBuild sRunningBuild = new MockSRunningBuild(sBuildType, "SubVersion", Status.NORMAL, "Running", "TestBuild01", false);
 	SProject sProject = new MockSProject("Test Project", "A test project", "project1", "ATestProject", sBuildType);
 	SProject sProject02 = new MockSProject("Test Project 02", "A test project 02", "project2", "TestProjectNumber02", sBuildType);
 	SProject sProject03 = new MockSProject("Test Project 03", "A test sub project 03", "project3", "TestProjectNumber02_TestProjectNumber03", sBuildType);
