@@ -362,9 +362,12 @@ public class SlackNotificationImpl implements SlackNotification {
             if(mentionChannelEnabled){
                 mentionContent += "<!channel> ";
             }
-            if(mentionSlackUserEnabled && !slackUsers.isEmpty() && !this.payload.isMergeBranch() &&
-                    (mentionSlackUserEnabledForManualExecution && !this.payload.isTriggeredByUser())) {
-                mentionContent += StringUtil.join(" ", slackUsers);
+            if (!slackUsers.isEmpty() && mentionSlackUserEnabled) {
+                // TODO: add property to filter out merge branches in case defined - && !this.payload.isMergeBranch()
+                if ((this.payload.isTriggeredByUser() && mentionSlackUserEnabledForManualExecution) ||
+                        !this.payload.isTriggeredByUser()) {
+                    mentionContent += StringUtil.join(" ", slackUsers);
+                }
             }
             if (mentionHereEnabled) {
                 mentionContent += "<!here>";

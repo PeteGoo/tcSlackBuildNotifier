@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>petegoo.teamcity.plugins.tcslacknotifications</groupId>
 		<artifactId>tcslackbuildnotifier</artifactId>
-		<version>1.4.7</version>
+		<version>1.4.7-sq</version>
 	</parent>
 
 	<artifactId>tcslackbuildnotifier-core</artifactId>

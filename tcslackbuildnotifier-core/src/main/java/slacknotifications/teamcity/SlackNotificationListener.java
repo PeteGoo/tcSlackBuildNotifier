@@ -81,6 +81,7 @@ public class SlackNotificationListener extends BuildServerAdapter {
         slackNotification.setMaxCommitsToDisplay(myMainSettings.getMaxCommitsToDisplay());
         slackNotification.setMentionChannelEnabled(slackNotificationConfig.getMentionChannelEnabled());
 		slackNotification.setMentionSlackUserEnabled(slackNotificationConfig.getMentionSlackUserEnabled());
+		slackNotification.setMentionSlackUserEnabledForManualExecution(slackNotificationConfig.getMentionSlackUserEnabledForManualExecution());
 		slackNotification.setMentionHereEnabled(slackNotificationConfig.getMentionHereEnabled());
         slackNotification.setShowElapsedBuildTime(myMainSettings.getShowElapsedBuildTime());
         if(slackNotificationConfig.getContent() != null && slackNotificationConfig.getContent().isEnabled()) {
