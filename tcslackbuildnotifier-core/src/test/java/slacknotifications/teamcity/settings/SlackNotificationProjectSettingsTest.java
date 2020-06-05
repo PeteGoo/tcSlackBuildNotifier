@@ -40,7 +40,7 @@ public class SlackNotificationProjectSettingsTest {
 		settings.addNewSlackNotification("1", "1", "#general", "Steve",
 				"master", false, state, false, false,
 				new HashSet<String>(), false, false,
-				false, false);
+				false, false, false);
 		List<SlackNotificationConfig> listOfConfigs = settings.getSlackNotificationsConfigs();
 		for (SlackNotificationConfig config : listOfConfigs) {
 			assertTrue(config.getFilterBranchName() == "master");
