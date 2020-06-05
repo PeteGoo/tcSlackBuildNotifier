@@ -47,7 +47,8 @@ In order to contribute to the project you first need to checkout the project sou
 
 In order to test the plugin simply run the following command with java and mvn installed:
 
-    mvn package tc-sdk:start
+    mvn package
+    mvn -pl :tcslackbuildnotifier-plugin tc-sdk:start
 
 By default it will install TeamCity in the version listed in the property in the root `pom.xml`. However you can overwrite this setting by using the `-DteamcityVersion=10.0` switch.
 
