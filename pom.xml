@@ -31,7 +31,12 @@
         <module>tcslackbuildnotifier-core</module>
     </modules>
 
-    <scm/>
+    <scm>
+        <connection>scm:${repository.type}:${repository.http.url}</connection>
+        <developerConnection>scm:${repository.type}:${repository.ssh.url}</developerConnection>
+        <url>${repository.http.url}</url>
+    </scm>
+
     <issueManagement/>
     <ciManagement/>
     <distributionManagement/>
@@ -46,6 +51,21 @@
         <add.maven.descriptor>true</add.maven.descriptor>
         <maven.min.version>3.0.5</maven.min.version>
         <maven.max.version>3.6.3</maven.max.version>
+
+        <repository.server>github.com</repository.server>
+        <repository.server.ssh.port />
+        <repository.server.http.port />
+
+        <repository.type>git</repository.type>
+        <repository.group>PeteGoo</repository.group>
+        <repository.name>tcSlackBuildNotifier.git</repository.name>
+        <repository.suffix>${repository.group}/${repository.name}</repository.suffix>
+        <repository.http.url>
+            https://${repository.server}${repository.server.http.port}/${repository.suffix}
+        </repository.http.url>
+        <repository.ssh.url>
+            ssh://git@${repository.server}${repository.server.ssh.port}/${repository.suffix}
+        </repository.ssh.url>
     </properties>
 
     <dependencyManagement>
