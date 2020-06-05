@@ -1,11 +1,12 @@
 language: java
 jdk:
-  - oraclejdk8
+  - openjdk8
+  - openjdk11
 addons:
   artifacts:
     # ...
     paths:
-    - $(ls target/*.zip | tr "\n" ":")
+    - $(ls tcslackbuildnotifier-web-ui/target/*.zip | tr "\n" ":")
     bucket: slacknotifier-builds
     key:
       secure: Jgn0V3qiY/WX/Oo/9WOyi6V/g0oeaaP6fbZgs9nzMRCydOrUzJsh/ZCVX0Zc3jZBYARIuSbJJsNY5YBcdspGvM+tigpJsZaJ9po1cnHzDUIlciMpzu204APCMVF9Qp0aYzMnKoAUN/pMFP0BxclklpXHXtUZrAkaw7uerDzrnuQ=
