@@ -28,7 +28,8 @@ public final class NotificationUtility {
                             + " " + notification.getErrorReason());
                 }
                 if (notification.getPayload() != null) {
-                    Loggers.SERVER.info(this.getClass().getSimpleName() + ":doPost :: content dump: " + notification.getPayload().toString());
+                    Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " +
+                            notification.getPayload().toString());
                 }
                 if (notification.isErrored()){
                     Loggers.SERVER.error(notification.getErrorReason());

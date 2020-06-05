@@ -8,7 +8,6 @@ import slacknotifications.SlackNotificationProxyConfig;
 import slacknotifications.teamcity.Loggers;
 
 import java.io.IOException;
-import java.util.jar.Manifest;
 
 public class SlackNotificationMainSettings implements MainConfigProcessor {
 	private static final String NAME = SlackNotificationMainSettings.class.getName();
@@ -151,9 +150,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         if(version != null){
             return version;
         }
-        Manifest props = new Manifest();
-        props.read(SlackNotificationMainSettings.class.getResourceAsStream("/META-INF/MANIFEST.MF"));
-        version = props.getMainAttributes().getValue("Build-Version");
+        version = SlackNotificationMainSettings.class.getPackage().getImplementationVersion();
         return version;
     }
 }
