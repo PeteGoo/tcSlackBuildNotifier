@@ -94,6 +94,14 @@
                                                   <td></td>
                                                   <td colspan="2"><span class="smallNote" style="margin-left:0px;">Make sure you include the leading # if you are posting to a channel e.g. #my-channel</span></td>
                                                 </tr>
+                                                <tr style="border:none;">
+                                                    <td>Branch Name:</td>
+                                                    <td colspan=2><input id="filterBranchName" name="filterBranchName" type=text maxlength=512 style="margin: 0pt; padding: 0pt; width: 36em;" watermark="master"/></td>
+                                                </tr>
+												<tr style="border:none">
+                                                  <td></td>
+                                                  <td colspan="2"><span class="smallNote" style="margin-left:0px;">Only notify for builds on this branch. Note that if you want to notify on the default branch, use the magic value &lt;default&gt;.</span></td>
+                                                </tr>
 												<tr style="border:none;">
 													<td><label for="slackNotificationsEnabled">Enabled:</label></td>
 													<td style="padding-left:3px;" colspan=2><input id="slackNotificationsEnabled" type=checkbox name="slackNotificationsEnabled"/></td>
@@ -162,6 +170,10 @@
 														<input class="buildState" id="mentionSlackUserEnabledForManualExecution" name="mentionSlackUserEnabledForManualExecution" type=checkbox />
 														Slack User on Manual Run</label>
 													</td>
+												</tr>
+												<tr style="border:none;">
+													<td><label for="mentionWhoTriggeredEnabled">Mention who triggered:</label></td>
+													<td style="padding-left:3px;" colspan=2><input id="mentionWhoTriggeredEnabled" type=checkbox name="mentionWhoTriggeredEnabled"/></td>
 												</tr>
 					    					</table>     
 					    					

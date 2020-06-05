@@ -25,13 +25,13 @@ public class PayloadContentCommits {
 
         for (SVcsModification change : changes) {
             Collection<SUser> committers = change.getCommitters();
-            String slackUserName = null;
-            if (committers != null && !committers.isEmpty()) {
+            String slackUserId = null;
+            if (!committers.isEmpty()) {
                 SUser committer = committers.iterator().next();
-                slackUserName = committer.getPropertyValue(SlackNotificator.USERNAME_KEY);
-                Loggers.ACTIVITIES.debug("Resolved committer " + change.getUserName() + " to Slack User " + slackUserName);
+                slackUserId = committer.getPropertyValue(SlackNotificator.USERID_KEY);
+                Loggers.ACTIVITIES.debug("Resolved committer " + change.getUserName() + " to Slack User " + slackUserId);
             }
-            commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName(), slackUserName));
+            commits.add(new Commit(change.getVersion(), change.getDescription(), change.getUserName(), slackUserId));
         }
     }
 

@@ -123,6 +123,7 @@
 					jQuerySlacknotification('#slackNotificationId').val(slacknotification.uniqueKey);
 					jQuerySlacknotification('#slackNotificationToken').val(slacknotification.token);
 					jQuerySlacknotification('#slackNotificationChannel').val(slacknotification.channel);
+					jQuerySlacknotification('#filterBranchName').val(slacknotification.filterBranchName);
 				    jQuerySlacknotification('#slackNotificationsEnabled').attr('checked', slacknotification.enabled);
 				    jQuerySlacknotification.each(slacknotification.states, function(name, value){
 				    	jQuerySlacknotification('#' + value.buildStateName).attr('checked', value.enabled);
@@ -140,6 +141,7 @@
 					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', slacknotification.mentionSlackUserEnabled);
 					jQuerySlacknotification('#mentionSlackUserEnabledForManualExecution').attr('checked', slacknotification.mentionSlackUserEnabledForManualExecution);
 					jQuerySlacknotification('#mentionHereEnabled').attr('checked', slacknotification.mentionHereEnabled);
+					jQuerySlacknotification('#mentionWhoTriggeredEnabled').attr('checked', slacknotification.mentionWhoTriggeredEnabled);
 					jQuerySlacknotification('#maxCommitsToDisplay').val(slacknotification.maxCommitsToDisplay);
 					jQuerySlacknotification('#customContentEnabled').attr('checked', slacknotification.customContentEnabled);
 					jQuerySlacknotification('#showBuildAgent').attr('checked', slacknotification.showBuildAgent);

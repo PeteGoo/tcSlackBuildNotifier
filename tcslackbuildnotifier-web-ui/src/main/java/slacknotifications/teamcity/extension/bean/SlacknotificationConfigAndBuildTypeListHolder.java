@@ -31,6 +31,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private boolean mentionSlackUserEnabled;
 	private boolean mentionSlackUserEnabledForManualExecution;
 	private boolean mentionHereEnabled;
+	private boolean mentionWhoTriggeredEnabled;
     private boolean customContentEnabled;
     private boolean showBuildAgent;
     private boolean showElapsedBuildTime;
@@ -39,6 +40,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
     private boolean showTriggeredBy;
     private int maxCommitsToDisplay;
     private boolean showFailureReason;
+    private String filterBranchName;
     private String botName;
     private String iconUrl;
 
@@ -58,6 +60,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 		mentionSlackUserEnabled = config.getMentionSlackUserEnabled();
 		mentionSlackUserEnabledForManualExecution = config.getMentionSlackUserEnabledForManualExecution();
 		mentionHereEnabled = config.getMentionHereEnabled();
+		mentionWhoTriggeredEnabled = config.isMentionWhoTriggeredEnabled();
         maxCommitsToDisplay = config.getContent().getMaxCommitsToDisplay();
         customContentEnabled = config.getContent().isEnabled();
         showBuildAgent = valueOrFallback(config.getContent().getShowBuildAgent(), valueOrFallback(mainSettings.getShowBuildAgent(), SlackNotificationContentConfig.DEFAULT_SHOW_BUILD_AGENT));
@@ -66,6 +69,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
         showCommitters = valueOrFallback(config.getContent().getShowCommitters(), valueOrFallback(mainSettings.getShowCommitters(), SlackNotificationContentConfig.DEFAULT_SHOW_COMMITTERS));
         showTriggeredBy = valueOrFallback(config.getContent().getShowTriggeredBy(), valueOrFallback(mainSettings.getShowTriggeredBy(), SlackNotificationContentConfig.DEFAULT_SHOW_TRIGGERED_BY));
         showFailureReason = valueOrFallback(config.getContent().getShowFailureReason(), valueOrFallback(mainSettings.getShowFailureReason(), SlackNotificationContentConfig.DEFAULT_SHOW_FAILURE_REASON));
+        filterBranchName = valueOrFallback(config.getFilterBranchName(), valueOrFallback(mainSettings.getFilterBranchName(),SlackNotificationContentConfig.DEFAULT_FILTER_BRANCH_NAME));
         botName = valueOrFallback(config.getContent().getBotName(), SlackNotificationMainConfig.DEFAULT_BOTNAME);
         iconUrl = valueOrFallback(config.getContent().getIconUrl(), SlackNotificationMainConfig.DEFAULT_ICONURL);
 	}

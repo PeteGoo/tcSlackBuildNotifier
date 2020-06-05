@@ -46,6 +46,7 @@ public class SlackNotificationSettingsControllerTest {
                 true,
                 true,
                 true,
+                "master",
                 true,
                 true,
                 null, null, null, null);

@@ -34,7 +34,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
-
 public class SlackNotificationImpl implements SlackNotification {
 	
 	private static final String UTF8 = "UTF-8";
@@ -64,14 +63,16 @@ public class SlackNotificationImpl implements SlackNotification {
     private Boolean showElapsedBuildTime;
     private boolean showCommits;
     private boolean showCommitters;
+    private String filterBranchName;
     private boolean showTriggeredBy;
     private int maxCommitsToDisplay;
     private boolean mentionChannelEnabled;
     private boolean mentionSlackUserEnabled;
     private boolean mentionSlackUserEnabledForManualExecution;
     private boolean mentionHereEnabled;
+    private boolean mentionWhoTriggeredEnabled;
     private boolean showFailureReason;
-	
+
 /*	This is a bit mask of states that should trigger a SlackNotification.
  *  All ones (11111111) means that all states will trigger the slacknotifications
  *  We'll set that as the default, and then override if we get a more specific bit mask. */
@@ -149,14 +150,29 @@ public class SlackNotificationImpl implements SlackNotification {
 		}
     }
 
-    public void post() throws IOException {
-        if(getIsApiToken()){
-            postViaApi();
-        }
-        else{
-            postViaWebHook();
-        }
+    public String getBranchDisplayName() {
+        // The actual branch
+        String branchDisplayName = this.payload == null ? "" : this.payload.getBranchDisplayName();
 
+        // when branchDisplayName is not available, we fudge it to be the magic value <default>.
+        if (branchDisplayName == null || branchDisplayName.length() == 0) {
+            Loggers.SERVER.info("SlackNotificationImpl :: getBranchDisplayName :: branchDisplayName is empty, defaults to <default>.");
+            branchDisplayName = "<default>";
+        }
+        return branchDisplayName;
+    }
+
+    public void post() throws IOException {
+        if (getFilterBranchName().equalsIgnoreCase(getBranchDisplayName()) ||
+            getFilterBranchName().equalsIgnoreCase("<default>") && this.payload != null && this.payload.getBranchIsDefault()) {
+            if (getIsApiToken()) {
+                postViaApi();
+            } else {
+                postViaWebHook();
+            }
+        } else {
+            Loggers.SERVER.warn("SlackNotificationImpl :: post :: filterBranchName not applicable, posting to Slack skipped.");
+        }
     }
 
     private void postViaApi() throws IOException {
@@ -164,7 +180,7 @@ public class SlackNotificationImpl implements SlackNotification {
             if (this.teamName == null) {
                 this.teamName = "";
             }
-            String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
+            String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&as_user=0&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.token,
                     this.botName == null ? "" : URLEncoder.encode(this.botName, UTF8),
                     this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, UTF8),
@@ -329,8 +345,8 @@ public class SlackNotificationImpl implements SlackNotification {
 
 
         for(Commit commit : commits){
-            if(commit.hasSlackUsername()){
-                slackUsers.add("<@" + commit.getSlackUserName() + ">");
+            if(commit.hasSlackUserId()){
+                slackUsers.add("<!" + commit.getSlackUserId() + ">");
             }
         }
         HashSet<String> tempHash = new HashSet<String>(slackUsers);
@@ -354,11 +370,16 @@ public class SlackNotificationImpl implements SlackNotification {
         }
 
         // Mention the channel and/or the Slack Username of any committers if known
-        if(payload.getIsFirstFailedBuild()
+        boolean needMentionForFirstFailure = payload.getIsFirstFailedBuild()
                 && (mentionChannelEnabled
                     || mentionHereEnabled
-                    ||(mentionSlackUserEnabled && !slackUsers.isEmpty()))) {
-            String mentionContent = ":arrow_up: \"" + this.payload.getBuildName() + "\" Failed ";
+                    ||(mentionSlackUserEnabled
+                        && !slackUsers.isEmpty()));
+            String mentionContent = ":arrow_up: ";
+
+        if(needMentionForFirstFailure){
+            mentionContent += "\"" + this.payload.getBuildName() + "\" Failed ";
+
             if(mentionChannelEnabled){
                 mentionContent += "<!channel> ";
             }
@@ -372,6 +393,14 @@ public class SlackNotificationImpl implements SlackNotification {
             if (mentionHereEnabled) {
                 mentionContent += "<!here>";
             }
+        }
+
+        boolean needMentionForTheOneWhoTriggered = mentionWhoTriggeredEnabled && payload.getTriggeredBySlackUserId() != null;
+        if (needMentionForTheOneWhoTriggered) {
+            mentionContent += "<@" + payload.getTriggeredBySlackUserId() + ">";
+        }
+
+        if (needMentionForFirstFailure || needMentionForTheOneWhoTriggered) {
             attachment.addField("", mentionContent, true);
         }
 
@@ -637,10 +666,22 @@ public class SlackNotificationImpl implements SlackNotification {
     public void setShowCommits(boolean showCommits) {
         this.showCommits = showCommits;
     }
-	
+
     @Override
     public void setShowCommitters(boolean showCommitters) {
         this.showCommitters = showCommitters;
+    }
+
+    public void setFilterBranchName(String filterBranchName) {
+        this.filterBranchName = filterBranchName;
+    }
+
+    public String getFilterBranchName() {
+        if (this.filterBranchName == null || this.filterBranchName.isEmpty()){
+            setFilterBranchName("<default>");
+            Loggers.SERVER.info("SlackNotification :: filterBranchName is empty, defaults to <default>.");
+        }
+        return this.filterBranchName;
     }
 
     @Override
@@ -676,6 +717,15 @@ public class SlackNotificationImpl implements SlackNotification {
     @Override
     public void setShowFailureReason(boolean showFailureReason) {
         this.showFailureReason = showFailureReason;
+    }
+
+    public boolean isMentionWhoTriggeredEnabled() {
+        return mentionWhoTriggeredEnabled;
+    }
+
+    @Override
+    public void setMentionWhoTriggeredEnabled(boolean mentionWhoTriggeredEnabled) {
+        this.mentionWhoTriggeredEnabled = mentionWhoTriggeredEnabled;
     }
 
     public boolean getIsApiToken() {

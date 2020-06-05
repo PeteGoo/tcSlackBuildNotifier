@@ -24,6 +24,7 @@ public class SlackNotificationConfig {
 	private static final String SLACK_USER_ENABLED_MESSAGE = "mention-slack-user-enabled";
 	private static final String SLACK_USER_ENABLED_FOR_MANUAL_EXECUTION = "mention-slack-user-enabled-for-manual-execution";
 	private static final String HERE_ENABLED_MESSAGE = "mention-here-enabled";
+	private static final String WHO_TRIGGERED_ENABLED_MESSAGE = "mention-who-triggered-enabled";
 	private static final String STATES = "states";
 	private static final String BUILD_TYPES = "build-types";
 	private static final String ENABLED_FOR_ALL = "enabled-for-all";
@@ -38,7 +39,8 @@ public class SlackNotificationConfig {
 	private static final String SHOW_TRIGGERED_BY = "showTriggeredBy";
 	private static final String MAX_COMMITS_TO_DISPLAY = "maxCommitsToDisplay";
 	private static final String SHOW_FAILURE_REASON = "showFailureReason";
-	
+	private static final String FILTER_BRANCH_NAME = "filterBranchName";
+
 	
 	private Boolean enabled = true;
 	private String uniqueKey = "";
@@ -54,8 +56,10 @@ public class SlackNotificationConfig {
 	private boolean mentionSlackUserEnabled;
 	private boolean mentionSlackUserEnabledForManualExecution;
 	private boolean mentionHereEnabled;
+	private boolean mentionWhoTriggeredEnabled;
     private boolean customContent;
     private SlackNotificationContentConfig content;
+	private String filterBranchName;
 
     @SuppressWarnings("unchecked")
 	public SlackNotificationConfig(Element e) {
@@ -71,6 +75,10 @@ public class SlackNotificationConfig {
 
 		if (e.getAttribute(CHANNEL) != null){
 			this.setChannel(e.getAttributeValue(CHANNEL));
+		}
+
+		if (e.getAttribute(FILTER_BRANCH_NAME) != null){
+			this.setFilterBranchName(e.getAttributeValue(FILTER_BRANCH_NAME));
 		}
 
         if (e.getAttribute(TEAM_NAME) != null){
@@ -105,7 +113,11 @@ public class SlackNotificationConfig {
 		if (e.getAttribute(HERE_ENABLED_MESSAGE) != null){
 			this.setMentionHereEnabled(Boolean.parseBoolean(e.getAttributeValue("mention-here-enabled")));
 		}
-		
+
+		if (e.getAttribute(WHO_TRIGGERED_ENABLED_MESSAGE) != null){
+			this.setMentionWhoTriggeredEnabled(Boolean.parseBoolean(e.getAttributeValue(WHO_TRIGGERED_ENABLED_MESSAGE)));
+		}
+
 		if(e.getChild(STATES) != null){
 			Element eStates = e.getChild(STATES);
 			List<Element> statesList = eStates.getChildren("state");
@@ -198,6 +210,9 @@ public class SlackNotificationConfig {
             if (eContent.getAttribute(SHOW_FAILURE_REASON) != null){
                 this.content.setShowFailureReason(Boolean.parseBoolean(eContent.getAttributeValue(SHOW_FAILURE_REASON)));
             }
+            if (eContent.getAttribute(FILTER_BRANCH_NAME) != null){
+            	setFilterBranchName(eContent.getAttributeValue(FILTER_BRANCH_NAME));
+			}
         }
 
 		
@@ -216,6 +231,7 @@ public class SlackNotificationConfig {
     public SlackNotificationConfig(String token,
 								   String channel,
 								   String teamName,
+								   String filterBranchName,
 								   Boolean enabled,
 								   BuildState states,
 								   boolean buildTypeAllEnabled,
@@ -224,6 +240,7 @@ public class SlackNotificationConfig {
 								   boolean mentionChannelEnabled,
 								   boolean mentionSlackUserEnabled,
 								   boolean mentionHereEnabled,
+								   boolean mentionWhoTriggeredEnabled,
 								   boolean mentionSlackUserEnabledForManualExecution) {
         this.content = new SlackNotificationContentConfig();
         int Min = 1000000, Max = 1000000000;
@@ -233,6 +250,7 @@ public class SlackNotificationConfig {
         this.setToken(token);
         this.setChannel(channel);
         this.setTeamName(teamName);
+        this.setFilterBranchName(filterBranchName);
         this.setEnabled(enabled);
         this.setBuildStates(states);
         this.subProjectsEnabled = buildTypeSubProjects;
@@ -241,6 +259,7 @@ public class SlackNotificationConfig {
 		this.setMentionSlackUserEnabled(mentionSlackUserEnabled);
 		this.setMentionSlackUserEnabledForManualExecution(mentionSlackUserEnabledForManualExecution);
 		this.setMentionHereEnabled(mentionHereEnabled);
+		this.setMentionWhoTriggeredEnabled(mentionWhoTriggeredEnabled);
 
         if (!this.allBuildTypesEnabled) {
             this.enabledBuildTypesSet = enabledBuildTypes;
@@ -249,9 +268,15 @@ public class SlackNotificationConfig {
 	
 	public Element getAsElement(){
 		Element el = new Element("slackNotification");
+
 		el.setAttribute(CHANNEL, this.getChannel());
+
 		if(StringUtil.isNotEmpty(this.getToken())) {
 			el.setAttribute(TOKEN, this.getToken());
+		}
+
+		if(StringUtil.isNotEmpty(this.getFilterBranchName())) {
+			el.setAttribute(FILTER_BRANCH_NAME, this.getFilterBranchName());
 		}
 
         if(StringUtil.isNotEmpty(this.getTeamName())) {
@@ -262,6 +287,7 @@ public class SlackNotificationConfig {
 		el.setAttribute(SLACK_USER_ENABLED_MESSAGE, String.valueOf(this.getMentionSlackUserEnabled()));
 		el.setAttribute(SLACK_USER_ENABLED_FOR_MANUAL_EXECUTION, String.valueOf(this.getMentionSlackUserEnabledForManualExecution()));
 		el.setAttribute(HERE_ENABLED_MESSAGE, String.valueOf(this.getMentionHereEnabled()));
+		el.setAttribute(WHO_TRIGGERED_ENABLED_MESSAGE, String.valueOf(this.isMentionWhoTriggeredEnabled()));
 
 		Element statesEl = new Element(STATES);
 		for (BuildStateEnum state : states.getStateSet()){
@@ -586,4 +612,16 @@ public class SlackNotificationConfig {
     public void setContent(SlackNotificationContentConfig content) {
         this.content = content;
     }
+
+	public String getFilterBranchName() { return filterBranchName; }
+
+	public void setFilterBranchName(String filterBranchName) { this.filterBranchName = filterBranchName; }
+
+	public boolean isMentionWhoTriggeredEnabled() {
+		return mentionWhoTriggeredEnabled;
+	}
+
+	public void setMentionWhoTriggeredEnabled(boolean mentionWhoTriggeredEnabled) {
+		this.mentionWhoTriggeredEnabled = mentionWhoTriggeredEnabled;
+	}
 }

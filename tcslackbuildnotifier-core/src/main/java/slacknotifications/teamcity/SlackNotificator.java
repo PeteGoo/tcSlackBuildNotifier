@@ -14,15 +14,12 @@ import jetbrains.buildServer.users.PropertyKey;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.util.StringUtil;
 import jetbrains.buildServer.vcs.VcsRoot;
-import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import slacknotifications.SlackNotification;
 import slacknotifications.teamcity.payload.SlackNotificationPayloadManager;
 import slacknotifications.teamcity.settings.SlackNotificationMainSettings;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -37,20 +34,20 @@ public class SlackNotificator implements Notificator {
     private ArrayList<UserPropertyInfo> userProps;
     private NotificationUtility notificationUtility;
 
-    private static final String SLACK_USERNAME_KEY = "tcSlackNotifier.userName";
+    private static final String SLACK_USERID_KEY = "tcSlackNotifier.userId";
     private static final String TYPE = "tcSlackBuildNotifier";
 
-    public static final PropertyKey USERNAME_KEY = new NotificatorPropertyKey(TYPE, SLACK_USERNAME_KEY);
+    public static final PropertyKey USERID_KEY = new NotificatorPropertyKey(TYPE, SLACK_USERID_KEY);
 
     public SlackNotificator(NotificatorRegistry notificatorRegistry,
                             SBuildServer sBuildServer,
                             SlackNotificationMainSettings configSettings,
                             SlackNotificationFactory factory,
-                            SlackNotificationPayloadManager manager){
+                            SlackNotificationPayloadManager manager) {
         Loggers.ACTIVITIES.debug("Registering SlackNotificator...");
 
         userProps = new ArrayList<UserPropertyInfo>();
-        userProps.add(new UserPropertyInfo(SLACK_USERNAME_KEY, "Slack Username"));
+        userProps.add(new UserPropertyInfo(SLACK_USERID_KEY, "Slack User Id"));
         notificatorRegistry.register(this, userProps);
         mainConfig = configSettings;
         notificationFactory = factory;
@@ -59,14 +56,14 @@ public class SlackNotificator implements Notificator {
         notificationUtility = new NotificationUtility();
     }
 
-    public void register(){
+    public void register() {
 
     }
 
     @Override
     public void notifyBuildStarted(SRunningBuild sRunningBuild, Set<SUser> set) {
-        for(SUser sUser : set){
-            if(!userHasSlackNameConfigured(sUser)){
+        for (SUser sUser : set) {
+            if (!userHasSlackIdConfigured(sUser)) {
                 continue;
             }
             SlackNotification slackNotification = createNotification(sUser);
@@ -77,8 +74,8 @@ public class SlackNotificator implements Notificator {
 
     @Override
     public void notifyBuildSuccessful(SRunningBuild sRunningBuild, Set<SUser> set) {
-        for(SUser sUser : set){
-            if(!userHasSlackNameConfigured(sUser)){
+        for (SUser sUser : set) {
+            if (!userHasSlackIdConfigured(sUser)) {
                 continue;
             }
             SlackNotification slackNotification = createNotification(sUser);
@@ -89,8 +86,8 @@ public class SlackNotificator implements Notificator {
 
     @Override
     public void notifyBuildFailed(SRunningBuild sRunningBuild, Set<SUser> set) {
-        for(SUser sUser : set){
-            if(!userHasSlackNameConfigured(sUser)){
+        for (SUser sUser : set) {
+            if (!userHasSlackIdConfigured(sUser)) {
                 continue;
             }
             SlackNotification slackNotification = createNotification(sUser);
@@ -110,8 +107,8 @@ public class SlackNotificator implements Notificator {
 
     @Override
     public void notifyBuildFailing(SRunningBuild sRunningBuild, Set<SUser> set) {
-        for(SUser sUser : set){
-            if(!userHasSlackNameConfigured(sUser)){
+        for (SUser sUser : set) {
+            if (!userHasSlackIdConfigured(sUser)) {
                 continue;
             }
             SlackNotification slackNotification = createNotification(sUser);
@@ -198,22 +195,19 @@ public class SlackNotificator implements Notificator {
     }
 
 
-    private boolean userHasSlackNameConfigured(SUser sUser){
-        String userName = sUser.getPropertyValue(USERNAME_KEY);
+    private boolean userHasSlackIdConfigured(SUser sUser) {
+        String userName = sUser.getPropertyValue(USERID_KEY);
 
-        return userName != null && StringUtil.isNotEmpty(userName);
+        return StringUtil.isNotEmpty(userName);
     }
 
-    private SlackNotification createNotification(SUser sUser){
+    private SlackNotification createNotification(SUser sUser) {
         SlackNotification notification = notificationFactory.getSlackNotification();
-        String userName = sUser.getPropertyValue(USERNAME_KEY);
-        if(userName.substring(0,1) == "@"){
-            userName = userName.substring(1);
-        }
-        notification.setChannel("@" + userName);
-
+        String userId = sUser.getPropertyValue(USERID_KEY);
+        notification.setChannel(userId);
         notification.setTeamName(mainConfig.getTeamName());
         notification.setToken(mainConfig.getToken());
+        notification.setFilterBranchName(mainConfig.getFilterBranchName());
         notification.setIconUrl(mainConfig.getIconUrl());
         notification.setBotName(mainConfig.getBotName());
         notification.setEnabled(mainConfig.getEnabled());
@@ -229,8 +223,7 @@ public class SlackNotificator implements Notificator {
     }
 
     @Nullable
-    private SFinishedBuild getPreviousNonPersonalBuild(SRunningBuild paramSRunningBuild)
-    {
+    private SFinishedBuild getPreviousNonPersonalBuild(SRunningBuild paramSRunningBuild) {
         List<SFinishedBuild> localList = buildServer.getHistory().getEntriesBefore(paramSRunningBuild, false);
 
         for (SFinishedBuild localSFinishedBuild : localList)

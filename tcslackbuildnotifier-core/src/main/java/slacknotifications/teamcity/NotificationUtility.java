@@ -13,7 +13,10 @@ public final class NotificationUtility {
 
     public void doPost(SlackNotification notification){
         try {
-            if (notification.isEnabled()){
+            if (notification.isEnabled() && (
+                    notification.getFilterBranchName().equalsIgnoreCase(notification.getBranchDisplayName()) ||
+                    notification.getFilterBranchName().equalsIgnoreCase("<default>") && notification.getPayload() != null && notification.getPayload().getBranchIsDefault()
+            )) {
                 notification.post();
                 if (notification.getResponse() != null && !notification.getResponse().getOk()) {
                     Loggers.SERVER.error(this.getClass().getSimpleName() + " :: SlackNotification failed : "
@@ -35,11 +38,11 @@ public final class NotificationUtility {
                     Loggers.SERVER.error(notification.getErrorReason());
                 }
                 if ((notification.getStatus() == null || notification.getStatus() > HttpStatus.SC_OK))
-                    Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + notification.getParam("projectId") + " SlackNotification (url: " + notification.getChannel() + " proxy: " + notification.getProxyHost() + ":" + notification.getProxyPort()+") returned HTTP status " + notification.getStatus().toString());
+                    Loggers.ACTIVITIES.warn("SlackNotificationListener :: " + notification.getParam("projectId") + " SlackNotification (url: " + notification.getChannel() + " proxy: " + notification.getProxyHost() + ":" + notification.getProxyPort()+") returned HTTP status " + notification.getStatus());
 
             } else {
-                Loggers.SERVER.debug("SlackNotification NOT triggered: "
-                        + notification.getParam("buildStatus") + " " + notification.getChannel());
+                Loggers.SERVER.info("SlackNotification NOT triggered: "
+                        + notification.getParam("buildStatus") + " " + notification.getChannel() + " isEnabled: " + notification.isEnabled() + " filterBranchName: " + notification.getFilterBranchName() + " branchDisplayName: " + notification.getBranchDisplayName());
             }
         } catch (FileNotFoundException e) {
             Loggers.SERVER.warn(this.getClass().getName() + ":doPost :: "

@@ -7,21 +7,21 @@ import jetbrains.buildServer.util.StringUtil;
  */
 public class Commit {
 
-    public Commit(String revision, String description, String userName, String slackUserName) {
+    public Commit(String revision, String description, String userName, String slackUserId) {
         this.description = description;
         this.userName = userName;
         this.revision = revision;
 
-        if(slackUserName != null && slackUserName.startsWith("@")){
-            slackUserName = slackUserName.substring(1);
+        if(slackUserId != null && slackUserId.startsWith("@")){
+            slackUserId = slackUserId.substring(1);
         }
-        this.slackUserName = slackUserName;
+        this.slackUserId = slackUserId;
     }
 
     private String description;
     private String userName;
     private String revision;
-    private String slackUserName;
+    private String slackUserId;
 
     public String getRevision() {
         return revision;
@@ -47,18 +47,18 @@ public class Commit {
         this.userName = userName;
     }
 
-    public String getSlackUserName() {
-        return slackUserName;
+    public String getSlackUserId() {
+        return slackUserId;
     }
 
-    public void setSlackUserName(String slackUserName) {
-        if(slackUserName != null && slackUserName.startsWith("@")){
-            slackUserName = slackUserName.substring(1);
+    public void setSlackUserId(String slackUserId) {
+        if(slackUserId != null && slackUserId.startsWith("@")){
+            slackUserId = slackUserId.substring(1);
         }
-        this.slackUserName = slackUserName;
+        this.slackUserId = slackUserId;
     }
 
-    public boolean hasSlackUsername(){
-        return slackUserName != null && StringUtil.isNotEmpty(slackUserName);
+    public boolean hasSlackUserId(){
+        return StringUtil.isNotEmpty(slackUserId);
     }
 }
