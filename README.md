@@ -3,7 +3,7 @@ tcSlackBuildNotifier
 
 ## Deprecation notice
 
-**This project is no longer actively maintained**
+**This project is no longer actively maintained** - JetBrains have added Slack functionality to [TeamCity 2020.1](https://blog.jetbrains.com/teamcity/2020/05/teamcity-2020-1-conditional-build-steps-support-for-kubernetes-slack-notifier-integration-with-azure-devops-and-jira-software-cloud-and-more/)
 
 [![Join the chat at https://gitter.im/PeteGoo/tcSlackBuildNotifier](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PeteGoo/tcSlackBuildNotifier?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
