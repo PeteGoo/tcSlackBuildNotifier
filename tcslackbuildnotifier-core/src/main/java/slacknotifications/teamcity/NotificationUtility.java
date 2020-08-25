@@ -30,7 +30,10 @@ public final class NotificationUtility {
                             + " returned " + notification.getStatus()
                             + " " + notification.getErrorReason());
                 }
-                Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " + notification.getPayload());
+                if (notification.getPayload() != null) {
+                    Loggers.SERVER.debug(this.getClass().getSimpleName() + ":doPost :: content dump: " +
+                            notification.getPayload().toString());
+                }
                 if (notification.isErrored()){
                     Loggers.SERVER.error(notification.getErrorReason());
                 }

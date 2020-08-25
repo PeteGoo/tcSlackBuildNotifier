@@ -37,6 +37,7 @@ public class SlackNotificationPayloadContent {
     String agentOs;
     String agentHostname;
     String triggeredBy;
+    Boolean triggeredByUser;
     String triggeredBySlackUserId;
     String comment;
     String message;
@@ -179,6 +180,7 @@ public class SlackNotificationPayloadContent {
             setTriggeredBySlackUserId(sRunningBuild.getTriggeredBy().getUser().getPropertyValue(SlackNotificator.USERID_KEY));
         }
         setTriggeredBy(sRunningBuild.getTriggeredBy().getAsString());
+        setTriggeredByUser(sRunningBuild.getTriggeredBy().isTriggeredByUser());
         setBuildId(Long.toString(sRunningBuild.getBuildId()));
         setBuildTypeId(TeamCityIdResolver.getBuildTypeId(sRunningBuild.getBuildType()));
         setAgentName(sRunningBuild.getAgentName());
@@ -201,7 +203,12 @@ public class SlackNotificationPayloadContent {
         setBuildDescriptionWithLinkSyntax(String.format("<" + getBuildStatusUrl() + "|" + getBuildResult() + " - " + sRunningBuild.getBuildType().getFullName() + " #" + sRunningBuild.getBuildNumber() + branchSuffix + ">"));
     }
 
-
+    private void setTriggeredByUser(boolean triggeredByUser) {
+        this.triggeredByUser = triggeredByUser;
+    }
+    public Boolean isTriggeredByUser() {
+        return triggeredByUser;
+    }
 
     private Branch getBranch() {
         return this.branch;

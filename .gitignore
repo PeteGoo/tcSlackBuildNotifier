@@ -1,28 +1,84 @@
-*.class
+### Linux
+*~
+.directory
+.Trash-*
 
-*/target/**
-target/**
+### Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
 
-# TC integration
-servers/*
+### MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
-# IntelliJ files
-.idea/*
+### JetBrains
 *.iml
+*.ipr
+*.iws
+.idea/
+/out/
+.idea_modules/
+atlassian-ide-plugin.xml
 
-# Mobile Tools for Java (J2ME)
+### Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.project
+.externalToolBuilders/
+*.launch
+.classpath
+.buildpath
+.target
+.texlipse
+
+### Java
+*.class
 .mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
 *.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-.metadata
-.project
-.settings
-.classpath
-.gradle
+### Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+
+### TC integration
+servers/

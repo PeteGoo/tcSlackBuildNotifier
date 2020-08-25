@@ -10,9 +10,11 @@ import java.util.Map;
 public class MockTriggeredBy implements TriggeredBy {
 
 	String triggeredBy;
-	
+	Boolean isTriggeredByUser;
+
 	public MockTriggeredBy(String triggeredBy) {
 		this.triggeredBy = triggeredBy;
+		this.isTriggeredByUser = isTriggeredByUser();
 	}
 
 	public String getAsString() {

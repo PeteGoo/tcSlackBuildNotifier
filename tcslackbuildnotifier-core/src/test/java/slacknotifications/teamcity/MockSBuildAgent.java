@@ -3,13 +3,16 @@ package slacknotifications.teamcity;
 import jetbrains.buildServer.BuildAgent;
 import jetbrains.buildServer.LicenseNotGrantedException;
 import jetbrains.buildServer.serverSide.*;
+import jetbrains.buildServer.serverSide.agentPools.AgentPool;
 import jetbrains.buildServer.serverSide.comments.Comment;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.users.User;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MockSBuildAgent implements SBuildAgent, BuildAgent {
 
@@ -49,6 +52,12 @@ public class MockSBuildAgent implements SBuildAgent, BuildAgent {
 		return null;
 	}
 
+	@NotNull
+	@Override
+	public Set<String> getAvailableRunTypeIds() {
+		return null;
+	}
+
 	public List<SBuildType> getBuildConfigurationsBuilt() {
 		// TODO Auto-generated method stub
 		return null;
@@ -84,6 +93,18 @@ public class MockSBuildAgent implements SBuildAgent, BuildAgent {
 	public int getPort() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@NotNull
+	@Override
+	public String getCommunicationProtocolDescription() {
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public String getCommunicationProtocolType() {
+		return null;
 	}
 
 	public Date getRegistrationTimestamp() {
@@ -173,6 +194,11 @@ public class MockSBuildAgent implements SBuildAgent, BuildAgent {
 		return 0;
 	}
 
+	@Override
+	public int getAgentPoolId() {
+		return 0;
+	}
+
 	public int getId() {
 		return this.agentId;
 	}
@@ -229,6 +255,28 @@ public class MockSBuildAgent implements SBuildAgent, BuildAgent {
 	public long getIdleTime() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@NotNull
+	@Override
+	public String describe(boolean b) {
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public AgentPool getAgentPool() {
+		return null;
+	}
+
+	@Override
+	public boolean isCloudAgent() {
+		return false;
+	}
+
+	@Override
+	public boolean canStartBuildIfAgentOutdated() {
+		return false;
 	}
 
 	public void setEnabled(boolean arg0, SUser arg1, String arg2, long arg3) {

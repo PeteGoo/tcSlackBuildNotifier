@@ -29,6 +29,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 	private String enabledBuildsListForWeb;
 	private boolean mentionChannelEnabled;
 	private boolean mentionSlackUserEnabled;
+	private boolean mentionSlackUserEnabledForManualExecution;
 	private boolean mentionHereEnabled;
 	private boolean mentionWhoTriggeredEnabled;
     private boolean customContentEnabled;
@@ -57,6 +58,7 @@ public class SlacknotificationConfigAndBuildTypeListHolder {
 		}
 		mentionChannelEnabled = config.getMentionChannelEnabled();
 		mentionSlackUserEnabled = config.getMentionSlackUserEnabled();
+		mentionSlackUserEnabledForManualExecution = config.getMentionSlackUserEnabledForManualExecution();
 		mentionHereEnabled = config.getMentionHereEnabled();
 		mentionWhoTriggeredEnabled = config.isMentionWhoTriggeredEnabled();
         maxCommitsToDisplay = config.getContent().getMaxCommitsToDisplay();

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<assembly>
+    <id>plugin-assembly</id>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <files>
+        <file>
+            <source>${project.build.directory}/processed-resources/teamcity-plugin.xml</source>
+            <outputDirectory>/</outputDirectory>
+        </file>
+    </files>
+    <moduleSets>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>${project.groupId}:tcslackbuildnotifier-plugin</include>
+            </includes>
+            <binaries>
+                <outputDirectory>server</outputDirectory>
+                <unpack>false</unpack>
+                <dependencySets>
+                    <dependencySet>
+                        <includes>
+                            <include>*</include>
+                        </includes>
+                    </dependencySet>
+                </dependencySets>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+</assembly>

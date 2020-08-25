@@ -166,13 +166,20 @@
                                                         <input class="buildState" id="mentionHereEnabled" name="mentionHereEnabled" type=checkbox />
                                                          @here</label>
 													</td>
+													<td><label style='white-space:nowrap;'>
+														<input class="buildState" id="mentionSlackUserEnabledForManualExecution" name="mentionSlackUserEnabledForManualExecution" type=checkbox />
+														Slack User on Manual Run</label>
+													</td>
 												</tr>
 												<tr style="border:none;">
-													<td><label for="mentionWhoTriggeredEnabled">Mention who triggered:</label></td>
-													<td style="padding-left:3px;" colspan=2><input id="mentionWhoTriggeredEnabled" type=checkbox name="mentionWhoTriggeredEnabled"/></td>
+													<td>Mention who triggered:</td>
+													<td style="padding-left:3px;"><label style='white-space:nowrap;'>
+														<input class="buildState" id="mentionWhoTriggeredEnabled" name="mentionWhoTriggeredEnabled" type=checkbox />
+														</label>
+													</td>
 												</tr>
-					    					</table>     
-					    					
+					    					</table>
+
 					    			</div><!--hookPane -->
 					    			<div id='payloadPane'>
                                         <table style="border:none;">

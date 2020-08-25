@@ -1,5 +1,0 @@
-<project name="JSP Copier" default="copy-jsps">
-	<target name="copy-jsps">
-		<copydir dest="/opt/TeamCity/Current/TeamCity/webapps/ROOT/plugins/tcSlackNotifications/SlackNotification/" src="src/main/resources/buildServerResources/SlackNotification/"/>
-	</target>
-</project>

@@ -25,6 +25,8 @@ import jetbrains.buildServer.vcs.SVcsModification;
 import jetbrains.buildServer.vcs.SelectPrevBuildPolicy;
 import jetbrains.buildServer.vcs.VcsException;
 import jetbrains.buildServer.vcs.VcsRootInstanceEntry;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -36,11 +38,12 @@ public class MockSRunningBuild implements SRunningBuild {
 	private MockSBuildAgent sBuildAgent;
 	private String buildNumber;
 	private MockTriggeredBy triggeredBy;
+	private Boolean isTriggeredByUser;
 	private Status status;
 	private String statusText;
 	private long buildId = 123456;
 
-	public MockSRunningBuild(SBuildType buildType, String triggeredBy, Status status, String statusText, String buildNumber) {
+	public MockSRunningBuild(SBuildType buildType, String triggeredBy, Status status, String statusText, String buildNumber, Boolean isTriggeredByUser) {
 		this.sBuildType = buildType;
 		this.sBuildAgent = new MockSBuildAgent("Test Agent", 
 									"agent.hostname.domain.name", 
@@ -49,6 +52,7 @@ public class MockSRunningBuild implements SRunningBuild {
 									"Linux, version 2.6.27.21" );
 		sBuildAgent.setRunningBuild(this);
 		this.triggeredBy = new MockTriggeredBy(triggeredBy);
+		this.isTriggeredByUser = isTriggeredByUser;
 		this.status = status;
 		this.statusText = statusText;
 		this.buildNumber = buildNumber;
@@ -66,6 +70,11 @@ public class MockSRunningBuild implements SRunningBuild {
 
 	public SBuildAgent getAgent() {
 		return sBuildAgent;
+	}
+
+	@Override
+	public int getAgentId() {
+		return 0;
 	}
 
 	public String getAgentAccessCode() {
@@ -479,6 +488,22 @@ public class MockSRunningBuild implements SRunningBuild {
 		return false;
 	}
 
+	@Nullable
+	@Override
+	public SFinishedBuild getRecentlyFinishedBuild() {
+		return null;
+	}
+
+	@Override
+	public boolean isAgentLessBuild() {
+		return false;
+	}
+
+	@Override
+	public boolean isCompositeBuild() {
+		return false;
+	}
+
 	public List<VcsRootInstanceEntry> getVcsRootEntries() {
 		// TODO Auto-generated method stub
 		return null;
@@ -514,11 +539,11 @@ public class MockSRunningBuild implements SRunningBuild {
 		
 	}
 
-	@Override
-	public BuildProblemData addUserBuildProblem(User arg0, String arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public BuildProblemData addUserBuildProblem(User arg0, String arg1) {
+//		 TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public Branch getBranch() {
@@ -529,6 +554,16 @@ public class MockSRunningBuild implements SRunningBuild {
 	@Override
 	public List<BuildProblemData> getFailureReasons() {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void muteBuildProblems(@NotNull SUser sUser, boolean b, @NotNull String s) {
+
+	}
+
+	@Override
+	public BuildProblemData addUserBuildProblem(@NotNull SUser sUser, @NotNull String s) {
 		return null;
 	}
 
@@ -544,11 +579,11 @@ public class MockSRunningBuild implements SRunningBuild {
 		return false;
 	}
 
-	@Override
-	public void muteBuildProblems(User arg0, boolean arg1, String arg2) {
+//	@Override
+//	public void muteBuildProblems(User arg0, boolean arg1, String arg2) {
 		// TODO Auto-generated method stub
-		
-	}
+//
+//	}
 
 	// From 8.0
 	
@@ -564,6 +599,12 @@ public class MockSRunningBuild implements SRunningBuild {
 		return null;
 	}
 
+	@NotNull
+	@Override
+	public Collection<SBuildFeatureDescriptor> getBuildFeaturesOfType(@NotNull String s) {
+		return null;
+	}
+
 	@Override
 	public String getBuildTypeExternalId() {
 		// TODO Auto-generated method stub
@@ -576,4 +617,11 @@ public class MockSRunningBuild implements SRunningBuild {
 		return null;
 	}
 
+	public Boolean getTriggeredByUser() {
+		return isTriggeredByUser;
+	}
+
+	public void setTriggeredByUser(Boolean triggeredByUser) {
+		isTriggeredByUser = triggeredByUser;
+	}
 }

@@ -7,11 +7,7 @@ import org.jdom.Element;
 import slacknotifications.SlackNotificationProxyConfig;
 import slacknotifications.teamcity.Loggers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 public class SlackNotificationMainSettings implements MainConfigProcessor {
 	private static final String NAME = SlackNotificationMainSettings.class.getName();
@@ -158,9 +154,7 @@ public class SlackNotificationMainSettings implements MainConfigProcessor {
         if(version != null){
             return version;
         }
-        Properties props = new Properties();
-        props.load(SlackNotificationMainSettings.class.getResourceAsStream("/version.txt"));
-        version = props.getProperty("version");
+        version = SlackNotificationMainSettings.class.getPackage().getImplementationVersion();
         return version;
     }
 }

@@ -139,6 +139,7 @@
 					});
 					jQuerySlacknotification('#mentionChannelEnabled').attr('checked', slacknotification.mentionChannelEnabled);
 					jQuerySlacknotification('#mentionSlackUserEnabled').attr('checked', slacknotification.mentionSlackUserEnabled);
+					jQuerySlacknotification('#mentionSlackUserEnabledForManualExecution').attr('checked', slacknotification.mentionSlackUserEnabledForManualExecution);
 					jQuerySlacknotification('#mentionHereEnabled').attr('checked', slacknotification.mentionHereEnabled);
 					jQuerySlacknotification('#mentionWhoTriggeredEnabled').attr('checked', slacknotification.mentionWhoTriggeredEnabled);
 					jQuerySlacknotification('#maxCommitsToDisplay').val(slacknotification.maxCommitsToDisplay);
