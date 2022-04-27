@@ -17,8 +17,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -96,7 +96,7 @@
 	<repositories>
 		<repository>
 			<id>tcslacknotifications.sourceforge</id>
-			<url>http://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
+			<url>https://svn.code.sf.net/p/tcplugins/code/maven2-repo</url>
 		</repository>
 		<!-- <repository> <id>jetbrains-all</id> <url>http://repository.jetbrains.com/all</url> 
 			</repository> -->
