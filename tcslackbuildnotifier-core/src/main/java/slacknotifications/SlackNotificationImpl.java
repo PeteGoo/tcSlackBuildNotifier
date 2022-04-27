@@ -183,8 +183,7 @@ public class SlackNotificationImpl implements SlackNotification {
                 }
             }
 
-            String url = String.format("https://slack.com/api/chat.postMessage?token=%s&link_names=1&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
-                    this.token,
+            String url = String.format("https://slack.com/api/chat.postMessage?link_names=1&username=%s&icon_url=%s&channel=%s&text=%s&pretty=1",
                     this.botName == null ? "" : URLEncoder.encode(this.botName, UTF8),
                     this.iconUrl == null ? "" : URLEncoder.encode(this.iconUrl, UTF8),
                     this.channel == null ? "" : URLEncoder.encode(this.channel, UTF8),
@@ -192,6 +191,7 @@ public class SlackNotificationImpl implements SlackNotification {
                     "");
 
             HttpPost httppost = new HttpPost(url);
+            httppost.addHeader("Authorization", "Bearer " + this.token);
 
             Loggers.SERVER.info("SlackNotificationListener :: Preparing message for URL " + url + " using proxy " + this.proxyHost + ":" + this.proxyPort);
             if (this.filename.length() > 0) {
